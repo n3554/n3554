@@ -11,3 +11,5 @@ Just generating LaTex (you can edit the `.tex` and then `pdflatex` the output):
 
     $ pandoc --number-sections -H n3554_header.tex n3554_a_parallel_algorithms_library.*.md -o n3554_a_parallel_algorithms_library.tex
 
+[Get `pandoc` here.](http://johnmacfarlane.net/pandoc/installing.html)
+
