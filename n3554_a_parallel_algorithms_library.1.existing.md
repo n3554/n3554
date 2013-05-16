@@ -215,7 +215,7 @@ namespace std {
             InputIterator first, InputIterator last, const EqualityComparable &value);
   template<class ExecutionPolicy,
            class InputIterator, class Predicate>
-    typename thrust::iterator_traits<InputIterator>::difference_type
+    typename iterator_traits<InputIterator>::difference_type
       count_if(ExecutionPolicy &&exec,
                InputIterator first, InputIterator last, Predicate pred);
 
@@ -933,7 +933,7 @@ template<class ExecutionPolicy,
 
 template<class ExecutionPolicy,
          class InputIterator, class Predicate>
-  typename thrust::iterator_traits<InputIterator>::difference_type
+  typename iterator_traits<InputIterator>::difference_type
     count_if(ExecutionPolicy &&exec,
              InputIterator first, InputIterator last, Predicate pred);
 ```
