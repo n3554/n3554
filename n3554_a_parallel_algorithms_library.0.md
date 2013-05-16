@@ -27,8 +27,11 @@ std::sort(std::seq, vec.begin(), vec.end());
 // parallel sort
 std::sort(std::par, vec.begin(), vec.end());        
 
-// vectorized sort
-std::sort(std::vec, vec.begin(), vec.end());
+// vectorized sort in the current thread
+std::sort(std::seq_vec, vec.begin(), vec.end());
+
+// parallel, vectorized sort
+std::sort(std::par_vec, vec.begin(), vec.end());
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -53,15 +56,19 @@ Algorithms invoked with `std::seq` execute internally in sequential order in the
 Algorithms invoked with `std::par` are permitted to execute internally in an unordered fashion in unspecified threads. It is the caller's responsibility to ensure
 that the invocation does not introduce data races or deadlocks.
 
-Algorithms invoked with `std::vec` are permitted to execute internally in an
+Algorithms invoked with `std::par_vec` are permitted to execute internally in an
 unordered fashion in unspecified threads. In addition to the restrictions
 implied by `std::par`, it is the caller's responsibility to ensure that a
 `std::vec` invocation does not throw exceptions or attempt to perform
 synchronization operations.
 
+Algorithms invoked with `std::seq_vec` are permitted to execute in an unordered fashion in the current thread.
+In addition to the restrictions implied by `std::par`, it is the caller's responsibility to ensure that a
+`std::vec` invocation does not throw exceptions or attempt to perform synchronization operations.
+
 Algorithms invoked without an execution policy execute as if they were invoked with `std::seq`.
 
-An implementation may provide additional execution policies besides `std::seq`, `std::par`, or `std::vec`.
+An implementation may provide additional execution policies besides `std::seq`, `std::par`, `std::seq_vec`, or `std::par_vec`.
 
 This proposal is a pure addition to the existing C++ standard library; we do not believe it alters the semantics of any existing functionality.
 
@@ -228,11 +235,11 @@ The second static parallelization example becomes:
 
 ```
 template<ExecutionPolicy>
-void func(ExecutionPolicy &policy, std::vector &vec)
+void func(ExecutionPolicy &exec, std::vector &vec)
 {
-  std::transform(policy, vec.begin(), vec.end(), vec.begin(), f);
-  std::sort(policy, vec.begin(), vec.end());
-  std::unique(policy, vec.begin(), vec.end());
+  std::transform(exec, vec.begin(), vec.end(), vec.begin(), f);
+  std::sort(exec, vec.begin(), vec.end());
+  std::unique(exec, vec.begin(), vec.end());
 }
 ```
 
@@ -245,9 +252,9 @@ we observed that a namespace would introduce ambiguities when algorithms are inv
 ```
 void func(std::vector &vec)
 {
-  transform(policy, vec.begin(), vec.end(), vec.begin(), f);
-  sort(policy, vec.begin(), vec.end());
-  unique(policy, vec.begin(), vec.end());
+  transform(vec.begin(), vec.end(), vec.begin(), f);
+  sort(vec.begin(), vec.end());
+  unique(vec.begin(), vec.end());
 }
 ```
 
@@ -258,25 +265,18 @@ Finally, we note that nested namespaces inside `std::` are unconventional and ge
 ## Vectorization
 
 In addition to sequential and parallel execution policies, we consider
-vectorization as a third possibility. In many architectures, an increasing
+vectorization as a third or fourth possibility. In many architectures, an increasing
 amount of parallelism is exposed via SIMD units. Naturally, affording parallel
 programmers a simple, standard means of accessing these resources is desirable.
-Like `std::par`, the `std::vec` execution policy would permit an algorithm
+Like `std::par`, the `std::par_vec` execution policy would permit an algorithm
 invocation to distribute execution across a collection of threads.
 However, stronger requirements on the behavior of iterator and functor arguments than those
 permitted by both `std::seq` and `std::par` would allow the implementation
 greater opportunity to exploit vectorization. These requirements would preclude
-the use of locks and exceptions in functors, for example.
+the use of locks and exceptions in functors, for example. An analogous policy,
+`std::seq_vec`, would allow vectorization, but isolate it to the current thread.
 
-While preparing this proposal, the existence and precise semantics of
-`std::vec` were controversial. In particular, it was unclear whether algorithms
-invoked with a `std::vec` policy were should be permitted to generate
-concurrency by introducing additional threads. Our current proposal suggests
-that the restrictions enforced on user-defined code and permissions granted to
-algorithm invocations by `std::vec` should be a superset of those provided by
-`std::par`.
-
-Whether or not we decide to propose to include a `std::vec` policy, we expect
+Whether or not we decide to propose to include a policies for vectorization, we expect
 our library solution to parallelism to complement other library and language
 forms of vectorization and parallelism in an eventual standard. Just as the
 existing sequential `std::for_each` library function coexists with the
@@ -299,9 +299,13 @@ namespace std
 
   extern const parallel_execution_policy par;
 
-  class vector_execution_policy { .. };
+  class parallel_vector_execution_policy { .. };
 
-  extern const vector_execution_policy vec;
+  extern const parallel_vector_execution_policy par_vec;
+
+  class sequential_vector_execution_policy { .. };
+
+  extern const sequential_vector_execution_policy seq_vec;
 
   // a dynamic execution policy container
   class execution_policy { ... };
@@ -391,10 +395,6 @@ class parallel_execution_policy : public execution_policy { ... };
 
 extern const parallel_execution_policy par;
 
-class vector_execution_policy : public execution_policy { ... };
-
-extern const vector_execution_policy vec;
-
 }
 ```
 
@@ -444,8 +444,6 @@ class execution_policy { ... };
 extern const execution_policy seq;
 
 extern const execution_policy par;
-
-extern const execution_policy vec;
 
 }
 ```
@@ -612,10 +610,10 @@ template<> struct is_execution_policy<sequential_execution_policy> : true_type {
 
 extern const sequential_execution_policy seq;
 
-class vector_execution_policy
+class sequential_vector_execution_policy
 {
   public:
-    void swap(vector_execution_policy &other);
+    void swap(sequential_vector_execution_policy &other);
 
     // implementation-defined public members follow
     ...
@@ -625,11 +623,30 @@ class vector_execution_policy
     ...
 };
 
-void swap(vector_execution_policy &a, vector_execution_policy &b);
+void swap(sequential_vector_execution_policy &a, sequential_vector_execution_policy &b);
 
-template<> struct is_execution_policy<vector_execution_policy> : true_type {};
+template<> struct is_execution_policy<sequential_vector_execution_policy> : true_type {};
 
-extern const vector_execution_policy vec;
+extern const sequential_vector_execution_policy seq_vec;
+
+class parallel_vector_execution_policy
+{
+  public:
+    void swap(parallel_vector_execution_policy &other);
+
+    // implementation-defined public members follow
+    ...
+
+  private:
+    // implementation-defined state follows
+    ...
+};
+
+void swap(parallel_vector_execution_policy &a, parallel_vector_execution_policy &b);
+
+template<> struct is_execution_policy<parallel_vector_execution_policy> : true_type {};
+
+extern const parallel_vector_execution_policy par_vec;
 
 // implementation-defined execution policy extensions follow
 ...
@@ -676,9 +693,10 @@ class execution_policy
 
     union 
     {
-      parallel_execution_policy   parallel;
-      sequential_execution_policy sequential;
-      vector_execution_policy     vector;
+      parallel_execution_policy          parallel;
+      sequential_execution_policy        sequential;
+      sequential_vector_execution_policy sequential_vector;
+      parallel_vector_execution_policy   parallel_vector;
 
       // any other possibilities follow
       ...
@@ -719,11 +737,11 @@ Execution Policies and Their Effect on Algorithm Execution
 
 1. Algorithms invoked with an execution policy argument of type `sequential_execution_policy` execute internally in sequential order in the calling thread.
 
-2. Algorithms invoked with an execution policy argument of type `parallel_execution_policy` or `vector_execution_policy` are permitted to execute internally in an unordered fashion in unspecified threads.
+2. Algorithms invoked with an execution policy argument of type `parallel_execution_policy` or `parallel_vector_execution_policy` are permitted to execute internally in an unordered fashion in unspecified threads.
 
-    [*Note:* The semantics of a `parallel_execution_policy` or `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
+    [*Note:* The semantics of a `parallel_execution_policy` or `parallel_vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
-3. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and
+3. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `sequential_vector_execution_policy`, `parallel_vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and
 assignable from any additional non-standard execution policy provided by the implementation.
 
 4. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard
@@ -731,7 +749,7 @@ implementation-defined execution policy depending on the dynamic value of the `e
 
 5. Algorithms invoked without an execution policy argument execute as if they were invoked with an execution policy argument of type `sequential_execution_policy`.
 
-6. Implementations of `parallel_execution_policy`, `sequential_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
+6. Implementations of `parallel_execution_policy`, `sequential_execution_policy`, `sequential_vector_execution_policy`, and `parallel_vector_execution_policy` are permitted to provide additional non-standard data and function members.
 
     [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
 
@@ -874,9 +892,9 @@ For algorithms invoked with a `parallel_execution_policy` argument:
 
 6. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation may introduce a data race.
 
-For algorithms invoked with a `vector_execution_policy` argument:
+For algorithms invoked with a `sequential_vector_execution_policy` or `parallel_vector_execution_policy` argument:
 
-1. A vector algorithm invocation inherits all the previous restrictions of `parallel_execution_policy`.
+1. A vectorizable algorithm invocation inherits all the previous restrictions of `parallel_execution_policy`.
 
 2. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation throws an exception.
 
