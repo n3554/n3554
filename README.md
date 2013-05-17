@@ -7,7 +7,7 @@ Building the PDF:
 
     $ pandoc --number-sections -H n3554_header.tex n3554_a_parallel_algorithms_library.*.md -o n3554_a_parallel_algorithms_library.pdf
 
-Just generating LaTex (you can edit the `.tex` and then `pdflatex` the output):
+Just generating LaTeX (you can edit the `.tex` and then `pdflatex` the output):
 
     $ pandoc --number-sections -H n3554_header.tex n3554_a_parallel_algorithms_library.*.md -o n3554_a_parallel_algorithms_library.tex
 
