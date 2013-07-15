@@ -1,17 +1,18 @@
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
 int main()
 {
   std::vector<int> vec(10);
 
-  std::for_each(std::par, vec.begin(), vec.end(), [](int x){
+  std::for_each(std::seq, vec.begin(), vec.end(), [](int x){
     std::cout << x << " ";
   });
   std::cout << std::endl;
 
 
-  std::for_each(std::seq, vec.begin(), vec.end(), [](int x){
+  std::for_each(std::par, vec.begin(), vec.end(), [](int x){
     std::cout << x << " ";
   });
   std::cout << std::endl;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <detail/config.hpp>
 #include <type_traits>
 #include <typeinfo>
 
@@ -60,11 +61,11 @@ class execution_policy
       switch(which)
       {
         case 0:
-          assign(exec.sequential);
+          assign(exec.seq);
           break;
 
         case 1:
-          assign(exec.parallel);
+          assign(exec.par);
           break;
 
         default:
@@ -94,11 +95,11 @@ class execution_policy
       switch(which)
       {
         case 0:
-          operator=(exec.sequential);
+          operator=(exec.seq);
           break;
 
         case 1:
-          operator=(exec.parallel);
+          operator=(exec.par);
           break;
 
         default:
@@ -166,8 +167,8 @@ class execution_policy
 
     union policy_union
     {
-      sequential_execution_policy sequential;
-      parallel_execution_policy   parallel;
+      sequential_execution_policy seq;
+      parallel_execution_policy   par;
     };
 
     policy_union exec;
@@ -178,11 +179,11 @@ class execution_policy
       switch(which)
       {
         case 0:
-          exec.sequential.~sequential_execution_policy();
+          exec.seq.~sequential_execution_policy();
           break;
 
         case 1:
-          exec.parallel.~parallel_execution_policy();
+          exec.par.~parallel_execution_policy();
           break;
       }
     }
@@ -191,38 +192,38 @@ class execution_policy
     void assign(const sequential_execution_policy &other)
     {
       which = 0;
-      exec.sequential = other;
+      exec.seq = other;
     }
 
 
     void assign(const parallel_execution_policy &other)
     {
       which = 1;
-      exec.parallel = other;
+      exec.par = other;
     }
 
 
     sequential_execution_policy *target_helper(sequential_execution_policy *)
     {
-      return (which == 0) ? &exec.sequential : 0;
+      return (which == 0) ? &exec.seq : 0;
     }
 
 
     const sequential_execution_policy *target_helper(sequential_execution_policy *) const
     {
-      return (which == 0) ? &exec.sequential : 0;
+      return (which == 0) ? &exec.seq : 0;
     }
 
 
     parallel_execution_policy *target_helper(parallel_execution_policy *)
     {
-      return (which == 1) ? &exec.parallel : 0;
+      return (which == 1) ? &exec.par : 0;
     }
 
 
     const parallel_execution_policy *target_helper(const parallel_execution_policy *) const
     {
-      return (which == 1) ? &exec.parallel : 0;
+      return (which == 1) ? &exec.par : 0;
     }
 
 
@@ -243,6 +244,9 @@ class execution_policy
       return exec.exec;
     }
 };
+
+
+template<> struct is_execution_policy<execution_policy> : true_type {};
 
 
 }
