@@ -1,0 +1,249 @@
+#pragma once
+
+#include <type_traits>
+#include <typeinfo>
+
+namespace std
+{
+
+
+template<typename T> struct is_execution_policy : false_type {};
+
+
+class sequential_execution_policy
+{
+  public:
+    void swap(sequential_execution_policy &other) {}
+};
+
+
+inline void swap(sequential_execution_policy &a, sequential_execution_policy &b)
+{
+  a.swap(b);
+}
+
+
+template<> struct is_execution_policy<sequential_execution_policy> : true_type {};
+
+
+extern const sequential_execution_policy seq;
+
+
+class parallel_execution_policy
+{
+  public:
+    void swap(parallel_execution_policy &other) {}
+};
+
+
+inline void swap(parallel_execution_policy &a, parallel_execution_policy &b)
+{
+  a.swap(b);
+}
+
+
+template<> struct is_execution_policy<parallel_execution_policy> : true_type {};
+
+
+extern const parallel_execution_policy par;
+class execution_policy
+{
+  public:
+    execution_policy()
+    {
+      assign(seq);
+    }
+
+
+    execution_policy(const execution_policy &other)
+    {
+      switch(which)
+      {
+        case 0:
+          assign(exec.sequential);
+          break;
+
+        case 1:
+          assign(exec.parallel);
+          break;
+
+        default:
+          break;
+      }
+    }
+
+
+    template<typename ExecutionPolicy>
+    execution_policy(const ExecutionPolicy &exec,
+                     typename enable_if<
+                       is_execution_policy<ExecutionPolicy>::value
+                     >::type * = 0)
+    {
+      assign(exec);
+    }
+
+
+    ~execution_policy()
+    {
+      destroy();
+    }
+
+
+    execution_policy &operator=(const execution_policy &other)
+    {
+      switch(which)
+      {
+        case 0:
+          operator=(exec.sequential);
+          break;
+
+        case 1:
+          operator=(exec.parallel);
+          break;
+
+        default:
+          break;
+      }
+
+      return *this;
+    }
+
+
+    template<typename ExecutionPolicy>
+    typename enable_if<
+      is_execution_policy<ExecutionPolicy>::value,
+      execution_policy &
+    >::type
+    operator=(const ExecutionPolicy &other)
+    {
+      // XXX we should probably destroy the current policy
+      //     if the current one doesn't match other
+      //     and placement new the new one
+
+      assign(other);
+
+      return *this;
+    }
+
+
+    inline const type_info& target_type() const
+    {
+      if(which == 0)
+      {
+        return typeid(sequential_execution_policy);
+      }
+
+      return typeid(parallel_execution_policy);
+    }
+
+
+    template<typename ExecutionPolicy>
+    typename enable_if<
+      is_execution_policy<ExecutionPolicy>::value,
+      ExecutionPolicy *
+    >::type
+    target()
+    {
+      ExecutionPolicy *dummy = 0;
+      return target_helper(dummy);
+    }
+
+
+    template<typename ExecutionPolicy>
+    typename enable_if<
+      is_execution_policy<ExecutionPolicy>::value,
+      const ExecutionPolicy *
+    >::type
+    target() const
+    {
+      ExecutionPolicy *dummy = 0;
+      return target_helper(dummy);
+    }
+
+
+  private:
+    int which;
+
+    union policy_union
+    {
+      sequential_execution_policy sequential;
+      parallel_execution_policy   parallel;
+    };
+
+    policy_union exec;
+
+
+    inline void destroy()
+    {
+      switch(which)
+      {
+        case 0:
+          exec.sequential.~sequential_execution_policy();
+          break;
+
+        case 1:
+          exec.parallel.~parallel_execution_policy();
+          break;
+      }
+    }
+
+
+    void assign(const sequential_execution_policy &other)
+    {
+      which = 0;
+      exec.sequential = other;
+    }
+
+
+    void assign(const parallel_execution_policy &other)
+    {
+      which = 1;
+      exec.parallel = other;
+    }
+
+
+    sequential_execution_policy *target_helper(sequential_execution_policy *)
+    {
+      return (which == 0) ? &exec.sequential : 0;
+    }
+
+
+    const sequential_execution_policy *target_helper(sequential_execution_policy *) const
+    {
+      return (which == 0) ? &exec.sequential : 0;
+    }
+
+
+    parallel_execution_policy *target_helper(parallel_execution_policy *)
+    {
+      return (which == 1) ? &exec.parallel : 0;
+    }
+
+
+    const parallel_execution_policy *target_helper(const parallel_execution_policy *) const
+    {
+      return (which == 1) ? &exec.parallel : 0;
+    }
+
+
+    friend inline int __which(const execution_policy &exec)
+    {
+      return exec.which;
+    }
+
+
+    friend inline policy_union &__union(execution_policy &exec)
+    {
+      return exec.exec;
+    }
+
+
+    friend inline const policy_union &__union(const execution_policy &exec)
+    {
+      return exec.exec;
+    }
+};
+
+
+}
+

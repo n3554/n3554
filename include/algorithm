@@ -1,0 +1,57 @@
+#pragma once
+
+#include <execution_policy>
+#include_next <algorithm>
+#include <iostream>
+
+namespace std
+{
+
+
+template<typename InputIterator, typename Function>
+InputIterator __for_each(const sequential_execution_policy &exec, InputIterator first, InputIterator last, Function f)
+{
+  std::cout << "for_each(seq)" << std::endl;
+
+  return first;
+}
+
+
+template<typename InputIterator, typename Function>
+InputIterator __for_each(const parallel_execution_policy &exec, InputIterator first, InputIterator last, Function f)
+{
+  std::cout << "for_each(par)" << std::endl;
+
+  return first;
+}
+
+
+template<typename InputIterator, typename Function>
+InputIterator __for_each(const execution_policy &exec, InputIterator first, InputIterator last, Function f)
+{
+  std::cout << "for_each(dyn)" << std::endl;
+
+  switch(__which(exec))
+  {
+    case 0:
+      first = __for_each(__union(exec).sequential, first, last, f);
+      break;
+
+    case 1:
+      first = __for_each(__union(exec).parallel, first, last, f);
+      break;
+  }
+
+  return first;
+}
+
+
+template<typename ExecutionPolicy, typename InputIterator, typename Function>
+InputIterator for_each(ExecutionPolicy &&exec, InputIterator first, InputIterator last, Function f)
+{
+  return __for_each(exec, first, last, f);
+}
+
+
+}
+
