@@ -6,6 +6,7 @@
 #include <iostream>
 #include <thrust/execution_policy.h>
 #include <thrust/logical.h>
+#include <thrust/find.h>
 #include <thrust/for_each.h>
 
 namespace std
@@ -114,6 +115,102 @@ bool __none_of(const execution_policy &exec, InputIterator first, InputIterator 
 }
 
 
+template<class InputIterator, class T>
+InputIterator __find(const sequential_execution_policy &, InputIterator first, InputIterator last, const T& value)
+{
+  return thrust::find(thrust::seq, first, last, value);
+}
+
+
+template<class InputIterator, class T>
+InputIterator __find(const parallel_execution_policy &, InputIterator first, InputIterator last, const T& value)
+{
+  return thrust::find(thrust::device, first, last, value);
+}
+
+
+template<class InputIterator, class T>
+InputIterator __find(const execution_policy &exec, InputIterator first, InputIterator last, const T& value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      last = __find(__union(exec).seq, first, last, value);
+      break;
+
+    case 1:
+      last = __find(__union(exec).par, first, last, value);
+      break;
+  }
+
+  return last;
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if(const sequential_execution_policy &, InputIterator first, InputIterator last, Predicate pred)
+{
+  return thrust::find_if(thrust::seq, first, last, pred);
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if(const parallel_execution_policy &, InputIterator first, InputIterator last, Predicate pred)
+{
+  return thrust::find_if(thrust::device, first, last, pred);
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if(const execution_policy &exec, InputIterator first, InputIterator last, Predicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      last = __find_if(__union(exec).seq, first, last, pred);
+      break;
+
+    case 1:
+      last = __find_if(__union(exec).par, first, last, pred);
+      break;
+  }
+
+  return last;
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if_not(const sequential_execution_policy &, InputIterator first, InputIterator last, Predicate pred)
+{
+  return thrust::find_if_not(thrust::seq, first, last, pred);
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if_not(const parallel_execution_policy &, InputIterator first, InputIterator last, Predicate pred)
+{
+  return thrust::find_if_not(thrust::device, first, last, pred);
+}
+
+
+template<class InputIterator, class Predicate>
+InputIterator __find_if_not(const execution_policy &exec, InputIterator first, InputIterator last, Predicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      last = __find_if_not(__union(exec).seq, first, last, pred);
+      break;
+
+    case 1:
+      last = __find_if_not(__union(exec).par, first, last, pred);
+      break;
+  }
+
+  return last;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -181,6 +278,30 @@ typename __enable_if_execution_policy<ExecutionPolicy,bool>::type
 none_of(ExecutionPolicy &&exec, InputIterator first, InputIterator last, Predicate pred)
 {
   return __none_of(exec, first, last, pred);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class T>
+typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
+find(ExecutionPolicy &&exec, InputIterator first, InputIterator last, const T& value)
+{
+  return __find(exec, first, last, value);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class Predicate>
+typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
+find_if(ExecutionPolicy &&exec, InputIterator first, InputIterator last, Predicate pred)
+{
+  return __find_if(exec, first, last, pred);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class Predicate>
+typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
+find_if_not(ExecutionPolicy &&exec, InputIterator first, InputIterator last, Predicate pred)
+{
+  return __find_if_not(exec, first, last, pred);
 }
 
 
