@@ -277,6 +277,73 @@ ForwardIterator1 __find_end(const execution_policy &exec, ForwardIterator1 first
 }
 
 
+template<class InputIterator, class ForwardIterator>
+InputIterator __find_first_of(const sequential_execution_policy &, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2)
+{
+  // XXX TODO
+  return std::find_first_of(first1, last1, first2, last2);
+}
+
+
+template<class InputIterator, class ForwardIterator>
+InputIterator __find_first_of(const parallel_execution_policy &, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2)
+{
+  // XXX TODO
+  return std::find_first_of(first1, last1, first2, last2);
+} 
+
+template<class InputIterator, class ForwardIterator>
+InputIterator __find_first_of(const execution_policy &exec, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      first1 = __find_first_of(__union(exec).seq, first1, last1, first2, last2);
+      break;
+
+    case 1:
+      first1 = __find_first_of(__union(exec).par, first1, last1, first2, last2);
+      break;
+  }
+
+  return first1;
+}
+
+
+template<class InputIterator, class ForwardIterator, class BinaryPredicate>
+InputIterator __find_first_of(const sequential_execution_policy &, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2, BinaryPredicate pred)
+{
+  // XXX TODO
+  return std::find_first_of(first1, last1, first2, last2, pred);
+}
+
+
+template<class InputIterator, class ForwardIterator, class BinaryPredicate>
+InputIterator __find_first_of(const parallel_execution_policy &, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2, BinaryPredicate pred)
+{
+  // XXX TODO
+  return std::find_first_of(first1, last1, first2, last2, pred);
+}
+
+
+template<class InputIterator, class ForwardIterator, class BinaryPredicate>
+InputIterator __find_first_of(const execution_policy &exec, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2, BinaryPredicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      first1 = __find_first_of(__union(exec).seq, first1, last1, first2, last2, pred);
+      break;
+
+    case 1:
+      first1 = __find_first_of(__union(exec).par, first1, last1, first2, last2, pred);
+      break;
+  }
+
+  return first1;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -384,6 +451,22 @@ typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator1>::type
 find_end(ExecutionPolicy &&exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred)
 {
   return __find_end(exec, first1, last1, first2, last2, pred);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class ForwardIterator>
+typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
+find_first_of(ExecutionPolicy &&exec, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2)
+{
+  return __find_first_of(exec, first1, last1, first2, last2);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class ForwardIterator, class BinaryPredicate>
+typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
+find_first_of(ExecutionPolicy &&exec, InputIterator first1, InputIterator last1, ForwardIterator first2, ForwardIterator last2, BinaryPredicate pred)
+{
+  return __find_first_of(exec, first1, last1, first2, last2, pred);
 }
 
 
