@@ -11,7 +11,7 @@ int main()
 
   std::vector<int> s2{2, 4, 6};
 
-  std::cout << "find with pred: " << std::find_end(std::seq, vec.begin(), vec.end(), s2.begin(), s2.end(), [](int x, int y){
+  std::cout << "find with pred: " << std::find_end(std::par, vec.begin(), vec.end(), s2.begin(), s2.end(), [](int x, int y){
     return x == y / 2;
   }) - vec.begin() << std::endl;
  
