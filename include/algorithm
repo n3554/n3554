@@ -211,6 +211,72 @@ InputIterator __find_if_not(const execution_policy &exec, InputIterator first, I
 }
 
 
+template<class ForwardIterator1, class ForwardIterator2>
+ForwardIterator1 __find_end(const sequential_execution_policy &, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2)
+{
+  // XXX TODO
+  return std::find_end(first1, last1, first2, last2);
+}
+
+
+template<class ForwardIterator1, class ForwardIterator2>
+ForwardIterator1 __find_end(const parallel_execution_policy &, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2)
+{
+  // XXX TODO
+  return std::find_end(first1, last1, first2, last2);
+}
+
+
+template<class ForwardIterator1, class ForwardIterator2>
+ForwardIterator1 __find_end(const execution_policy &exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      first1 = __find_end(__union(exec).seq, first1, last1, first2, last2);
+      break;
+
+    case 1:
+      first1 = __find_end(__union(exec).par, first1, last1, first2, last2);
+  }
+
+  return first1;
+}
+
+
+template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+ForwardIterator1 __find_end(const sequential_execution_policy &, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred)
+{
+  // XXX TODO
+  return std::find_end(first1, last1, first2, last2, pred);
+}
+
+
+template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+ForwardIterator1 __find_end(const parallel_execution_policy &, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred)
+{
+  // XXX TODO
+  return std::find_end(first1, last1, first2, last2, pred);
+}
+
+
+template<class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+ForwardIterator1 __find_end(const execution_policy &exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      first1 = __find_end(__union(exec).seq, first1, last1, first2, last2, pred);
+      break;
+
+    case 1:
+      first1 = __find_end(__union(exec).par, first1, last1, first2, last2, pred);
+  }
+
+  return first1;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -302,6 +368,22 @@ typename __enable_if_execution_policy<ExecutionPolicy,InputIterator>::type
 find_if_not(ExecutionPolicy &&exec, InputIterator first, InputIterator last, Predicate pred)
 {
   return __find_if_not(exec, first, last, pred);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator1, class ForwardIterator2>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator1>::type
+find_end(ExecutionPolicy &&exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2)
+{
+  return __find_end(exec, first1, last1, first2, last2);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator1>::type
+find_end(ExecutionPolicy &&exec, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2, BinaryPredicate pred)
+{
+  return __find_end(exec, first1, last1, first2, last2, pred);
 }
 
 
