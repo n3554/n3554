@@ -9,6 +9,7 @@
 #include <thrust/find.h>
 #include <thrust/count.h>
 #include <thrust/mismatch.h>
+#include <thrust/equal.h>
 #include <thrust/for_each.h>
 
 namespace std
@@ -522,37 +523,68 @@ __mismatch(const execution_policy &exec, InputIterator1 first1, InputIterator1 l
 }
 
 
-template<typename InputIterator1, typename InputIterator2, typename Predicate>
-pair<InputIterator1,InputIterator2>
-__mismatch(const sequential_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+template<typename InputIterator1, typename InputIterator2>
+bool __equal_disambiguate(const sequential_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 {
-  return std::mismatch(first1, last1, first2, pred);
+  return std::equal(first1, last1, first2);
 }
 
 
-template<typename InputIterator1, typename InputIterator2, typename Predicate>
-pair<InputIterator1,InputIterator2>
-__mismatch(const parallel_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+template<typename InputIterator1, typename InputIterator2>
+bool __equal_disambiguate(const parallel_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 {
-  thrust::pair<InputIterator1,InputIterator2> result = thrust::mismatch(thrust::device, first1, last1, first2, pred);
-  return std::make_pair(result.first, result.second);
+  return thrust::equal(thrust::device, first1, last1, first2);
 }
 
 
-template<typename InputIterator1, typename InputIterator2, typename Predicate>
-pair<InputIterator1,InputIterator2>
-__mismatch(const execution_policy &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+template<typename InputIterator1, typename InputIterator2>
+bool __equal_disambiguate(const execution_policy &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 {
-  pair<InputIterator1,InputIterator2> result(first1,first2);
+  bool result = false;
 
   switch(__which(exec))
   {
     case 0:
-      result = __mismatch(__union(exec).seq, first1, last1, first2, pred);
+      result = __equal_disambiguate(__union(exec).seq, first1, last1, first2);
       break;
 
     case 1:
-      result = __mismatch(__union(exec).par, first1, last1, first2, pred);
+      result = __equal_disambiguate(__union(exec).par, first1, last1, first2);
+      break;
+  }
+
+  return result;
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename Predicate>
+bool __equal_disambiguate(const sequential_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+{
+  return std::equal(first1, last1, first2, pred);
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename Predicate>
+bool __equal_disambiguate(const parallel_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+{
+  bool result = false;
+  return thrust::equal(thrust::device, first1, last1, first2, pred);
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename Predicate>
+bool __equal_disambiguate(const execution_policy &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+{
+  bool result = false;
+
+  switch(__which(exec))
+  {
+    case 0:
+      result = __equal_disambiguate(__union(exec).seq, first1, last1, first2, pred);
+      break;
+
+    case 1:
+      result = __equal_disambiguate(__union(exec).par, first1, last1, first2, pred);
       break;
   }
 
@@ -749,6 +781,28 @@ typename __enable_if_execution_policy<
 mismatch(ExecutionPolicy &&exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
 {
   return __mismatch(exec, first1, last1, first2, pred);
+}
+
+
+template<typename ExecutionPolicy, typename InputIterator1, typename InputIterator2>
+typename __enable_if_execution_policy<
+  ExecutionPolicy,
+  bool
+>::type
+equal(ExecutionPolicy &&exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+{
+  return __equal_disambiguate(exec, first1, last1, first2);
+}
+
+
+template<typename ExecutionPolicy, typename InputIterator1, typename InputIterator2, typename Predicate>
+typename __enable_if_execution_policy<
+  ExecutionPolicy,
+  bool
+>::type
+equal(ExecutionPolicy &&exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Predicate pred)
+{
+  return __equal_disambiguate(exec, first1, last1, first2, pred);
 }
 
 
