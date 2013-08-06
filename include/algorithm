@@ -656,6 +656,39 @@ InputIterator2 __copy_n(const execution_policy &exec, InputIterator1 first, Size
 }
 
 
+template<typename InputIterator1, typename InputIterator2>
+InputIterator2 __move(const sequential_execution_policy &, InputIterator1 first, InputIterator1 last, InputIterator2 result)
+{
+  return std::move(first, last, result);
+}
+
+
+template<typename InputIterator1, typename InputIterator2>
+InputIterator2 __move(const parallel_execution_policy &, InputIterator1 first, InputIterator1 last, InputIterator2 result)
+{
+  // XXX TODO
+  return std::move(first, last, result);
+}
+
+
+template<typename InputIterator1, typename InputIterator2>
+InputIterator2 __move(const execution_policy &exec, InputIterator1 first, InputIterator1 last, InputIterator2 result)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __move(__union(exec).seq, first, last, result);
+      break;
+
+    case 1:
+      result = __move(__union(exec).par, first, last, result);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -891,6 +924,14 @@ typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
 copy_n(ExecutionPolicy &&exec, InputIterator first, Size n, OutputIterator result)
 {
   return __copy_n(exec, first, n, result);
+}
+
+
+template<typename ExecutionPolicy, typename InputIterator, typename OutputIterator>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+move(ExecutionPolicy &&exec, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return __move(exec, first, last, result);
 }
 
 
