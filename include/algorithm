@@ -721,6 +721,70 @@ ForwardIterator2 __swap_ranges(const execution_policy &exec, ForwardIterator1 fi
 }
 
 
+template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
+OutputIterator __transform(const sequential_execution_policy &, InputIterator first, InputIterator last, OutputIterator result, UnaryOperation op)
+{
+  return thrust::transform(thrust::seq, first, last, result, op);
+}
+
+
+template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
+OutputIterator __transform(const parallel_execution_policy &, InputIterator first, InputIterator last, OutputIterator result, UnaryOperation op)
+{
+  return thrust::transform(thrust::device, first, last, result, op);
+}
+
+
+template<typename InputIterator, typename OutputIterator, typename UnaryOperation>
+OutputIterator __transform(const execution_policy &exec, InputIterator first, InputIterator last, OutputIterator result, UnaryOperation op)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __transform(__union(exec).seq, first, last, result);
+      break;
+
+    case 1:
+      result = __transform(__union(exec).par, first, last, result);
+      break;
+  }
+
+  return result;
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename OutputIterator, typename BinaryOperation>
+OutputIterator __transform(const sequential_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputIterator result, BinaryOperation op)
+{
+  return thrust::transform(thrust::seq, first1, last1, first2, result, op);
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename OutputIterator, typename BinaryOperation>
+OutputIterator __transform(const parallel_execution_policy &, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputIterator result, BinaryOperation op)
+{
+  return thrust::transform(thrust::device, first1, last1, first2, result, op);
+}
+
+
+template<typename InputIterator1, typename InputIterator2, typename OutputIterator, typename BinaryOperation>
+OutputIterator __transform(const execution_policy &exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputIterator result, BinaryOperation op)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __transform(__union(exec).seq, first1, last1, first2, result, op);
+      break;
+
+    case 1:
+      result = __transform(__union(exec).par, first1, last1, first2, result, op);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -973,6 +1037,23 @@ swap_ranges(ExecutionPolicy &&exec, ForwardIterator1 first, ForwardIterator1 las
 {
   return __swap_ranges(exec, first, last, result);
 }
+
+
+template<typename ExecutionPolicy, typename InputIterator, typename OutputIterator, typename UnaryOperation>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+transform(ExecutionPolicy &&exec, InputIterator first, InputIterator last, OutputIterator result, UnaryOperation op)
+{
+  return __transform(exec, first, last, result, op);
+}
+
+
+template<typename ExecutionPolicy, typename InputIterator1, typename InputIterator2, typename OutputIterator, typename BinaryOperation>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+transform(ExecutionPolicy &&exec, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputIterator result, BinaryOperation op)
+{
+  return __transform(exec, first1, last1, first2, result, op);
+}
+
 
 
 }
