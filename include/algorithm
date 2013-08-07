@@ -785,6 +785,66 @@ OutputIterator __transform(const execution_policy &exec, InputIterator1 first1, 
 }
 
 
+template<typename ForwardIterator, typename T>
+void __replace(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, const T& old_value, const T& new_value)
+{
+  return thrust::replace(thrust::seq, first, last, old_value, new_value);
+}
+
+
+template<typename ForwardIterator, typename T>
+void __replace(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, const T& old_value, const T& new_value)
+{
+  return thrust::replace(thrust::device, first, last, old_value, new_value);
+}
+
+
+template<typename ForwardIterator, typename T>
+void __replace(const execution_policy &exec, ForwardIterator first, ForwardIterator last, const T& old_value, const T& new_value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __replace(__union(exec).seq, first, last, old_value, new_value);
+      break;
+
+    case 1:
+      __replace(__union(exec).par, first, last, old_value, new_value);
+      break;
+  }
+}
+
+
+template<typename ForwardIterator, typename Predicate, typename T>
+void __replace_if(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, Predicate pred, const T& new_value)
+{
+  return thrust::replace_if(thrust::seq, first, last, pred, new_value);
+}
+
+
+template<typename ForwardIterator, typename Predicate, typename T>
+void __replace_if(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, Predicate pred, const T& new_value)
+{
+  return thrust::replace_if(thrust::device, first, last, pred, new_value);
+}
+
+
+template<typename ForwardIterator, typename Predicate, typename T>
+void __replace_if(const execution_policy &exec, ForwardIterator first, ForwardIterator last, Predicate pred, const T& new_value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __replace_if(__union(exec).seq, first, last, pred, new_value);
+      break;
+
+    case 1:
+      __replace_if(__union(exec).par, first, last, pred, new_value);
+      break;
+  }
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1054,6 +1114,21 @@ transform(ExecutionPolicy &&exec, InputIterator1 first1, InputIterator1 last1, I
   return __transform(exec, first1, last1, first2, result, op);
 }
 
+
+template<class ExecutionPolicy, class ForwardIterator, class T>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+replace(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, const T& old_value, const T& new_value)
+{
+  return __replace(exec, first, last, old_value, new_value);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class Predicate, class T>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+replace_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, Predicate pred, const T& new_value)
+{
+  return __replace_if(exec, first, last, pred, new_value);
+}
 
 
 }
