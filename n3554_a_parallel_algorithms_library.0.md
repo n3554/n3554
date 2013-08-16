@@ -688,19 +688,7 @@ class execution_policy
     target() const;
 
   private:
-    // exposition only
-    int which;
-
-    union 
-    {
-      parallel_execution_policy          parallel;
-      sequential_execution_policy        sequential;
-      sequential_vector_execution_policy sequential_vector;
-      parallel_vector_execution_policy   parallel_vector;
-
-      // any other possibilities follow
-      ...
-    };
+    ...
 };
 
 void swap(execution_policy &a, execution_policy &b);
