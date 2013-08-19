@@ -13,10 +13,14 @@ For example, instead of parallelizing the standard heap algorithms, a better str
 ## Unchanged algorithms from `<algorithm>`
 
   * No parallelism
+    * `binary_search`
+    * `equal_range`
     * `iter_swap`
+    * `lower_bound`
     * `min`
     * `max`
     * `minmax`
+    * `upper_bound`
 
   * Uncertain / low priority
     * `is_permutation`
