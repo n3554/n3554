@@ -90,14 +90,16 @@ namespace std {
     OutputIterator
       exclusive_scan(ExecutionPolicy &&exec,
                      InputIterator first, InputIterator last,
-                     OutputIterator result, class T init);
+                     OutputIterator result,
+                     T init);
   template<class ExecutionPolicy,
            class InputIterator, class OutputIterator,
            class T, class BinaryOperation>
     OutputIterator
       exclusive_scan(ExecutionPolicy &&exec,
                      InputIterator first, InputIterator last,
-                     OutputIterator result, class T init, BinaryOperation binary_op);
+                     OutputIterator result,
+                     T init, BinaryOperation binary_op);
 
   template<class ExecutionPolicy,
            class InputIterator, class OutputIterator>
@@ -113,6 +115,14 @@ namespace std {
                      InputIterator first, InputIterator last,
                      OutputIterator result,
                      BinaryOperation binary_op);
+  template<class ExecutionPolicy,
+           class InputIterator, class OutputIterator,
+           class T, class BinaryOperation>
+    OutputIterator
+      inclusive_scan(ExecutionPolicy &&exec,
+                     InputIterator first, InputIterator last,
+                     OutputIterator result,
+                     T init, BinaryOperation binary_op);
 }
 ```
 
@@ -178,7 +188,8 @@ template<class ExecutionPolicy,
   OutputIterator
     exclusive_scan(ExecutionPolicy &&exec,
                    InputIterator first, InputIterator last,
-                   OutputIterator result, class T init);
+                   OutputIterator result,
+                   T init);
 
 template<class ExecutionPolicy,
          class InputIterator, class OutputIterator,
@@ -186,12 +197,17 @@ template<class ExecutionPolicy,
   OutputIterator
     exclusive_scan(ExecutionPolicy &&exec,
                    InputIterator first, InputIterator last,
-                   OutputIterator result, class T init, BinaryOperation binary_op);
+                   OutputIterator result,
+                   T init, BinaryOperation binary_op);
 ```
 
 1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum`, where `prefix_sum` is the result of the corresponding sum
-    `init + *iter_0 + *iter_1 + *iter_2 + ...` or `binary_op(init, binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))` for every iterator `iter_j`
-    in the range `[first,first + (i - result) - 1)`.
+
+    `init + *iter_0 + *iter_1 + *iter_2 + ...` or
+    
+    `binary_op(init, binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))`
+        
+    for every iterator `iter_j` in the range `[first,first + (i - result) - 1)`.
 
     The order of operands of the sum is unspecified.
 
@@ -227,11 +243,26 @@ template<class ExecutionPolicy,
                    InputIterator first, InputIterator last,
                    OutputIterator result,
                    BinaryOperation binary_op);
+
+template<class ExecutionPolicy,
+         class InputIterator, class OutputIterator,
+         class T, class BinaryOperation>
+  OutputIterator
+    inclusive_scan(ExecutionPolicy &&exec,
+                   InputIterator first, InputIterator last,
+                   OutputIterator result,
+                   T init, BinaryOperation binary_op);
 ```
 
 1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum`, where `prefix_sum` is the result of the corresponding sum
-    `init + *iter_0 + *iter_1 + *iter_2 + ...` or `binary_op(init, binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))` for every iterator `iter_j`
-    in the range `[first,first + (i - result) - 1)`.
+
+    `*iter_0 + *iter_1 + *iter_2 + ...` or
+    
+    `binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))` or
+    
+    `binary_op(init, binary_op(*iter_0, binary_op(*iter1_, binary_op(*iter_2, ...))))`
+
+    for every iterator `iter_j` in the range `[first,first + (i - result) - 1)`.
 
     The order of operands of the sum is unspecified.
 
