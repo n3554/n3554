@@ -27,11 +27,8 @@ std::sort(std::seq, vec.begin(), vec.end());
 // parallel sort
 std::sort(std::par, vec.begin(), vec.end());        
 
-// vectorized sort in the current thread
-std::sort(std::seq_vec, vec.begin(), vec.end());
-
-// parallel, vectorized sort
-std::sort(std::par_vec, vec.begin(), vec.end());
+// vectorized sort
+std::sort(std::vec, vec.begin(), vec.end());
 
 // sort with dynamically-selected execution
 size_t threshold = ...
@@ -56,19 +53,15 @@ Algorithms invoked with `std::seq` execute internally in sequential order in the
 Algorithms invoked with `std::par` are permitted to execute internally in an unordered fashion in unspecified threads. It is the caller's responsibility to ensure
 that the invocation does not introduce data races or deadlocks.
 
-Algorithms invoked with `std::par_vec` are permitted to execute internally in an
+Algorithms invoked with `std::vec` are permitted to execute internally in an
 unordered fashion in unspecified threads. In addition to the restrictions
 implied by `std::par`, it is the caller's responsibility to ensure that a
 `std::vec` invocation does not throw exceptions or attempt to perform
 synchronization operations.
 
-Algorithms invoked with `std::seq_vec` are permitted to execute in an unordered fashion in the current thread.
-In addition to the restrictions implied by `std::par`, it is the caller's responsibility to ensure that a
-`std::vec` invocation does not throw exceptions or attempt to perform synchronization operations.
-
 Algorithms invoked without an execution policy execute as if they were invoked with `std::seq`.
 
-An implementation may provide additional execution policies besides `std::seq`, `std::par`, `std::seq_vec`, or `std::par_vec`.
+An implementation may provide additional execution policies besides `std::seq`, `std::par`, or `std::vec`.
 
 This proposal is a pure addition to the existing C++ standard library; we do not believe it alters the semantics of any existing functionality.
 
@@ -277,13 +270,9 @@ namespace std
 
   extern const parallel_execution_policy par;
 
-  class parallel_vector_execution_policy { .. };
+  class vector_execution_policy { .. };
 
-  extern const parallel_vector_execution_policy par_vec;
-
-  class sequential_vector_execution_policy { .. };
-
-  extern const sequential_vector_execution_policy seq_vec;
+  extern const vector_execution_policy vec;
 
   // a dynamic execution policy container
   class execution_policy { ... };
@@ -588,10 +577,10 @@ template<> struct is_execution_policy<sequential_execution_policy> : true_type {
 
 extern const sequential_execution_policy seq;
 
-class sequential_vector_execution_policy
+class vector_execution_policy
 {
   public:
-    void swap(sequential_vector_execution_policy &other);
+    void swap(vector_execution_policy &other);
 
     // implementation-defined public members follow
     ...
@@ -601,30 +590,11 @@ class sequential_vector_execution_policy
     ...
 };
 
-void swap(sequential_vector_execution_policy &a, sequential_vector_execution_policy &b);
+void swap(vector_execution_policy &a, vector_execution_policy &b);
 
-template<> struct is_execution_policy<sequential_vector_execution_policy> : true_type {};
+template<> struct is_execution_policy<vector_execution_policy> : true_type {};
 
-extern const sequential_vector_execution_policy seq_vec;
-
-class parallel_vector_execution_policy
-{
-  public:
-    void swap(parallel_vector_execution_policy &other);
-
-    // implementation-defined public members follow
-    ...
-
-  private:
-    // implementation-defined state follows
-    ...
-};
-
-void swap(parallel_vector_execution_policy &a, parallel_vector_execution_policy &b);
-
-template<> struct is_execution_policy<parallel_vector_execution_policy> : true_type {};
-
-extern const parallel_vector_execution_policy par_vec;
+extern const vector_execution_policy vec;
 
 // implementation-defined execution policy extensions follow
 ...
@@ -752,7 +722,7 @@ Execution policies describe the manner in which the algorithms apply the user-pr
     int x;
     std::mutex m;
     int a[] = {1,2};
-    std::for_each( std::par_vec , std::begin(a), std::end(a), [&](int) {
+    std::for_each( std::vec , std::begin(a), std::end(a), [&](int) {
         m.lock();
         ++x;
         m.unlock();
@@ -913,7 +883,7 @@ For algorithms invoked with a `parallel_execution_policy` argument:
 
 6. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation may introduce a data race.
 
-For algorithms invoked with a `sequential_vector_execution_policy` or `parallel_vector_execution_policy` argument:
+For algorithms invoked with a `vector_execution_policy` argument:
 
 1. A vectorizable algorithm invocation inherits all the previous restrictions of `parallel_execution_policy`.
 
