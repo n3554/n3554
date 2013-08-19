@@ -688,19 +688,7 @@ class execution_policy
     target() const;
 
   private:
-    // exposition only
-    int which;
-
-    union 
-    {
-      parallel_execution_policy          parallel;
-      sequential_execution_policy        sequential;
-      sequential_vector_execution_policy sequential_vector;
-      parallel_vector_execution_policy   parallel_vector;
-
-      // any other possibilities follow
-      ...
-    };
+    ...
 };
 
 void swap(execution_policy &a, execution_policy &b);
@@ -735,21 +723,76 @@ Class `execution_policy`
 Execution Policies and Their Effect on Algorithm Execution
 ==========================================================
 
-1. Algorithms invoked with an execution policy argument of type `sequential_execution_policy` execute internally in sequential order in the calling thread.
+Execution policies describe the manner in which the algorithms apply the user-provided function objects.
 
-2. Algorithms invoked with an execution policy argument of type `parallel_execution_policy` or `parallel_vector_execution_policy` are permitted to execute internally in an unordered fashion in unspecified threads.
+1. The applications of the function objects in the algorithms invoked with the `sequential_execution_policy` execute in sequential order in the calling thread.
 
-    [*Note:* The semantics of a `parallel_execution_policy` or `parallel_vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
+2. The applications of the function objects in the algorithms invoked with the `parallel_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, or indeterminately sequenced if executed on one thread. 
+   [*Note:* It is the caller's responsibility to ensure correctness, for example that the invocation does not introduce data races or deadlocks. –- *end note*] [*Example:*
 
-3. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `sequential_vector_execution_policy`, `parallel_vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and
-assignable from any additional non-standard execution policy provided by the implementation.
+    ```
+    int a[] = {0,1};
+    std::vector<int> v(2);
+    std::for_each(std::par, std::begin(a), std::end(a), [&](int i) {
+        v[i] = i*2+1;
+    });
+    ```
 
-4. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard
-implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+    The program above has a data race because of the unsynchronized access to the container `v` -– *end example*] [*Example:*
 
-5. Algorithms invoked without an execution policy argument execute as if they were invoked with an execution policy argument of type `sequential_execution_policy`.
+    ```
+    std::atomic<int> x = 0;
+    int a[] = {1,2};
+    std::for_each(std::par , std::begin(a), std::end(a), [](int n) {
+        x.fetch_add( 1 , std::memory_order_relaxed );
+        // spin wait for another iteration to change the value of x
+        while( x.load( std::memory_order_relaxed ) == 1 )
+            ;
+    });
+    ```
 
-6. Implementations of `parallel_execution_policy`, `sequential_execution_policy`, `sequential_vector_execution_policy`, and `parallel_vector_execution_policy` are permitted to provide additional non-standard data and function members.
+    The above example depends on the order of execution of the iterations, and is therefore undefined (may deadlock). -– *end example*]
+    [*Example:*
+
+    ```
+    int x;
+    std::mutex m;
+    int a[] = {1,2};
+    std::for_each( std::par , std::begin(a), std::end(a), [&](int) {
+        m.lock();
+        ++x;
+        m.unlock();
+    });
+    ```
+    
+    The above example synchronizes access to object `x` ensuring that it is incremented correctly. –- *end example*]
+
+3. The applications of the function objects in the algorithms invoked with `vector_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, or unsequenced if executed on one thread. [*Note:* as a consequence, function objects governed by the `vector_execution_policy` policy must not synchronize with each other. Specifically, they must not acquire locks. –- *end note*]
+    [*Example:*
+
+    ```
+    int x;
+    std::mutex m;
+    int a[] = {1,2};
+    std::for_each( std::par_vec , std::begin(a), std::end(a), [&](int) {
+        m.lock();
+        ++x;
+        m.unlock();
+    });
+    ```
+
+    The above program is invalid because the applications of the function object are not guaranteed to run on different threads.
+    [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*] -– *end example*]
+
+    [*Note:* The semantics of a `parallel_execution_policy` or `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
+
+4. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and assignable from any additional non-standard execution policy provided by the implementation.
+
+5. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+
+6. Algorithms invoked without an execution policy argument execute as if they were invoked with an execution policy argument of type `sequential_execution_policy`.
+
+7. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
 
     [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
 
