@@ -801,26 +801,26 @@ An alternative design might require `std::execution_policy::target` to return a 
 Reporting Exceptions
 ====================
 
-Exception behavior of functions launched through a `std::sequential_execution_policy` argument
-----------------------------------------------------------------------------------------------
-
-An algorithm invoked with a sequential execution policy reports exceptional behavior in the same manner as the legacy algorithms.
-
-Exception behavior of functions launched through a `std::parallel_execution_policy` argument
+Exception behavior of functions launched through a `std::sequential_execution_policy` or a `std::parallel_execution_policy` argument
 --------------------------------------------------------------------------------------------
 
-An algorithm invoked with a parallel execution policy may report exceptional behavior by throwing an exception.
+An algorithm invoked with a sequential or parallel execution policy may report exceptional behavior by throwing an exception.
 
-A parallel algorithm may report exceptional behavior to the caller by throwing one of three exception types:
+An algorithm may report exceptional behavior to the caller by throwing one of two exception types:
 
   * If temporary memory resources are required by the algorithm and none are available, the algorithm may throw `std::bad_alloc`.
-  * If parallel resources are required by the algorithm and none are available, the algorithm may throw `std::system_error`.
   * If one or more uncaught exceptions are thrown for any other reason during the execution of the algorithm:
     * The exception is collected in an `exception_list` associated with the algorithm's invocation.
     * If the `exception_list` associated with the algorithm's invocation is non-empty, it is thrown once all tasks have terminated.
 
-Note that these guarantees imply that all exceptions thrown during the execution of the algorithm are communicated to the caller. It is unspecified
-whether an algorithm implementation will "forge ahead" after encountering and capturing a user exception.
+When an exception is thrown during the application of the user-provided function object, the algorithm throws an `exception_list` exception. 
+Every evaluation of the user-provided function object must finish before the `exception_list exception` is thrown. Therefore, all exceptions 
+thrown during the application of the user-provided function objects are contained in the `exception_list`, however the number of such exceptions is 
+unspecified. [*Note:* for example, the number of invocations of the user-provide function object in `std::for_each` is unspecified. When 
+`std::for_each` is executed serially, only one exception will be contained in the exception_list object -- *end note*]
+
+[*Note:* that these guarantees imply that all exceptions thrown during the execution of the algorithm are communicated to the caller. It is 
+unspecified whether an algorithm implementation will "forge ahead" after encountering and capturing a user exception. -- *end note*]
 
 Exception behavior of functions launched through a `std::vector_execution_policy` argument
 ------------------------------------------------------------------------------------------
