@@ -710,9 +710,9 @@ Execution policies describe the manner in which the algorithms apply the user-pr
 
     ```
     int a[] = {0,1};
-    std::vector<int> v(2);
+    std::vector<int> v;
     std::for_each(std::par, std::begin(a), std::end(a), [&](int i) {
-        v[i] = i*2+1;
+        v.push_back(i*2+1);
     });
     ```
 
