@@ -262,28 +262,6 @@ Are the algorithms invoked by `func` parallel or not? A reader must search for `
 
 Finally, we note that nested namespaces inside `std::` are unconventional and generally frowned upon.
 
-## Vectorization
-
-In addition to sequential and parallel execution policies, we consider
-vectorization as a third or fourth possibility. In many architectures, an increasing
-amount of parallelism is exposed via SIMD units. Naturally, affording parallel
-programmers a simple, standard means of accessing these resources is desirable.
-Like `std::par`, the `std::par_vec` execution policy would permit an algorithm
-invocation to distribute execution across a collection of threads.
-However, stronger requirements on the behavior of iterator and functor arguments than those
-permitted by both `std::seq` and `std::par` would allow the implementation
-greater opportunity to exploit vectorization. These requirements would preclude
-the use of locks and exceptions in functors, for example. An analogous policy,
-`std::seq_vec`, would allow vectorization, but isolate it to the current thread.
-
-Whether or not we decide to propose to include a policies for vectorization, we expect
-our library solution to parallelism to complement other library and language
-forms of vectorization and parallelism in an eventual standard. Just as the
-existing sequential `std::for_each` library function coexists with the
-sequential `for` loop language construct, we expect a future C++ standard to
-offer the programmer a variety of complementary choices along a spectrum of
-abstraction.
-
 ## Execution Policies as Stateful Types
 
 We propose that parallel execution policies have distinct, stateful types:
