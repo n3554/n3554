@@ -20,8 +20,6 @@ For example, instead of parallelizing the standard heap algorithms, a better str
 
   * Uncertain / low priority
     * `is_permutation`
-    * `search`
-    * `search_n`
     * `push_heap`
     * `pop_heap`
     * `make_heap`

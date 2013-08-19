@@ -243,6 +243,29 @@ namespace std {
                InputIterator1 first1, InputIterator1 last1,
                InputIterator2 first2, BinaryPredicate pred);
 
+  template<class ExecutionPolicy,
+           class ForwardIterator1, class ForwardIterator2>
+    ForwardIterator1 search(ExecutionPolicy &&exec,
+                            ForwardIterator1 first1, ForwardIterator1 last1,
+                            ForwardIterator2 first2, ForwardIterator2 last2);
+  template<class ExecutionPolicy,
+           class ForwardIterator1, class ForwardIterator2,
+           class BinaryPredicate>
+    ForwardIterator1 search(ExecutionPolicy &&exec,
+                            ForwardIterator1 first1, ForwardIterator1 last1,
+                            ForwardIterator2 first2, ForwardIterator2 last2,
+                            BinaryPredicate pred);
+  template<class ExecutionPolicy,
+           class ForwardIterator, class Size, class T>
+    ForwardIterator search_n(ExecutionPolicy &&exec,
+                             ForwardIterator first, ForwardIterator last, Size count,
+                             const T& value);
+  template<class ExecutionPolicy,
+           class ForwardIterator, class Size, class T, class BinaryPredicate>
+    ForwardIterator search_n(ExecutionPolicy &&exec,
+                             ForwardIterator first, ForwardIterator last, Size count,
+                             const T& value, BinaryPredicate pred);
+
   // modifying sequence operations:
   // copy:
   template<class ExecutionPolicy,
@@ -1009,6 +1032,60 @@ template<class ExecutionPolicy,
 4. *Remarks:* The signatures shall not participate in overload resolution if
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
+
+### Search `[alg.search]`
+
+```
+template<class ExecutionPolicy,
+         class ForwardIterator1, class ForwardIterator2>
+  ForwardIterator1 search(ExecutionPolicy &&exec,
+                          ForwardIterator1 first1, ForwardIterator1 last1,
+                          ForwardIterator2 first2, ForwardIterator2 last2);
+
+template<class ExecutionPolicy,
+         class ForwardIterator1, class ForwardIterator2, class BinaryPredicate>
+  ForwardIterator1 search(ExecutionPolicy &&exec,
+                          ForwardIterator1 first1, ForwardIterator1 last1,
+                          ForwardIterator2 first2, ForwardIterator2 last2,
+                          BinaryPredicate pred);
+```
+
+1. *Effects*: Finds a subsequence of equal values in a sequence.
+
+    The algorithm's execution is parallelized as determined by `exec`.
+
+2. *Returns:* The first iterator `i` in the range `[first1,last1 - (last2-first2)` such that for any non-negative integer `n` less than `last2 - first2` the following corresponding conditions hold:
+    `*(i + n) == *(first2 + n), pred(*(i + n), *(first2 + n)) != false`. Returns `first1` if `[first2,last2)` is empty, otherwise returns `last1` if no such iterator is found.
+
+3. *Complexity:* At most `(last1 - first1) * (last2 - first2)` applications of the corresponding predicate.
+
+
+```
+template<class ExecutionPolicy,
+         class ForwardIterator, class Size, class T>
+  ForwardIterator search_n(ExecutionPolicy &&exec,
+                           ForwardIterator first, ForwardIterator last, Size count,
+                           const T& value);
+
+template<class ExecutionPolicy,
+         class ForwardIterator, class Size, class T,
+         class BinaryPredicate>
+  ForwardIterator search_n(ExecutionPolicy &&exec,
+                           ForwardIterator first, ForwardIterator last, Size count,
+                           const T& value, BinaryPredicate pred);
+```
+
+1. *Requires:* The type `Size` shall be convertible to integral type.
+
+2. *Effects:* Finds a subsequence of equal values in a sequence.
+
+    The algorithm's execution is parallelized as determined by `exec`.
+
+3. *Returns:* The first iterator `i` in the range `[first,last-count)` such that for any non-negative integer `n` less than `count` the following corresponding conditions hold:
+    `*(i + n) == value, pred(*(i + n),value) != false`. Returns `last` if no such iterator is found.
+
+4. *Complexity:* At most `last - first` applications of the corresponding predicate.
+
 
 ### Copy `[alg.copy]`
 
