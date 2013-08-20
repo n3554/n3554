@@ -738,9 +738,7 @@ Execution policies describe the manner in which the algorithms apply the user-pr
 
 5. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
 
-6. Algorithms invoked without an execution policy argument execute as if they were invoked with an execution policy argument of type `sequential_execution_policy`.
-
-7. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
+6. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
 
     [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
 
