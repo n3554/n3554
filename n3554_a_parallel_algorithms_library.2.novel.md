@@ -21,7 +21,6 @@ namespace std {
     InputIterator for_each_n(ExecutionPolicy &&exec,
                              InputIterator first, Size n,
                              Function f);
-} // namespace parallel
 }
 ```
 
