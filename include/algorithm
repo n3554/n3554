@@ -905,6 +905,66 @@ void __fill_n(const execution_policy &exec, OutputIterator first, Size n, const 
 }
 
 
+template<class ForwardIterator, class Generator>
+void __generate(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, Generator gen)
+{
+  std::generate(first, last, gen); 
+}
+
+
+template<class ForwardIterator, class Generator>
+void __generate(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, Generator gen)
+{
+  thrust::generate(thrust::device, first, last, gen); 
+}
+
+
+template<class ForwardIterator, class Generator>
+void __generate(const execution_policy &exec, ForwardIterator first, ForwardIterator last, Generator gen)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __generate(__union(exec).seq, first, last, gen);
+      break;
+
+    case 1:
+      __generate(__union(exec).par, first, last, gen);
+      break;
+  }
+}
+
+
+template<class OutputIterator, class Size, class Generator>
+void __generate_n(const sequential_execution_policy &, OutputIterator first, Size n, Generator gen)
+{
+  std::generate_n(first, n, gen);
+}
+
+
+template<class OutputIterator, class Size, class Generator>
+void __generate_n(const parallel_execution_policy &, OutputIterator first, Size n, Generator gen)
+{
+  thrust::generate_n(thrust::device, first, n, gen);
+}
+
+
+template<class OutputIterator, class Size, class Generator>
+void __generate_n(const execution_policy &exec, OutputIterator first, Size n, Generator gen)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __generate_n(__union(exec).seq, first, n, gen);
+      break;
+
+    case 1:
+      __generate_n(__union(exec).par, first, n, gen);
+      break;
+  }
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1203,6 +1263,21 @@ typename __enable_if_execution_policy<ExecutionPolicy>::type
 fill_n(ExecutionPolicy &&exec, OutputIterator first, Size n, const T& value)
 {
   return __fill_n(exec, first, n, value);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class Generator>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+generate(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, Generator gen)
+{
+  return __generate(exec, first, last, gen);
+}
+
+template<class ExecutionPolicy, class OutputIterator, class Size, class Generator>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+generate_n(ExecutionPolicy &&exec, OutputIterator first, Size n, Generator gen)
+{
+  return __generate_n(exec, first, n, gen);
 }
 
 
