@@ -1034,6 +1034,70 @@ ForwardIterator __remove_if(const execution_policy &exec, ForwardIterator first,
 }
 
 
+template<class ForwardIterator, class OutputIterator, class T>
+OutputIterator __remove_copy(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, OutputIterator result, const T& value)
+{
+  return std::remove_copy(first, last, result, value);
+}
+
+
+template<class ForwardIterator, class OutputIterator, class T>
+OutputIterator __remove_copy(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, OutputIterator result, const T& value)
+{
+  return thrust::remove_copy(thrust::device, first, last, result, value);
+}
+
+
+template<class ForwardIterator, class OutputIterator, class T>
+OutputIterator __remove_copy(const execution_policy &exec, ForwardIterator first, ForwardIterator last, OutputIterator result, const T& value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __remove_copy(__union(exec).seq, first, last, result, value);
+      break;
+
+    case 1:
+      result = __remove_copy(__union(exec).par, first, last, result, value);
+      break;
+  }
+
+  return result;
+}
+
+
+template<class ForwardIterator, class OutputIterator, class Predicate>
+OutputIterator __remove_copy_if(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, OutputIterator result, Predicate pred)
+{
+  return std::remove_copy_if(first, last, result, pred);
+}
+
+
+template<class ForwardIterator, class OutputIterator, class Predicate>
+OutputIterator __remove_copy_if(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, OutputIterator result, Predicate pred)
+{
+  return thrust::remove_copy_if(thrust::device, first, last, result, pred);
+}
+
+
+template<class ForwardIterator, class OutputIterator, class Predicate>
+OutputIterator __remove_copy_if(const execution_policy &exec, ForwardIterator first, ForwardIterator last, OutputIterator result, Predicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __remove_copy_if(__union(exec).seq, first, last, result, pred);
+      break;
+
+    case 1:
+      result = __remove_copy_if(__union(exec).par, first, last, result, pred);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1363,6 +1427,22 @@ typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator>::type
 remove_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, Predicate pred)
 {
   return __remove_if(exec, first, last, pred);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class OutputIterator, class T>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+remove_copy(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, OutputIterator result, const T& value)
+{
+  return __remove_copy(exec, first, last, result, value);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class OutputIterator, class Predicate>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+remove_copy_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, OutputIterator result, Predicate pred)
+{
+  return __remove_copy_if(exec, first, last, result, pred);
 }
 
 
