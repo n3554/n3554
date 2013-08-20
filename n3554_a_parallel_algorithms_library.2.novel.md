@@ -181,6 +181,8 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
+### Exclusive scan `[exclusive.scan]`
+
 ```
 template<class ExecutionPolicy,
          class InputIterator, class OutputIterator,
@@ -201,15 +203,17 @@ template<class ExecutionPolicy,
                    T init, BinaryOperation binary_op);
 ```
 
-1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum`, where `prefix_sum` is the result of the corresponding sum
+1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum_i`, where `prefix_sum_i` is the result of the corresponding sum
 
-    `init + *iter_0 + *iter_1 + *iter_2 + ...` or
-    
-    `binary_op(init, binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))`
-        
-    for every iterator `iter_j` in the range `[first,first + (i - result) - 1)`.
+    `A + B` or `binary_op(A, B)`. For any such `prefix_sum_i`,
 
-    The order of operands of the sum is unspecified.
+    1. `A` is the partial sum of elements in the range `[first, middle_i)`.
+
+    2. `B` is the partial sum of elements in the range `[middle_i, first + (i - result))`.
+
+    3. `first < middle_i`, `middle_i < first + (i - result)`.
+
+    4. `prefix_sum_0` is defined to be `init`. XXX this definition does not include init in A or B
 
     The algorithm's execution is parallelized as determined by `exec`.
 
@@ -226,6 +230,8 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 6. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
+
+### Inclusive scan `[inclusive.scan]`
 
 ```
 template<class ExecutionPolicy,

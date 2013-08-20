@@ -2234,6 +2234,9 @@ namespace std {
 }
 ```
 
+### Inner product `[inner.product]`
+
+
 ```
 template<class ExecutionPolicy,
          class InputIterator1, class InputIterator2, class T>
@@ -2287,6 +2290,8 @@ template<class ExecutionPolicy,
 5. *Remarks:* The signature shall not participate in overload resolution if
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
+
+### Adjacent difference `[adjacent.difference]`
 
 ```
 template<class ExecutionPolicy,
