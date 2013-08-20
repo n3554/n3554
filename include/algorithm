@@ -11,6 +11,7 @@
 #include <thrust/mismatch.h>
 #include <thrust/equal.h>
 #include <thrust/for_each.h>
+#include <thrust/remove.h>
 
 namespace std
 {
@@ -965,6 +966,74 @@ void __generate_n(const execution_policy &exec, OutputIterator first, Size n, Ge
 }
 
 
+template<class ForwardIterator, class T>
+ForwardIterator __remove(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  return std::remove(first, last, value);
+}
+
+
+template<class ForwardIterator, class T>
+ForwardIterator __remove(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  return thrust::remove(thrust::device, first, last, value);
+}
+
+
+template<class ForwardIterator, class T>
+ForwardIterator __remove(const execution_policy &exec, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  ForwardIterator result = last;
+
+  switch(__which(exec))
+  {
+    case 0:
+      result = __remove(__union(exec).seq, first, last, value);
+      break;
+
+    case 1:
+      result = __remove(__union(exec).par, first, last, value);
+      break;
+  }
+
+  return result;
+}
+
+
+template<class ForwardIterator, class Predicate>
+ForwardIterator __remove_if(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, Predicate pred)
+{
+  return std::remove_if(first, last, pred);
+}
+
+
+template<class ForwardIterator, class Predicate>
+ForwardIterator __remove_if(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, Predicate pred)
+{
+  return thrust::remove_if(thrust::device, first, last, pred);
+}
+
+
+template<class ForwardIterator, class Predicate>
+ForwardIterator __remove_if(const execution_policy &exec, ForwardIterator first, ForwardIterator last, Predicate pred)
+{
+  ForwardIterator result = last;
+
+  switch(__which(exec))
+  {
+    case 0:
+      result = __remove(__union(exec).seq, first, last, pred);
+      break;
+
+    case 1:
+      result = __remove(__union(exec).par, first, last, pred);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1278,6 +1347,22 @@ typename __enable_if_execution_policy<ExecutionPolicy>::type
 generate_n(ExecutionPolicy &&exec, OutputIterator first, Size n, Generator gen)
 {
   return __generate_n(exec, first, n, gen);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class T>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator>::type
+remove(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  return __remove(exec, first, last, value);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class Predicate>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator>::type
+remove_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, Predicate pred)
+{
+  return __remove_if(exec, first, last, pred);
 }
 
 
