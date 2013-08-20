@@ -1005,7 +1005,7 @@ template<class ExecutionPolicy,
 2. *Returns:* The first iterator `i` in the range `[first1,last1 - (last2-first2)` such that for any non-negative integer `n` less than `last2 - first2` the following corresponding conditions hold:
     `*(i + n) == *(first2 + n), pred(*(i + n), *(first2 + n)) != false`. Returns `first1` if `[first2,last2)` is empty, otherwise returns `last1` if no such iterator is found.
 
-3. *Complexity:* At most `(last1 - first1) * (last2 - first2)` applications of the corresponding predicate.
+3. *Complexity:* `O((last1 - first1) * (last2 - first2))`.
 
 
 ```
@@ -1032,7 +1032,7 @@ template<class ExecutionPolicy,
 3. *Returns:* The first iterator `i` in the range `[first,last-count)` such that for any non-negative integer `n` less than `count` the following corresponding conditions hold:
     `*(i + n) == value, pred(*(i + n),value) != false`. Returns `last` if no such iterator is found.
 
-4. *Complexity:* At most `last - first` applications of the corresponding predicate.
+4. *Complexity:* `O(last - first)`.
 
 
 ### Copy `[alg.copy]`
@@ -1906,7 +1906,7 @@ template<class ExecutionPolicy,
 
 3. *Remarks:* Stable.
 
-4. *Complexity:* `O(m + n`)`, where `m = middle - first` and `n = last - middle`.
+4. *Complexity:* `O(m + n)`, where `m = middle - first` and `n = last - middle`.
 
 5. *Remarks:* The signatures shall not participate in overload resolution if
 
