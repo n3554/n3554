@@ -845,6 +845,66 @@ void __replace_if(const execution_policy &exec, ForwardIterator first, ForwardIt
 }
 
 
+template<class ForwardIterator, class T>
+void __fill(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  std::fill(first, last, value); 
+}
+
+
+template<class ForwardIterator, class T>
+void __fill(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  thrust::fill(thrust::device, first, last, value); 
+}
+
+
+template<class ForwardIterator, class T>
+void __fill(const execution_policy &exec, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __fill(__union(exec).seq, first, last, value);
+      break;
+
+    case 1:
+      __fill(__union(exec).par, first, last, value);
+      break;
+  }
+}
+
+
+template<class OutputIterator, class Size, class T>
+void __fill_n(const sequential_execution_policy &, OutputIterator first, Size n, const T& value)
+{
+  std::fill_n(first, n, value);
+}
+
+
+template<class OutputIterator, class Size, class T>
+void __fill_n(const parallel_execution_policy &, OutputIterator first, Size n, const T& value)
+{
+  thrust::fill_n(thrust::device, first, n, value);
+}
+
+
+template<class OutputIterator, class Size, class T>
+void __fill_n(const execution_policy &exec, OutputIterator first, Size n, const T& value)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __fill_n(__union(exec).seq, first, n, value);
+      break;
+
+    case 1:
+      __fill_n(__union(exec).par, first, n, value);
+      break;
+  }
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1128,6 +1188,21 @@ typename __enable_if_execution_policy<ExecutionPolicy>::type
 replace_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, Predicate pred, const T& new_value)
 {
   return __replace_if(exec, first, last, pred, new_value);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class T>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+fill(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  return __fill(exec, first, last, value);
+}
+
+template<class ExecutionPolicy, class OutputIterator, class Size, class T>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+fill_n(ExecutionPolicy &&exec, OutputIterator first, Size n, const T& value)
+{
+  return __fill_n(exec, first, n, value);
 }
 
 
