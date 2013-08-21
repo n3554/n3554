@@ -370,7 +370,7 @@ Retrieving the dynamic value from an `std::execution_policy` an API similar to `
       }
       else
       {
-        std::cout << "Received some other kind of policy" << std::eedl;
+        std::cout << "Received some other kind of policy" << std::endl;
       }
     }
 
