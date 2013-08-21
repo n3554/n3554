@@ -380,7 +380,7 @@ An alternative design might require `std::execution_policy::target` to return a 
 
 ## Effect of policies on algorithm execution
 
-Execution policies describe the manner in which the algorithms apply user-provided function objects.
+Execution policies describe the manner in which standard algorithms apply user-provided function objects.
 
 1. The applications of the function objects in the algorithms invoked with the `sequential_execution_policy` execute in sequential order in the calling thread.
 
