@@ -830,7 +830,7 @@ Header `<exception>` synopsis
 
 ```
 namespace std {
-  class exception_list
+  class exception_list : public exception
   {
     public:
       typedef exception_ptr     value_type;
@@ -843,8 +843,6 @@ namespace std {
       size_t size() const;
       iterator begin() const;
       iterator end() const;
-  
-      const char *what() const;
   
     private:
       std::list<exception_ptr> exceptions_; // exposition only
