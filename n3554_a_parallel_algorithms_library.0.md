@@ -326,7 +326,7 @@ otherwise from `integral_constant<bool,false>`.
 
 ### Example Usage of `execution_policy`
 
-`std::execution_policy` allows us to dynamically control algorithm execution:
+`std::execution_policy` allows dynamic control over algorithm execution:
 
     std::vector<float> sort_me = ...
     
