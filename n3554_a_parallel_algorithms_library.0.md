@@ -881,6 +881,12 @@ For algorithms invoked with a `parallel_execution_policy` argument:
 
 6. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation may introduce a data race.
 
+7. If they exist, an algorithm may apply iterator member functions of a stronger category than its specification requires. In this case, it is unspecified in which thread(s) and in 
+   which order these member functions are invoked.
+
+    [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
+    case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
+
 For algorithms invoked with a `vector_execution_policy` argument:
 
 1. A vectorizable algorithm invocation inherits all the previous restrictions of `parallel_execution_policy`.
