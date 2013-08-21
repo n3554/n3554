@@ -1,47 +1,13 @@
 ---------------------------
 
 Appendix: Design Notes and Outstanding Questions
-======================================
+================================================
 
-Before introducing the detailed specification of our proposal, we begin by outlining our rationale and by noting that we have identified a number of outstanding questions which require further work to resolve. 
+This appendix outlines the rationale behind some of our design choices
+and identifies outstanding questions which may require further work to
+resolve. 
 
-## General Considerations
-
-This proposal is motivated by a strong desire to provide a standard model of
-parallelism enabling performance portability across the broadest possible range
-of parallel architectures. For this reason, we have exposed parallelism in the
-most abstract manner possible in order to avoid presuming the existence of a
-particular parallel machine model. In particular, we have intentionally avoided
-a specification which would be required to introduce concurrency by creating
-threads. Additionally, our proposal's semantics ensure that a sequential
-implementation is always a valid realization of an algorithm invocation.
-
-One limitation of STL-like algorithms is that they encourage the programmer to
-engage in a style of programming which may be an obstacle to achieving large
-absolute performance. For example, in situations where a sequential programmer
-might implement a program using a single `for` loop, a parallel programmer
-might express the same program as a sequence of separate `gather`, `for_each`,
-and `scatter` phases. This is troublesome because in many cases the
-performance of most STL algorithms is bounded by the speed of memory
-bandwidth, and the rate of memory bandwidth scaling on parallel
-architectures is slowing.
-
-One way to ameliorate such problems is to combine the use of parallel
-algorithms with "fancy" iterators in the style of the Boost Iterator Library.
-Iterators such as `transform_iterator` can fuse the effect of `std::transform`
-into another algorithm call, while a `permutation_iterator` can fuse a scatter
-or gather. By fusing together several "elemental" operations into a single
-function consumed by a parallel algorithm, memory bandwidth requirements can be
-reduced significantly. However, because this idea is orthogonal to the idea of
-parallel algorithms, this proposal does not include a novel iterator library.
-
-While we are enthusiastic that our library solution to parallelism can offer a
-portable way to author programs for parallel architectures, we acknowledge that
-it is only a partial solution for parallelism. We expect our library to coexist
-in an ecosystem of standard language and library constructs which target
-parallelism at varying levels of abstraction.
-
-## Naming
+## Rejected Naming Schemes
 
 Integrating and exposing a new library of parallel algorithms into the existing
 C++ standard library is an interesting challenge. Because this proposal
@@ -65,16 +31,12 @@ parallelism via parallel execution policies with distinct types. As the code
 sample in the executive summary demonstrates, we feel that this scheme provides
 deep integration with the existing standard library.
 
-### Rejected Alternative Naming Schemes
-
-Here, we discuss the rationale for rejecting alternative schemes we considered.
-
-#### A `parallel_` Name Prefix
+### A `parallel_` Name Prefix
 
 A simple way to disambiguate parallel algorithms from their sequential versions
 would be simply to give them new, unique names. Indeed, this is the approach suggested
-by Intel & Microsoft’s earlier paper N3429 and is the one taken in their libraries
-(i.e. Threading Building Blocks & Parallel Patterns Library, respectively). It
+by Intel & Microsoft's earlier paper N3429 and is the one taken in their libraries
+(i.e., Threading Building Blocks & Parallel Patterns Library, respectively). It
 is impossible for a human reader or implementation to confuse a call to
 `std::for_each` for `std::parallel_for_each` and vice versa.
 
@@ -169,7 +131,7 @@ void func(ExecutionPolicy &exec, std::vector &vec)
 }
 ```
 
-#### A Nested `std::parallel` Namespace
+### A Nested `std::parallel` Namespace
 
 Another naming scheme would be to provide overloads of the existing standard algorithms in a nested `std::parallel` namespace.
 This scheme would avoid many of the problems we identified with distinguishing parallel algorithms by a name prefix. However,

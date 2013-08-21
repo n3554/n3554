@@ -121,8 +121,71 @@ by nature sequential and hence do not permit a parallel implementation.
 Parallel execution of algorithms
 ================================
 
+In this section, we describe our proposed model of parallel execution.
+Later sections describe all the algorithms for which we propose
+to permit parallel execution.
 
 
+## Model of parallelism
+
+As described above, our goal is to make parallel execution easily
+available across the broadest possible range of platforms.  For this
+reason, we have exposed parallelism in the most abstract manner possible
+in order to avoid presuming the existence of a particular parallel
+machine model. In particular, we have intentionally avoided a
+specification which would be required to introduce concurrency by
+creating threads.  We have also carefully avoided making parallel
+execution mandatory; algorithm implementations are always permitted to
+opt for sequential execution regardless of policy.
+
+This design provides an approachable model of parallelism that should
+feel familiar to any user of the STL.  However, its limitations mean
+that it is only a partial solution to the problem of providing
+parallelism to C++ programmers.  We expect our library to coexist in an
+ecosystem of standard language and library constructs which target
+parallelism at varying levels of abstraction.
+
+### Composition with scheduling
+
+Our proposed parallel execution policies, `std::par` and `std::vec`,
+specify how an implementation is allowed to execute user-provided
+function objects.  In other words, they specify *what* parallel work an
+implementation can create, but they do not specify the orthogonal
+concern of *where* this work should be executed.
+
+Our proposal is designed with the expectation that the C++ standard will
+adopt some standard mechanism (e.g., executors or task schedulers) that
+provide a way for programs to manage the question of *where* parallel
+work will be performed.  To accommodate this direction, we anticipate
+that our policies could be extended to accept an additional argument
+specifying an object whose responsibility it is to control the placement
+and scheduling of work.  This ability is necessary for scheduling
+decisions made within algorithm implementations to compose well with
+scheduling decisions made within the surrounding application.
+
+### Composition across algorithms
+
+One limitation of STL-like algorithms is that they encourage the programmer to
+engage in a style of programming which may be an obstacle to achieving maximum
+absolute performance. For example, in situations where a sequential programmer
+might implement a program using a single `for` loop, a parallel programmer
+might express the same program as a sequence of separate `gather`, `for_each`,
+and `scatter` phases. This is troublesome because in many cases the
+performance of most STL algorithms is bounded by the speed of memory
+bandwidth, and the rate of memory bandwidth scaling on parallel
+architectures is slowing.
+
+One way to ameliorate such problems is to combine the use of parallel
+algorithms with "fancy" iterators in the style of the Boost Iterator Library.
+Iterators such as `transform_iterator` can fuse the effect of `std::transform`
+into another algorithm call, while a `permutation_iterator` can fuse a scatter
+or gather. By fusing together several "elemental" operations into a single
+function consumed by a parallel algorithm, memory bandwidth requirements can be
+reduced significantly.  Our experience with previous implementations,
+such as Thrust, shows that such iterator facilities can be quite
+valuable.  However, because this idea is orthogonal to the idea of
+parallel algorithms, this proposal does not include a novel iterator
+library.
 
 ## Execution policy definitions
 
