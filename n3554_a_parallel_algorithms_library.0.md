@@ -7,32 +7,38 @@
   arch.robison@intel.com
 % 2013-03-15
 
-Executive Summary
-=================
+Overview
+========
 
-We introduce a library of algorithms with parallel execution semantics.
-Some of these algorithms have semantics similar to the existing standard
-library of sequential algorithms. Some of the algorithms we propose are
-novel.
+We propose an extension of the C++ standard library that provides access
+to parallel execution for a broad range of algorithms.  Many of these
+algorithms correspond with algorithms already in the standard library,
+while some are novel.  Our proposal is a pure extension, as it does not
+alter the meaning of any existing functionality.  Our goal in this
+proposal is to provide access to the performance benefits of parallelism
+in a way that (1) can be easily adopted by programmers and (2) can be
+supported efficiently on the broadest possible range of hardware
+platforms.
 
-We introduce three parallel execution policies for parallel algorithm
-execution: `std::seq`, `std::par`, and `std::vec`, as well as a facility
-for vendors to provide non-standard execution policies as extensions.
-These policy objects may be used to specify how a parallel algorithm
-should be executed:
+We identify a collection of algorithms that permit efficient parallel
+implementations.  We also introduce the concept of an *execution policy*,
+that may be used to specify how these algorithms should be executed.
+Execution policies become an optional parameter to a standard set of
+algorithms, permitting the programmer to write code such as the
+following:
 
     std::vector<int> vec = ...
 
-    // legacy sequential sort
+    // previous standard sequential sort
     std::sort(vec.begin(), vec.end());                  
 
-    // explicit sequential sort
+    // explicitly sequential sort
     std::sort(std::seq, vec.begin(), vec.end());        
 
-    // parallel sort
+    // permitting parallel execution
     std::sort(std::par, vec.begin(), vec.end());        
 
-    // vectorized sort
+    // permitting vectorization as well
     std::sort(std::vec, vec.begin(), vec.end());
 
     // sort with dynamically-selected execution
@@ -40,57 +46,75 @@ should be executed:
     std::execution_policy exec = std::seq;
     if(vec.size() > threshold)
     {
-      exec = std::par;
+        exec = std::par;
     }
 
     std::sort(exec, vec.begin(), vec.end());
 
+
+## Execution policies
+
+In this proposal, we define three standard execution policies:
+`std::seq`, `std::par`, and `std::vec`, as well as a facility for
+vendors to provide non-standard policies as extensions.  The `std::seq`
+policy requires that the called algorithm execute in sequential order on
+the calling thread.  The other policies indicate that some form of
+parallel execution is permitted.  Even when parallel execution is
+possible, it is *never mandatory*.  An implementation is always
+permitted to fallback to sequential execution.
+
+By using `std::par` or `std::vec` a program simultaneously requests
+parallel execution and indicates the manner in which the implementation
+is allowed to apply user-provided function objects.  The `std::par`
+policy indicates that function objects invoked by the algorithm may be
+executed in an unordered fashion in unspecified threads, or
+indeterminately sequenced if executed on one thread.  The `std::vec`
+policy indicates that these function objects may execute in an unordered
+fashion in unspecified threads, or unsequenced if executed on one
+thread.  Complete details on these definitions are provided in the
+section of this paper on *[Effect of policies on algorithm execution][]*.
+
+We have designed the standard policies to be meaningful on the broadest
+possible range of platforms.  Since programs based strictly on the
+standard must be portable, our execution policies carefully avoid
+platform-specific details that would tie a program too closely to a
+particular implementation.  Our definition of `std::par` is intended to
+permit an implementation to safely execute an algorithm across
+potentially many threads.  The more restrictive `std::vec` policy is
+intended to additionally permit vectorization within the implementation.
+
 In addition to these standard policies, our proposal is designed to
 permit individual implementations to provide additional non-standard
-policies that provide further means of controlling the execution of
-algorithms.
+policies that might provide further means of controlling the execution
+of algorithms.
 
-    // parallel sort with non-standard implementation-provided execution policies:
+    // possible non-standard, implementation-specific policies
     std::sort(vectorize_in_this_thread, vec.begin(), vec.end());
     std::sort(submit_to_my_thread_pool, vec.begin(), vec.end());
     std::sort(execute_on_that_gpu, vec.begin(), vec.end());
     std::sort(offload_to_my_fpga, vec.begin(), vec.end());
     std::sort(send_this_computation_to_the_cloud, vec.begin(), vec.end());
 
-## Execution policies
-
-Algorithms invoked with `std::seq` execute internally in sequential order in the calling thread.
-
-Algorithms invoked with `std::par` are permitted to execute internally in an unordered fashion in unspecified threads. It is the caller's responsibility to ensure
-that the invocation does not introduce data races or deadlocks.
-
-Algorithms invoked with `std::vec` are permitted to execute internally in an
-unordered fashion in unspecified threads. In addition to the restrictions
-implied by `std::par`, it is the caller's responsibility to ensure that a
-`std::vec` invocation does not throw exceptions or attempt to perform
-synchronization operations.
-
-Algorithms invoked without an execution policy execute as if they were invoked with `std::seq`.
-
-An implementation may provide additional execution policies besides `std::seq`, `std::par`, or `std::vec`.
-
 ## Algorithms
 
-This proposal is a pure addition to the existing C++ standard library; we do not believe it alters the semantics of any existing functionality.
+We overload an existing algorithm name when the existing
+C++11 specification allows sufficient discretion for a parallel
+implementation (e.g., `transform`) or when we feel no other name would
+be appropriate (e.g., `for_each`, `inner_product`).
 
-We propose to overload an existing algorithm name when the existing C++11 specification allows sufficient discretion for a parallel implementation (e.g., `transform`) or when we feel no other name would be appropriate (e.g., `for_each`, `inner_product`).
+* Section 3: [Overloads of Existing Algorithms Introduced by this Proposal][]
 
-We propose to introduce a new algorithm name when the existing analogous algorithm name implies a sequential implementation (e.g., `accumulate` versus `reduce`).
+We propose to introduce a new algorithm name when the existing analogous
+algorithm name implies a sequential implementation (e.g., `accumulate`
+versus `reduce`).
+
+* Section 4: [Novel Algorithms Introduced by this Proposal][]
 
 Finally, we avoid defining any new functionality for algorithms that are
 by nature sequential and hence do not permit a parallel implementation.
 
-Detailed specifications for each of these three classes of algorithms
-can be found in the following sections:
-
-* Section 3: [Overloads of Existing Algorithms Introduced by this Proposal][]
-* Section 4: [Novel Algorithms Introduced by this Proposal][]
 * Section 5: [Existing Algorithms Left Unchanged by this Proposal][]
+
 
 ---------------------------
 
