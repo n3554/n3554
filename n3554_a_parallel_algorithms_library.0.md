@@ -734,16 +734,21 @@ Execution policies describe the manner in which the algorithms apply the user-pr
 
     [*Note:* The semantics of a `parallel_execution_policy` or `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
-4. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and assignable from any additional non-standard execution policy provided by the implementation.
+4. If they exist, an algorithm invoked with `parallel_execution_policy` or `vector_execution_policy` may apply iterator member functions of a stronger category than its specification requires. In this case,
+   the application of these member functions are subject to provisions 2. and 3. above, respectively.
 
-5. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+    [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
+    case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
 
-6. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
+5. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and assignable from any additional non-standard execution policy provided by the implementation.
+
+6. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+
+7. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
 
     [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
 
-Example Usage of `execution_policy`:
-====================================
+## Example Usage of `execution_policy`:
 
 `std::execution_policy` allows us to dynamically control algorithm execution:
 
@@ -849,49 +854,6 @@ namespace std {
   };
 }
 ```
-
-Interaction with Threads
-========================
-
-For algorithms invoked with a `sequential_execution_policy` argument:
-
-1. Program-defined functions arising from the manipulation of algorithm parameters (e.g., functors, iterators, etc.) are invoked in the calling thread of execution.
-
-2. Program-defined functions arising from the manipulation of algorithm parameters are invoked in sequential order.
-
-3. Algorithms synchronize with the caller.
-
-For algorithms invoked with a `parallel_execution_policy` argument:
-
-1. It is the responsibility of the algorithm implementation to allocate temporary storage in a thread-safe manner.
-
-    [*Note:* One way to guarantee this is to allocate all dynamic storage in the calling thread before concurrent computation begins. -- *end note*.]
-
-2. It is unspecified in which thread(s) program-defined functions arising from the manipulation of algorithm parameters are invoked.
-
-3. It is unspecified in which order program-defined functions arising from the manipulation of algorithm parameters are invoked.
-
-4. Algorithm invocations synchronize with the caller.
-
-5. Algorithms make no guarantee of forward progress.
-
-    [*Note:* Program-defined code executed by an algorithm's invocation of a functor or iterator dereference cannot wait on the result of another invocation. -- *end note*.]
-
-6. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation may introduce a data race.
-
-7. If they exist, an algorithm may apply iterator member functions of a stronger category than its specification requires. In this case, it is unspecified in which thread(s) and in 
-   which order these member functions are invoked.
-
-    [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
-    case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
-
-For algorithms invoked with a `vector_execution_policy` argument:
-
-1. A vectorizable algorithm invocation inherits all the previous restrictions of `parallel_execution_policy`.
-
-2. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter manipulation throws an exception.
-
-3. An algorithm's behavior is undefined if program-defined code executed through algorithm parameter mainpulation attempts to synchronize.
 
 Proposed Additions to Algorithms and Algorithm-like functions
 =============================================================
