@@ -814,10 +814,10 @@ An algorithm may report exceptional behavior to the caller by throwing one of tw
 When an exception is thrown during the application of the user-provided function object, the algorithm throws an `exception_list` exception. 
 Every evaluation of the user-provided function object must finish before the `exception_list exception` is thrown. Therefore, all exceptions 
 thrown during the application of the user-provided function objects are contained in the `exception_list`, however the number of such exceptions is 
-unspecified. [*Note:* for example, the number of invocations of the user-provide function object in `std::for_each` is unspecified. When 
-`std::for_each` is executed serially, only one exception will be contained in the exception_list object -- *end note*]
+unspecified. [*Note:* For example, the number of invocations of the user-provide function object in `std::for_each` is unspecified. When 
+`std::for_each` is executed serially, only one exception will be contained in the `exception_list` object -- *end note*]
 
-[*Note:* that these guarantees imply that all exceptions thrown during the execution of the algorithm are communicated to the caller. It is 
+[*Note:* These guarantees imply that all exceptions thrown during the execution of the algorithm are communicated to the caller. It is 
 unspecified whether an algorithm implementation will "forge ahead" after encountering and capturing a user exception. -- *end note*]
 
 Exception behavior of functions launched through a `std::vector_execution_policy` argument
