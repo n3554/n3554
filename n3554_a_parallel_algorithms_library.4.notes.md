@@ -357,6 +357,25 @@ This is also the motivation behind the addition of our proposed `for_each_n` alg
 
 On the other hand, it may be safer to require our parallel `for_each` to simply return a copy of its function object for consistency's sake.
 
+## `generate` and `generate_n`
+
+We propose to permit parallelization for the standard algorithms `generate` and
+`generate_n`, even though common use cases of the legacy interface involve
+sequential access to state within the functor (e.g., as in random number
+generation). 
+
+In a parallel context, these use cases would introduce data races unless
+explicit action was taken to synchronize access to shared state. Moreover,
+these races may be difficult to detect since they may be hidden from the
+programmer behind standard APIs (e.g., `std::rand`).
+
+A less permissive design might avoid such issues by disallowing parallelization
+of `generate`, `generate_n`, and other algorithms based on the perceived value
+of parallelization. However, rather than considering the value of algorithm
+parallelization on a case-by-case basis, our current proposal permits
+parallelization of the standard algorithms to the degree possible, regardless
+of the expected value (or hazard) of parallelization.
+
 ## Iterator Traversal Requirements
 
 Even though random access to data is a prerequisite for parallel execution, we propose
