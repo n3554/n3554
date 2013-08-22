@@ -51,6 +51,10 @@ following:
 
     std::sort(exec, vec.begin(), vec.end());
 
+Interested programmers may experiment with this model of parallelism by
+accessing our prototype implementation at
+<http://github.com/n3554/n3554>.
+
 
 ## Execution policies
 
