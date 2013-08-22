@@ -189,13 +189,33 @@ library.
 
 ## Execution policy definitions
 
-Header `<execution_policy>` synopsis
+The execution policies `std::seq`, `std::par` and `std::vec` are defined as global instances of types
+`std::sequential_execution_policy`, `std::parallel_execution_policy` and `std::vector_execution_policy`.
+
+These types are defined in the header `<execution_policy>` as follows:
 
 ```
 namespace std
 {
 
 template<class T> struct is_execution_policy;
+
+class sequential_execution_policy
+{
+  public:
+    void swap(sequential_execution_policy &other);
+
+    // implementation-defined public members follow
+    ...
+
+  private:
+    // implementation-defined state follows
+    ...
+};
+
+void swap(sequential_execution_policy &a, sequential_execution_policy &b);
+
+template<> struct is_execution_policy<sequential_execution_policy> : true_type {};
 
 class parallel_execution_policy
 {
@@ -215,23 +235,6 @@ void swap(parallel_execution_policy &a, parallel_execution_policy &b);
 template<> struct is_execution_policy<parallel_execution_policy> : true_type {};
 
 extern const parallel_execution_policy par;
-
-class sequential_execution_policy
-{
-  public:
-    void swap(sequential_execution_policy &other);
-
-    // implementation-defined public members follow
-    ...
-
-  private:
-    // implementation-defined state follows
-    ...
-};
-
-void swap(sequential_execution_policy &a, sequential_execution_policy &b);
-
-template<> struct is_execution_policy<sequential_execution_policy> : true_type {};
 
 extern const sequential_execution_policy seq;
 
@@ -256,7 +259,32 @@ extern const vector_execution_policy vec;
 
 // implementation-defined execution policy extensions follow
 ...
+```
 
+### Class template `is_execution_policy`
+
+```
+namespace std {
+  template<class T> struct is_execution_policy
+    : integral_constant<bool, see below> { };
+}
+```
+
+1. `is_execution_policy` can be used to detect parallel execution policies for the purpose of excluding parallel algorithm signatures from otherwise ambiguous overload resolution participation.
+
+2. If `T` is the type of a standard or implementation-defined non-standard execution policy, `is_execution_policy<T>` shall be publicly derived from `integral_constant<bool,true>`,
+otherwise from `integral_constant<bool,false>`.
+
+3. The effect of specializing `is_execution_policy` for a type which is not defined by library is unspecified.
+
+    [*Note:* This provision reserves the privilege of creating non-standard execution policies to the library implementation. -- *end note*.]
+
+### Class `execution_policy`
+
+Objects of type `execution_policy` may be used to dynamically control the invocation of parallel algorithms. The type is
+defined in the header `<execution_policy>` as follows:
+
+```
 class execution_policy
 {
   public:
@@ -301,28 +329,6 @@ void swap(execution_policy &a, execution_policy &b);
 
 }
 ```
-
-### Class template `is_execution_policy`
-
-```
-namespace std {
-  template<class T> struct is_execution_policy
-    : integral_constant<bool, see below> { };
-}
-```
-
-1. `is_execution_policy` can be used to detect parallel execution policies for the purpose of excluding parallel algorithm signatures from otherwise ambiguous overload resolution participation.
-
-2. If `T` is the type of a standard or implementation-defined non-standard execution policy, `is_execution_policy<T>` shall be publicly derived from `integral_constant<bool,true>`,
-otherwise from `integral_constant<bool,false>`.
-
-3. The effect of specializing `is_execution_policy` for a type which is not defined by library is unspecified.
-
-    [*Note:* This provision reserves the privilege of creating non-standard execution policies to the library implementation. -- *end note*.]
-
-### Class `execution_policy`
-
-1. Objects of type `execution_policy` may be used to dynamically control the invocation of parallel algorithms.
 
 ### Example Usage of `execution_policy`
 
@@ -424,7 +430,7 @@ Execution policies describe the manner in which standard algorithms apply user-p
     
     The above example synchronizes access to object `x` ensuring that it is incremented correctly. –- *end example*]
 
-3. The applications of the function objects in the algorithms invoked with `vector_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, or unsequenced if executed on one thread. [*Note:* as a consequence, function objects governed by the `vector_execution_policy` policy must not synchronize with each other. Specifically, they must not acquire locks. –- *end note*]
+3. The applications of the function objects in the algorithms invoked with the `vector_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, or unsequenced if executed on one thread. [*Note:* as a consequence, function objects governed by the `vector_execution_policy` policy must not synchronize with each other. Specifically, they must not acquire locks. –- *end note*]
     [*Example:*
 
     ```
@@ -441,9 +447,9 @@ Execution policies describe the manner in which standard algorithms apply user-p
     The above program is invalid because the applications of the function object are not guaranteed to run on different threads.
     [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*] -– *end example*]
 
-    [*Note:* The semantics of a `parallel_execution_policy` or `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
+    [*Note:* The semantics of the `parallel_execution_policy` or the `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
-4. If they exist, an algorithm invoked with `parallel_execution_policy` or `vector_execution_policy` may apply iterator member functions of a stronger category than its specification requires. In this case,
+4. If they exist, an algorithm invoked with the `parallel_execution_policy` or the `vector_execution_policy` may apply iterator member functions of a stronger category than its specification requires. In this case,
    the application of these member functions are subject to provisions 2. and 3. above, respectively.
 
     [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
@@ -451,9 +457,9 @@ Execution policies describe the manner in which standard algorithms apply user-p
 
 5. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and assignable from any additional non-standard execution policy provided by the implementation.
 
-6. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with a `sequential_execution_policy`, a `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+6. Algorithms invoked with an execution policy argument of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
 
-7. Implementations of `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
+7. Implementations of types `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
 
     [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
 
