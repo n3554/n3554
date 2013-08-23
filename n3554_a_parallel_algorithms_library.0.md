@@ -167,6 +167,39 @@ and scheduling of work.  This ability is necessary for scheduling
 decisions made within algorithm implementations to compose well with
 scheduling decisions made within the surrounding application.
 
+As an illustrative example, consider the call to `std::sort` given
+earlier:
+
+    std::sort(std::par, vec.begin(), vec.end());
+
+This call gives the implementation of `std::sort` complete discretion in
+determining the appropriate mapping of parallel work onto threads.  As
+we have just described, we also envision supporting parameters to
+`std::par` as in the following:
+
+    std::sort(std::par(sched), vec.begin(), vec.end());
+
+The value provided by `sched` would be an object, such as an executor,
+that provides a suitable abstraction for mapping parallel work onto
+threads.  Another example of specific interest would be the use case
+where the application might request that the implementation use no
+additional threads:
+
+    std::sort(std::vec(this_thread), vec.begin(), vec.end());
+
+Cases like this may arise where some outer part of the application has
+already created just the right number of threads to fill up the machine,
+and the creation of any additional threads would cause performance to
+suffer.
+
+We are not providing a precise definition of the parameters being passed
+to `std::par` and `std::vec` in this document because it remains to be
+seen what these objects will actually be.  Since the purpose is to
+compose with other parts of the standard, it precise design will depend
+on what mechanisms are adopted by the standard library for representing
+scheduling decisions.
+
+
 ### Composition across algorithms
 
 One limitation of STL-like algorithms is that they encourage the programmer to
