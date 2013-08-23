@@ -1,11 +1,11 @@
-% A Parallel Algorithms Library | N3554
+% A Parallel Algorithms Library | N3724
 % Jared Hoberock; Jaydeep Marathe; Michael Garland; Olivier Giroux; Vinod Grover
   {jhoberock, jmarathe, mgarland, ogiroux, vgrover}@nvidia.com
   Artur Laksberg; Herb Sutter
   {arturl, hsutter}@microsoft.com
   Arch Robison
   arch.robison@intel.com
-% 2013-03-15
+% 2013-08-30
 
 Overview
 ========
