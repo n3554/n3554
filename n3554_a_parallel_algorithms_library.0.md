@@ -76,7 +76,7 @@ indeterminately sequenced if executed on one thread.  The `std::vec`
 policy indicates that these function objects may execute in an unordered
 fashion in unspecified threads, or unsequenced if executed on one
 thread.  Complete details on these definitions are provided in the
-section of this paper on *[Effect of policies on algorithm execution][]*.
+section of this paper on *[Effect of policies on algorithm execution](#effect-of-policies-on-algorithm-execution)*.
 
 We have designed the standard policies to be meaningful on the broadest
 possible range of platforms.  Since programs based strictly on the
@@ -106,18 +106,18 @@ C++11 specification allows sufficient discretion for a parallel
 implementation (e.g., `transform`) or when we feel no other name would
 be appropriate (e.g., `for_each`, `inner_product`).
 
-* Section 3: [Overloads of Existing Algorithms Introduced by this Proposal][]
+* Section 3: [Overloads of Existing Algorithms Introduced by this Proposal](#overloads-of-existing-algorithms-introduced-by-this-proposal)
 
 We propose to introduce a new algorithm name when the existing analogous
 algorithm name implies a sequential implementation (e.g., `accumulate`
 versus `reduce`).
 
-* Section 4: [Novel Algorithms Introduced by this Proposal][]
+* Section 4: [Novel Algorithms Introduced by this Proposal](#novel-algorithms-introduced-by-this-proposal)
 
 Finally, we avoid defining any new functionality for algorithms that are
 by nature sequential and hence do not permit a parallel implementation.
 
-* Section 5: [Existing Algorithms Left Unchanged by this Proposal][]
+* Section 5: [Existing Algorithms Left Unchanged by this Proposal](#existing-algorithms-left-unchanged-by-this-proposal)
 
 
 ---------------------------
@@ -600,13 +600,4 @@ namespace std {
   };
 }
 ```
-
-Proposed Additions to Algorithms and Algorithm-like functions
-=============================================================
-
-Here we enumerate the additions we propose to the standard algorithms library.
-
-We propose to overload an existing algorithm name when the existing C++11 specification allows sufficient discretion for a parallel implementation (e.g., `transform`) or when we feel no other name would be appropriate (e.g., `for_each`, `inner_product`).
-
-We propose to introduce a new algorithm name when the existing analogous algorithm name implies a sequential implementation (e.g., `accumulate` versus `reduce`).
 
