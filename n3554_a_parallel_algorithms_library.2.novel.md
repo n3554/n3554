@@ -201,7 +201,7 @@ template<class ExecutionPolicy,
 
 1. *Effects:* The second algorithm's execution is parallelized as determined by `exec`.
 
-2. *Returns:* The result of the sum `T(0) + *iter_0 + *iter_1 + *iter_2 + ... ` for every iterator `iter_i` in the range `[first,last)`.
+2. *Returns:* The result of the sum of `T(0)` and the elements in the range `[first,last)`.
 
     The order of operands of the sum is unspecified.
 
@@ -237,9 +237,9 @@ template<class ExecutionPolicy,
 
 1. *Effects:* The execution of the second and fourth algorithms is parallelized as determined by `exec`.
 
-2. *Returns:* The result of the generalized sum `init + *iter_0 + *iter_1 + *iter_2 + ...` or `binary_op(init, binary_op(*iter_0, binary_op(*iter_2, ...)))` for every iterator `iter_i` in the range `[first,last)`.
+2. *Returns:* The result of the generalized sum of `init` and the elements in the range `[first,last)`.
 
-    The order of operands of the sum is unspecified.
+    Sums of elements are evaluated with `operator+` or `binary_op`. The order of operands of the sum is unspecified.
 
 3. *Requires:* The `operator+` function associated with `InputIterator`'s value type or `binary_op` shall have associativity and commutativity.
 
@@ -287,17 +287,23 @@ template<class ExecutionPolicy,
                    T init, BinaryOperation binary_op);
 ```
 
-1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum_i`, where `prefix_sum_i` is the result of the corresponding sum
+1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, produces a result such that upon
+    completion of the algorithm, `*i` yields the generalized sum of `init` and the elements in the range
+    `[first, first + (i - result))`.
 
-    `A + B` or `binary_op(A, B)`. For any such `prefix_sum_i`,
+    During execution of the algorithm, every evaluation of the above sum is either of the corresponding form
 
-    1. `A` is the partial sum of elements in the range `[first, middle_i)`.
+    `(init + A) + B)` or `A + B` or
 
-    2. `B` is the partial sum of elements in the range `[middle_i, first + (i - result))`.
+    `binary_op(binary_op(init,A), B)` or `binary_op(A, B)`
 
-    3. `first < middle_i`, `middle_i < first + (i - result)`.
+    where there exists some iterator `j` in `[first, last)` such that:
 
-    4. `prefix_sum_0` is defined to be `init`. XXX this definition does not include init in A or B
+    1. `A` is the partial sum of elements in the range `[j, j + n)`.
+
+    2. `B` is the partial sum of elements in the range `[j + n, j + m)`.
+
+    3. `n` and `m` are positive integers and `j + m < last`.
 
     The execution of the second and fourth algorithms is parallelized as determined by `exec`.
 
@@ -363,19 +369,25 @@ template<class ExecutionPolicy,
                    T init, BinaryOperation binary_op);
 ```
 
-1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, performs `*i = prefix_sum`, where `prefix_sum` is the result of the corresponding sum
+1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, produces a result such that upon
+    completion of the algorithm, `*i` yields the generalized sum of `init` and the elements in the range
+    `[first, first + (i - result)]`.
 
-    `*iter_0 + *iter_1 + *iter_2 + ...` or
-    
-    `binary_op(*iter_0, binary_op(*iter_1, binary_op(*iter_2, ...)))` or
-    
-    `binary_op(init, binary_op(*iter_0, binary_op(*iter1_, binary_op(*iter_2, ...))))`
+    During execution of the algorithm, every evaluation of the above sum is either of the corresponding form
 
-    for every iterator `iter_j` in the range `[first,first + (i - result) - 1)`.
+    `(init + A) + B)` or `A + B` or
 
-    The order of operands of the sum is unspecified.
+    `binary_op(binary_op(init,A), B)` or `binary_op(A, B)`
 
-    The execution of the second, fourth, and sixth algorithms is parallelized as determined by `exec`.
+    where there exists some iterator `j` in `[first, last)` such that:
+
+    1. `A` is the partial sum of elements in the range `[j, j + n)`.
+
+    2. `B` is the partial sum of elements in the range `[j + n, j + m)`.
+
+    3. `n` and `m` are positive integers and `j + m < last`.
+
+    The execution of the second and fourth algorithms is parallelized as determined by `exec`.
 
 2. *Returns:* The end of the resulting range beginning at `result`.
 
