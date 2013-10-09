@@ -569,7 +569,7 @@ is determined by the execution policy used to invoke the algorithm:
     `std::for_each` is executed serially, only one exception will be contained in the `exception_list` object -- *end note*]
 
     [*Note:* These guarantees imply that, unless the algorithm has failed to
-    allocate memory and has terminated `std::bad_alloc`, all exceptions thrown 
+    allocate memory and terminated with `std::bad_alloc`, all exceptions thrown 
     during the execution of the algorithm are communicated to the caller. It is 
     unspecified whether an algorithm implementation will "forge ahead" after 
     encountering and capturing a user exception. -- *end note*]
