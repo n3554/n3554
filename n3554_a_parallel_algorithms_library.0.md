@@ -555,27 +555,34 @@ An alternative design might require `std::execution_policy::target` to return a 
 
 ## Exception reporting behavior
 
-An algorithm invoked with a sequential or parallel execution policy may report exceptional behavior by throwing an exception.
+If, during the execution of an algorithm, the application of the user-provided
+function object terminates with an uncaught exception, the behavior of the program 
+is determined by the execution policy used to invoke the algorithm:
 
-If program-defined code invoked by an algorithm invoked with a vector execution policy throws an exception, the behavior is undefined.
+- For algorithms invoked with the `vector_execution_policy`, `std::terminate` shall be called.
+- For algorithms invoked with the `sequential_execution_policy` or the `parallel_execution_policy`, 
+  the execution of the algorithms terminates with an `exception_list` exception. 
+  All exceptions thrown during the application of the user-provided function objects
+  are contained in the `exception_list`, however the number of such exceptions is unspecified.
 
-An algorithm may report exceptional behavior to the caller by throwing one of two exception types:
+    [*Note:* For example, the number of invocations of the user-provide function object in `std::for_each` is unspecified. When 
+    `std::for_each` is executed serially, only one exception will be contained in the `exception_list` object -- *end note*]
 
-  * If temporary memory resources are required by the algorithm and none are available, the algorithm may throw `std::bad_alloc`.
-  * If one or more uncaught exceptions are thrown for any other reason during the execution of the algorithm:
-    * The exception is collected in an `exception_list` associated with the algorithm's invocation.
-    * If the `exception_list` associated with the algorithm's invocation is non-empty, it is thrown once all tasks have terminated.
+    [*Note:* These guarantees imply that, unless the algorithm has failed to
+    allocate memory and terminated with `std::bad_alloc`, all exceptions thrown 
+    during the execution of the algorithm are communicated to the caller. It is 
+    unspecified whether an algorithm implementation will "forge ahead" after 
+    encountering and capturing a user exception. -- *end note*]
 
-When an exception is thrown during the application of the user-provided function object, the algorithm throws an `exception_list` exception. 
-Every evaluation of the user-provided function object must finish before the `exception_list exception` is thrown. Therefore, all exceptions 
-thrown during the application of the user-provided function objects are contained in the `exception_list`, however the number of such exceptions is 
-unspecified. [*Note:* For example, the number of invocations of the user-provide function object in `std::for_each` is unspecified. When 
-`std::for_each` is executed serially, only one exception will be contained in the `exception_list` object -- *end note*]
+- For algorithms invoked with any other execution policy, the behavior is implementation-defined.
 
-[*Note:* These guarantees imply that all exceptions thrown during the execution of the algorithm are communicated to the caller. It is 
-unspecified whether an algorithm implementation will "forge ahead" after encountering and capturing a user exception. -- *end note*]
+Additionally, if temporary memory resources are required by the algorithm and none are available, 
+the algorithm may terminate with the `std::bad_alloc` exception.
 
-
+[*Note:* The algorithm may terminate with the `std::bad_alloc` exception even if
+one or more user-provided function objects have terminated with an exception. 
+For example, this can happen when an algorithm fails to allocate memory while
+creating or adding elements to the `exception_list` object -- *end note*]
 
 Header `<exception>` synopsis
 
