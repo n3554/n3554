@@ -13,3 +13,7 @@ Just generating LaTeX (you can edit the `.tex` and then `pdflatex` the output):
 
 [Get `pandoc` here.](http://johnmacfarlane.net/pandoc/installing.html)
 
+Building the examples:
+
+    $ g++ -std=c++11 -Iinclude -fopenmp reverse.cpp for_each.cpp externs.cpp -o for_each
+
