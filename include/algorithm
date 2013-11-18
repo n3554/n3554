@@ -1098,6 +1098,138 @@ OutputIterator __remove_copy_if(const execution_policy &exec, ForwardIterator fi
 }
 
 
+template<class ForwardIterator>
+ForwardIterator __unique(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last)
+{
+  return std::unique(first, last);
+}
+
+
+template<class ForwardIterator>
+ForwardIterator __unique(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last)
+{
+  return thrust::unique(thrust::device, first, last);
+}
+
+
+template<class ForwardIterator>
+ForwardIterator __unique(const execution_policy &exec, ForwardIterator first, ForwardIterator last)
+{
+  ForwardIterator result = last;
+
+  switch(__which(exec))
+  {
+    case 0:
+      result = __unique(__union(exec).seq, first, last);
+      break;
+
+    case 1:
+      result = __unique(__union(exec).par, first, last);
+      break;
+  }
+
+  return result;
+}
+
+
+template<class ForwardIterator, class BinaryPredicate>
+ForwardIterator __unique(const sequential_execution_policy &, ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
+{
+  return std::unique(first, last, pred);
+}
+
+
+template<class ForwardIterator, class BinaryPredicate>
+ForwardIterator __unique(const parallel_execution_policy &, ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
+{
+  return thrust::unique(thrust::device, first, last, pred);
+}
+
+
+template<class ForwardIterator, class BinaryPredicate>
+ForwardIterator __unique(const execution_policy &exec, ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
+{
+  ForwardIterator result = last;
+
+  switch(__which(exec))
+  {
+    case 0:
+      result = __unique(__union(exec).seq, first, last, pred);
+      break;
+
+    case 1:
+      result = __unique(__union(exec).par, first, last, pred);
+      break;
+  }
+
+  return result;
+}
+
+
+template<class InputIterator, class OutputIterator>
+OutputIterator __unique_copy(const sequential_execution_policy &, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return std::unique_copy(first, last, result);
+}
+
+
+template<class InputIterator, class OutputIterator>
+OutputIterator __unique_copy(const parallel_execution_policy &, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return thrust::unique_copy(thrust::device, first, last, result);
+}
+
+
+template<class InputIterator, class OutputIterator>
+OutputIterator __unique_copy(const execution_policy &exec, InputIterator first, InputIterator last, OutputIterator result)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __unique_copy(__union(exec).seq, first, last, result);
+      break;
+
+    case 1:
+      result = __unique_copy(__union(exec).par, first, last, result);
+      break;
+  }
+
+  return result;
+}
+
+
+template<class InputIterator, class OutputIterator, class BinaryPredicate>
+OutputIterator __unique_copy(const sequential_execution_policy &, InputIterator first, InputIterator last, OutputIterator result, BinaryPredicate pred)
+{
+  return std::unique_copy(first, last, result, pred);
+}
+
+
+template<class InputIterator, class OutputIterator, class BinaryPredicate>
+OutputIterator __unique_copy(const parallel_execution_policy &, InputIterator first, InputIterator last, OutputIterator result, BinaryPredicate pred)
+{
+  return thrust::unique_copy(thrust::device, first, last, result, pred);
+}
+
+
+template<class InputIterator, class OutputIterator, class BinaryPredicate>
+OutputIterator __unique_copy(const execution_policy &exec, InputIterator first, InputIterator last, OutputIterator result, BinaryPredicate pred)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __unique_copy(__union(exec).seq, first, last, result, pred);
+      break;
+
+    case 1:
+      result = __unique_copy(__union(exec).par, first, last, result, pred);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1443,6 +1575,38 @@ typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
 remove_copy_if(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, OutputIterator result, Predicate pred)
 {
   return __remove_copy_if(exec, first, last, result, pred);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator>::type
+unique(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last)
+{
+  return __unique(exec, first, last);
+}
+
+
+template<class ExecutionPolicy, class ForwardIterator, class BinaryPredicate>
+typename __enable_if_execution_policy<ExecutionPolicy,ForwardIterator>::type
+unique(ExecutionPolicy &&exec, ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
+{
+  return __unique(exec, first, last, pred);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class OutputIterator>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+unique_copy(ExecutionPolicy &&exec, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return __unique_copy(exec, first, last, result);
+}
+
+
+template<class ExecutionPolicy, class InputIterator, class OutputIterator, class BinaryPredicate>
+typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
+unique_copy(ExecutionPolicy &&exec, InputIterator first, InputIterator last, OutputIterator result, BinaryPredicate pred)
+{
+  return __unique_copy(exec, first, last, result, pred);
 }
 
 
