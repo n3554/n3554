@@ -1230,6 +1230,68 @@ OutputIterator __unique_copy(const execution_policy &exec, InputIterator first, 
 }
 
 
+template<class BidirectionalIterator>
+void __reverse(const sequential_execution_policy &, BidirectionalIterator first, BidirectionalIterator last)
+{
+  return std::reverse(first, last);
+}
+
+
+template<class BidirectionalIterator>
+void __reverse(const parallel_execution_policy &, BidirectionalIterator first, BidirectionalIterator last)
+{
+  return thrust::reverse(thrust::device, first, last);
+}
+
+
+template<class BidirectionalIterator>
+void __reverse(const execution_policy &exec, BidirectionalIterator first, BidirectionalIterator last)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      __reverse(__union(exec).seq, first, last);
+      break;
+
+    case 1:
+      __reverse(__union(exec).par, first, last);
+      break;
+  }
+}
+
+
+template<class BidirectionalIterator, class OutputIterator>
+OutputIterator __reverse_copy(const sequential_execution_policy &, BidirectionalIterator first, BidirectionalIterator last, OutputIterator result)
+{
+  return std::reverse_copy(first, last, result);
+}
+
+
+template<class BidirectionalIterator, class OutputIterator>
+OutputIterator __reverse_copy(const parallel_execution_policy &, BidirectionalIterator first, BidirectionalIterator last, OutputIterator result)
+{
+  return thrust::reverse_copy(thrust::device, first, last, result);
+}
+
+
+template<class BidirectionalIterator, class OutputIterator>
+OutputIterator __reverse_copy(const execution_policy &exec, BidirectionalIterator first, BidirectionalIterator last, OutputIterator result)
+{
+  switch(__which(exec))
+  {
+    case 0:
+      result = __reverse_copy(__union(exec).seq, first, last, result);
+      break;
+
+    case 1:
+      result = __reverse_copy(__union(exec).par, first, last, result);
+      break;
+  }
+
+  return result;
+}
+
+
 template<typename InputIterator, typename Function>
 InputIterator __for_each(const sequential_execution_policy &, InputIterator first, InputIterator last, Function f)
 {
@@ -1607,6 +1669,22 @@ typename __enable_if_execution_policy<ExecutionPolicy,OutputIterator>::type
 unique_copy(ExecutionPolicy &&exec, InputIterator first, InputIterator last, OutputIterator result, BinaryPredicate pred)
 {
   return __unique_copy(exec, first, last, result, pred);
+}
+
+
+template<class ExecutionPolicy, class BidirectionalIterator>
+typename __enable_if_execution_policy<ExecutionPolicy>::type
+reverse(ExecutionPolicy &&exec, BidirectionalIterator first, BidirectionalIterator last)
+{
+  return __reverse(exec, first, last);
+}
+
+
+template<class ExecutionPolicy, class BidirectionalIterator, class OutputIterator>
+typename __enable_if_execution_policy<ExecutionPolicy, OutputIterator>::type
+reverse_copy(ExecutionPolicy &&exec, BidirectionalIterator first, BidirectionalIterator last, OutputIterator result)
+{
+  return __reverse_copy(exec, first, last, result);
 }
 
 
