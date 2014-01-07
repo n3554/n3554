@@ -8,6 +8,42 @@ of functions invoked as a consequence of the invocation of a standard
 algorithm. Execution policies afford standard algorithms the discretion to
 execute in parallel.
 
+[*Example:*
+
+    std::vector<int> vec = ...
+
+    // standard sequential sort
+    std::sort(vec.begin(), vec.end());                  
+
+    using namespace std::experimental::parallelism;
+
+    // explicitly sequential sort
+    sort(seq, vec.begin(), vec.end());        
+
+    // permitting parallel execution
+    sort(par, vec.begin(), vec.end());        
+
+    // permitting vectorization as well
+    sort(vec, vec.begin(), vec.end());
+
+    // sort with dynamically-selected execution
+    size_t threshold = ...
+    execution_policy exec = seq;
+    if(vec.size() > threshold)
+    {
+      exec = par;
+    }
+
+    sort(exec, vec.begin(), vec.end());
+
+-- *end example*]
+
+
+[*Note:* Because different parallel architectures may require idiosyncratic
+parameters for efficient execution, implementations of the Standard Library are
+encouraged to provide additional execution policies to those described in this
+Technical Specification as extensions. *-- end note*]
+
 ## Header `<experimental/execution_policy>` synopsis [execpol.synop] {#execpol.synop}
 
     #include <type_traits>
@@ -240,8 +276,8 @@ template<class T> T *target();
 template<class T> const T *target() const;
 ```
 
-1. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
-2. *Remarks:* This signature does not participate in overload resolution if
+2. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
+3. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
 ## Execution policy specialized algorithms [execpol.algorithms] {#execpol.algorithms}
@@ -271,13 +307,13 @@ template<class T> const T *target() const;
 
     const sequential_execution_policy seq;
 
-1. The object `seq` requires a standard algorithm to execute sequentially.
+3. The object `seq` requires a standard algorithm to execute sequentially.
 
     const parallel_execution_policy par;
 
-1. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
+4. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
     const vector_execution_policy vec;
 
-1. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
+5. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
