@@ -1,4 +1,4 @@
-# `Execution policies` [execpol] {#execpol}
+# Execution policies [execpol] {#execpol}
 
 ## In general [execpol.general] {#execpol.general}
 
