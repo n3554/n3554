@@ -1,6 +1,6 @@
-# Parallel exceptions
+# Parallel exceptions [exceptions] {#exceptions}
 
-## Exception reporting behavior
+## Exception reporting behavior [exceptions.behavior] {#exceptions.behavior}
 
 1. During the execution of a standard parallel algorithm, if the application of a function object terminates with an
    uncaught exception, the behavior of the program is determined by the type of execution policy used to invoke the algorithm.
@@ -29,7 +29,7 @@
       For example, this can happen when an algorithm fails to allocate memory while
       creating or adding elements to the `exception_list` object -- *end note*]
 
-## Header `<experimental/exception>` synopsis
+## Header `<experimental/exception>` synopsis {#exceptions.synop}
 
     namespace std {
     namespace experimental {
