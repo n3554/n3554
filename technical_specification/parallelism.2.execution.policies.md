@@ -132,8 +132,6 @@ namespace parallelism {
 
 ## Dynamic execution policy [execpol.dynamic] {#execpol.dynamic}
 
-1. The class `execution_policy` is a dynamic container for execution policy objects.
-
 ```
 namespace std {
 namespace experimental {
@@ -156,6 +154,54 @@ namespace parallelism {
 }
 }
 ```
+
+1. The class `execution_policy` is a dynamic container for execution policy objects.
+
+2. `execution_policy` allows dynamic control over standard algorithm execution.
+
+   [*Example:*
+
+       std::vector<float> sort_me = ...
+       
+       std::execution_policy exec = std::seq;
+       
+       if(sort_me.size() > threshold)
+       {
+         exec = std::par;
+       }
+        
+       std::sort(exec, sort_me.begin(), sort_me.end());
+
+   -- *end example*]
+
+3. The stored dynamic value of an `execution_policy` object may be retrieved.
+
+    [*Example:*
+
+        void some_api(std::execution_policy exec, int arg1, double arg2)
+        {
+          if(exec.target_type() == typeid(std::seq))
+          {
+            std::cout << "Received a sequential policy" << std::endl;
+            auto *exec_ptr = exec.target<std::sequential_execution_policy>();
+          }
+          else if(exec.target_type() == typeid(std::par))
+          {
+            std::cout << "Received a parallel policy" << std::endl;
+            auto *exec_ptr = exec.target<std::parallel_execution_policy>();
+          }
+          else if(exec.target_type() == typeid(std::vec))
+          {
+            std::cout << "Received a vector policy" << std::endl;
+            auto *exec_ptr = exec.target<std::vector_execution_policy>();
+          }
+          else
+          {
+            std::cout << "Received some other kind of policy" << std::endl;
+          }
+        }
+
+    -- *end example*]
 
 ### `execution_policy` construct/assign/swap
 
@@ -222,4 +268,16 @@ template<class T> const T *target() const;
 1. The header `<execution_policy>` declares a global object associated with each standard execution policy.
 
 2. Concurrent access to these objects shall not result in a data race.
+
+    const sequential_execution_policy seq;
+
+1. The object `seq` requires a standard algorithm to execute sequentially.
+
+    const parallel_execution_policy par;
+
+1. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
+
+    const vector_execution_policy vec;
+
+1. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
