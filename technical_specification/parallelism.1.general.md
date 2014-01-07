@@ -44,6 +44,9 @@ declared directly within namespace `std`. Unless otherwise specified, all
 components described in this Technical Specification are declared in namespace
 `std::experimental::parallelism`.
 
+[*Note:* Once standardized, the components described by this Technical Specification
+are expected to be promoted to namespace `std`. -- *end note*]
+
 Unless otherwise specified, references to other entities described in this
 Technical Specification are assumed to be qualified with
 `std::experimental::parallelism`, and references to entities described in the
