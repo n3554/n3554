@@ -102,8 +102,6 @@ otherwise from `integral_constant<bool,false>`.
 
 ## Sequential execution policy [execpol.seq] {#execpol.seq}
 
-1. The class `sequential_execution_policy` provides a mechanism to require a standard algorithm invocation to execute in a sequential order.
-
 ```
 namespace std {
 namespace experimental {
@@ -118,13 +116,15 @@ namespace parallelism {
 }
 ```
 
-    void swap(sequential_execution_policy &other);
+1. The class `sequential_execution_policy` provides a mechanism to require a standard algorithm invocation to execute in a sequential order.
+
+```
+void swap(sequential_execution_policy &other);
+```
     
-1. *Effects:* Swaps the state of `*this` and `other`.
+2. *Effects:* Swaps the state of `*this` and `other`.
 
 ## Parallel execution policy [execpol.par] {#execpol.par}
-
-1. The class `parallel_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
 ```
 namespace std {
@@ -140,13 +140,15 @@ namespace parallelism {
 }
 ```
 
-    void swap(parallel_execution_policy &other);
+1. The class `parallel_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
+
+```
+void swap(parallel_execution_policy &other);
+```
     
-1. *Effects:* Swaps the state of `*this` and `other`.
+2. *Effects:* Swaps the state of `*this` and `other`.
 
 ## Vector execution policy [execpol.vec] {#execpol.vec}
-
-1. The class `vector_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
 ```
 namespace std {
@@ -162,9 +164,13 @@ namespace parallelism {
 }
 ```
 
-    void swap(vector_execution_policy &other);
+1. The class `vector_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
+
+```
+void swap(vector_execution_policy &other);
+```
     
-1. *Effects:* Swaps the state of `*this` and `other`.
+2. *Effects:* Swaps the state of `*this` and `other`.
 
 ## Dynamic execution policy [execpol.dynamic] {#execpol.dynamic}
 
@@ -252,11 +258,11 @@ namespace parallelism {
 template<class T> execution_policy &operator=(const T &exec);
 ```
 
-1. *Effects:* Assigns a copy of `exec`'s state to `*this`.
+3. *Effects:* Assigns a copy of `exec`'s state to `*this`.
 
-2. *Returns:* `*this`.
+4. *Returns:* `*this`.
 
-3. *Remarks:* This signature does not participate in overload resolution if
+5. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
 ```
@@ -305,15 +311,21 @@ template<class T> const T *target() const;
 
 2. Concurrent access to these objects shall not result in a data race.
 
-    const sequential_execution_policy seq;
+```
+const sequential_execution_policy seq;
+```
 
 3. The object `seq` requires a standard algorithm to execute sequentially.
 
-    const parallel_execution_policy par;
+```
+const parallel_execution_policy par;
+```
 
 4. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
-    const vector_execution_policy vec;
+```
+const vector_execution_policy vec;
+```
 
 5. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
