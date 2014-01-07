@@ -166,16 +166,20 @@ namespace parallelism {
 2. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
-    template<class T> execution_policy &operator=(const T &exec);
+```
+template<class T> execution_policy &operator=(const T &exec);
+```
 
 1. *Effects:* Assigns a copy of `exec`'s state to `*this`.
 
 2. *Returns:* `*this`.
 
-3. `Remarks:* This signature does not participate in overload resolution if
+3. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
-    void swap(execution_policy &other);
+```
+void swap(execution_policy &other);
+```
 
 1. *Effects:* Swaps the stored object of `*this` with that of `other`.
 
@@ -185,11 +189,13 @@ namespace parallelism {
 
 1. *Returns:* `typeid(T)`, such that `T` is the type of the execution policy object contained by `*this`.
 
-    template<class T> T *target();
-    template<class T> const T *target() const;
+```
+template<class T> T *target();
+template<class T> const T *target() const;
+```
 
 1. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
-2. `Remarks:* This signature does not participate in overload resolution if
+2. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
 ## Execution policy specialized algorithms [execpol.algorithms] {#execpol.algorithms}
