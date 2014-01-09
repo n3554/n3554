@@ -1,8 +1,9 @@
 % Working Draft, Technical Specification on C++ Extensions for Parallelism
+% Document Number: N3850
 % Editor: Jared Hoberock \
   NVIDIA Corporation \
   jhoberock@nvidia.com
-% 2014-02-XX
+% Date: 2014-02-XX
 
 # General [general] {#general}
 
