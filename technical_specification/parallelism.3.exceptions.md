@@ -33,7 +33,7 @@
 
     namespace std {
     namespace experimental {
-    namespace parallelism {
+    namespace parallel {
       class exception_list : public exception
       {
         public:

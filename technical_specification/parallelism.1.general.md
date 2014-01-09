@@ -1,5 +1,5 @@
-% Working Draft, Technical Specification on C++ Extensions for Parallelism
-% Document Number: N3850
+% Working Draft, Technical Specification on C++ Extensions for Parallelism \
+  Document Number: N3850
 % Editor: Jared Hoberock \
   NVIDIA Corporation \
   jhoberock@nvidia.com
@@ -49,14 +49,14 @@ Since the extensions described in this Technical Specification are
 experimental and not part of the C++ Standard Library, they should not be
 declared directly within namespace `std`. Unless otherwise specified, all
 components described in this Technical Specification are declared in namespace
-`std::experimental::parallelism`.
+`std::experimental::parallel`.
 
 [*Note:* Once standardized, the components described by this Technical Specification
 are expected to be promoted to namespace `std`. -- *end note*]
 
 Unless otherwise specified, references to other entities described in this
 Technical Specification are assumed to be qualified with
-`std::experimental::parallelism`, and references to entities described in the
+`std::experimental::parallel`, and references to entities described in the
 C++ Standard Library are assumed to be qualified with `std::`.
 
 Extensions that are expected to eventually be added to an existing header
@@ -72,5 +72,5 @@ Standard and the following apply.
 
 XXX define *user-provided function objects* ?
 
-XXX define *parallel algorithm* ?
+A *parallel algorithm* is a function declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
 

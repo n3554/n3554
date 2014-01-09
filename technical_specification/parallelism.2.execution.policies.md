@@ -15,7 +15,7 @@ execute in parallel.
     // standard sequential sort
     std::sort(vec.begin(), vec.end());                  
 
-    using namespace std::experimental::parallelism;
+    using namespace std::experimental::parallel;
 
     // explicitly sequential sort
     sort(seq, vec.begin(), vec.end());        
@@ -50,7 +50,7 @@ Technical Specification as extensions. *-- end note*]
 
     namespace std { 
     namespace experimental {
-    namespace parallelism {
+    namespace parallel {
       // 2.3, execution policy type trait
       template<class T> struct is_execution_policy;
 
@@ -86,7 +86,7 @@ Technical Specification as extensions. *-- end note*]
 
     namespace std {
     namespace experimental {
-    namespace parallelism {
+    namespace parallel {
       template<class T> struct is_execution_policy
         : integral_constant<bool, see below> { };
     }
@@ -107,7 +107,7 @@ otherwise from `integral_constant<bool,false>`.
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
 
   class sequential_execution_policy
   {
@@ -135,7 +135,7 @@ void swap(sequential_execution_policy &other);
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
 
   class parallel_execution_policy
   {
@@ -163,7 +163,7 @@ void swap(parallel_execution_policy &other);
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
 
   class vector_execution_policy
   {
@@ -191,7 +191,7 @@ void swap(vector_execution_policy &other);
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
 
   class execution_policy
   {
@@ -315,7 +315,7 @@ template<class T> const T *target() const;
 
     namespace std {
     namespace experimental {
-    namespace parallelism {
+    namespace parallel {
       extern const sequential_execution_policy seq;
       extern const parallel_execution_policy   par;
       extern const vector_execution_policy     vec;

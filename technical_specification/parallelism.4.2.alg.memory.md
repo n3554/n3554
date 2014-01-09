@@ -7,7 +7,7 @@ This subclause defines function templates for constructing multiple objects in u
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
   template<class ExecutionPolicy,
            class InputIterator, class ForwardIterator>
     ForwardIterator uninitialized_copy(ExecutionPolicy &&exec,

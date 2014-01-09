@@ -15,7 +15,7 @@ This clause describes components that C++ programs may use to perform operations
    
      [*Example:*
 
-         using namespace std::experimental::parallelism;
+         using namespace std::experimental::parallel;
          int a[] = {0,1};
          std::vector<int> v;
          for_each(par, std::begin(a), std::end(a), [&](int i) {
@@ -26,7 +26,7 @@ This clause describes components that C++ programs may use to perform operations
    
      [*Example:*
 
-         using namespace std::experimental::parallelism;
+         using namespace std::experimental::parallel;
          std::atomic<int> x = 0;
          int a[] = {1,2};
          for_each(par , std::begin(a), std::end(a), [](int n) {
@@ -39,7 +39,7 @@ This clause describes components that C++ programs may use to perform operations
 
      [*Example:*
 
-         using namespace std::experimental::parallelism;
+         using namespace std::experimental::parallel;
          int x;
          std::mutex m;
          int a[] = {1,2};
@@ -55,7 +55,7 @@ This clause describes components that C++ programs may use to perform operations
 
     [*Example:*
 
-        using namespace std::experimental::parallelism;
+        using namespace std::experimental::parallel;
         int x;
         std::mutex m;
         int a[] = {1,2};
@@ -82,5 +82,5 @@ This clause describes components that C++ programs may use to perform operations
 
 6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
 
-7. The applications of function objects in parallel algorithms invoked with an execution policy object of non-standard type provided by the implementation execute in implementation-defined fashion.
+7. The semantics of parallel algorithms invoked with an execution policy object of type other than those described by this Technical Specification are unspecified.
 

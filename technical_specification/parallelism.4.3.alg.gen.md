@@ -7,7 +7,7 @@ This subclause describes components that C++ programs may use to perform generic
 ```
 namespace std {
 namespace experimental {
-namespace parallelism {
+namespace parallel {
   // non-modifying sequence operations:
   template<class ExecutionPolicy,
            class InputIterator, class Predicate>
