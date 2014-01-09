@@ -325,23 +325,25 @@ template<class T> const T *target() const;
 
 1. The header `<execution_policy>` declares a global object associated with each standard execution policy.
 
-2. Concurrent access to these objects shall not result in a data race.
+2. An implementation may provide additional execution policy objects besides `seq`, `par`, or `vec`.
+
+3. Concurrent access to these objects shall not result in a data race.
 
 ```
 const sequential_execution_policy seq;
 ```
 
-3. The object `seq` requires a standard algorithm to execute sequentially.
+4. The object `seq` requires a standard algorithm to execute sequentially.
 
 ```
 const parallel_execution_policy par;
 ```
 
-4. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
+5. The object `par` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
 ```
 const vector_execution_policy vec;
 ```
 
-5. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
+6. The object `vec` allows a standard algorithm to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
