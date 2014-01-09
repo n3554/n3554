@@ -55,21 +55,22 @@ This clause describes components that C++ programs may use to perform operations
 
     [*Example:*
 
-    ```
-    using namespace std::experimental::parallelism;
-    int x;
-    std::mutex m;
-    int a[] = {1,2};
-    for_each(vec, std::begin(a), std::end(a), [&](int) {
-      m.lock();
-      ++x;
-      m.unlock();
-    });
-    ```
+        using namespace std::experimental::parallelism;
+        int x;
+        std::mutex m;
+        int a[] = {1,2};
+        for_each(vec, std::begin(a), std::end(a), [&](int) {
+          m.lock();
+          ++x;
+          m.unlock();
+        });
+   
 
     The above program is invalid because the applications of the function object are not guaranteed to run on different threads.
 
-    [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*] -– *end example*]
+    [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*]
+    
+    -- *end example*]
 
     [*Note:* The semantics of the `parallel_execution_policy` or the `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
@@ -79,15 +80,7 @@ This clause describes components that C++ programs may use to perform operations
     [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
     case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
 
-6. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`. Objects of type `execution_policy` must be constructible and assignable from any additional non-standard execution policy provided by the implementation.
-   `XXX this provision should be moved to clause on execution policies`
+6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
 
-7. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
-
-8. Implementations of types `sequential_execution_policy`, `parallel_execution_policy`, and `vector_execution_policy` are permitted to provide additional non-standard data and function members.
-
-    [*Note:* This provision permits objects of these types to be stateful. -- *end note*.]
-
-    `XXX this provision should be moved to the clause on execution policies` 
-
+7. The applications of function objects in parallel algorithms invoked with an execution policy object of non-standard type provided by the implementation execute in implementation-defined fashion.
 
