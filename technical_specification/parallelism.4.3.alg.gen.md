@@ -24,9 +24,9 @@ namespace parallelism {
 
   template<class ExecutionPolicy,
            class InputIterator, class Function>
-    ForwardIterator for_each(ExecutionPolicy &&exec,
-                             InputIterator first, InputIterator last,
-                             Function f);
+    InputIterator for_each(ExecutionPolicy &&exec,
+                           InputIterator first, InputIterator last,
+                           Function f);
   template<class InputIterator, class Size, class Function>
     Function for_each_n(InputIterator first, Size n,
                         Function f);
@@ -666,9 +666,9 @@ template<class InputIterator, class Size n, class Function>
 ```
 template<class ExecutionPolicy,
          class InputIterator, class Function>
-  ForwardIterator for_each(ExecutionPolicy &&exec,
-                           InputIterator first, InputIterator last,
-                           Function f);
+  InputIterator for_each(ExecutionPolicy &&exec,
+                         InputIterator first, InputIterator last,
+                         Function f);
 
 template<class ExecutionPolicy,
          class InputIterator, class Size, class Function>
