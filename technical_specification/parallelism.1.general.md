@@ -65,3 +65,5 @@ Standard and the following apply.
 
 XXX define *user-provided function objects* ?
 
+XXX define *parallel algorithm* ?
+
