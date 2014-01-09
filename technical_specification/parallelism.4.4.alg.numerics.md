@@ -6,6 +6,8 @@ This subclause describes components that C++ programs may use to perform seminum
 
 ```
 namespace std {
+namespace experimental {
+namespace parallelism {
   template<class InputIterator>
     typename iterator_traits<InputIterator>::value_type
       reduce(InputIterator first, InputIterator last);
@@ -132,6 +134,8 @@ namespace std {
                                        InputIterator first, InputIterator last,
                                        OutputIterator result,
                                        BinaryOperation binary_op);
+}
+}
 }
 ```
 
