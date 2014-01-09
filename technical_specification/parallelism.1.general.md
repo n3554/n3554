@@ -1,3 +1,9 @@
+% Working Draft, Technical Specification on C++ Extensions for Parallelism
+% Editor: Jared Hoberock \
+  NVIDIA Corporation \
+  jhoberock@nvidia.com
+% 2014-02-XX
+
 # General [general] {#general}
 
 ## Scope [general.scope] {#general.scope}
