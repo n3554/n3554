@@ -187,7 +187,9 @@ $if(toc)$
 \setcounter{tocdepth}{$toc-depth$}
 \tableofcontents
 }
+\newpage
 $endif$
+
 $body$
 
 $if(natbib)$
