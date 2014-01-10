@@ -1,10 +1,3 @@
-% Working Draft, Technical Specification on C++ Extensions for Parallelism \
-  Document Number: N3850
-% Editor: Jared Hoberock \
-  NVIDIA Corporation \
-  jhoberock@nvidia.com
-% Date: 2014-02-XX
-
 # General [general] {#general}
 
 ## Scope [general.scope] {#general.scope}
@@ -72,5 +65,5 @@ Standard and the following apply.
 
 XXX define *user-provided function objects* ?
 
-A *parallel algorithm* is a function declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
+A *parallel algorithm* is a function template described by this Technical Specification declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
 
