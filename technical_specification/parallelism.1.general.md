@@ -1,6 +1,6 @@
-# General [general] {#general}
+# General {#general}
 
-## Scope [general.scope] {#general.scope}
+## Scope {#general.scope}
 
 This Technical Specification describes requirements for implementations of an
 interface that computer programs written in the C++ programming language may
@@ -19,7 +19,7 @@ The goal of this Technical Specification is to build widespread existing
 practice for parallelism in the C++ standard algorithms library. It gives
 advice on extensions to those vendors who wish to provide them.
 
-## Normative references [general.references] {#general.references}
+## Normative references {#general.references}
 
 The following reference document is indepensible for the application of this
 document. For dated references, only the edition cited applies. For undated
@@ -36,7 +36,7 @@ C++ Standard Library components described in ISO/IEC 14882:2011 clauses 25 and
 Unless otherwise specified, the whole of the C++ Standard Library introduction
 [lib.library] is included into this Technical Specification by reference.
 
-## Namespaces and headers [general.namespaces] {#general.namespaces}
+## Namespaces and headers {#general.namespaces}
 
 Since the extensions described in this Technical Specification are
 experimental and not part of the C++ Standard Library, they should not be
@@ -58,7 +58,7 @@ include the standard contents of `<meow>` as if by
 
     #include <meow>
 
-## Terms and definitions [general.defns] {#general.defns}
+## Terms and definitions {#general.defns}
 
 For the purposes of this document, the terms and definitions given in the C++
 Standard and the following apply.

@@ -1,8 +1,8 @@
-## Specialized memory algorithms [alg.memory] {#alg.memory}
+## Specialized memory algorithms {#alg.memory}
 
 This subclause defines function templates for constructing multiple objects in uninitialized memory buffers in parallel.
 
-### Header `<experimental/memory>` synopsis [alg.memory.synop] {#alg.memory.synop}
+### Header `<experimental/memory>` synopsis {#alg.memory.synop}
 
 ```
 namespace std {
@@ -13,6 +13,12 @@ namespace parallel {
     ForwardIterator uninitialized_copy(ExecutionPolicy &&exec,
                                        InputIterator first, InputIterator last,
                                        ForwardIterator result);
+  template<class ExecutionPolicy,
+           class InputIterator, class Size, class ForwardIterator>
+    ForwardIterator uninitialized_copy_n(ExecutionPolicy &&exec,
+                                         InputIterator first, Size n,
+                                         ForwardIterator result);
+
   template<class ExecutionPolicy,
            class ForwardIterator, class T>
     void uninitialized_fill(ExecutionPolicy &&exec,
@@ -28,7 +34,7 @@ namespace parallel {
 }
 ```
 
-### `uninitialized_copy` [alg.memory.uninitialized.copy] {#alg.memory.uninitialized.copy}
+### Uninitialized copy {#alg.memory.uninitialized.copy}
 
 ```
 template<class ExecutionPolicy,
@@ -36,11 +42,6 @@ template<class ExecutionPolicy,
   ForwardIterator uninitialized_copy(ExecutionPolicy &&exec,
                                      InputIterator first, InputIterator last,
                                      ForwardIterator result);
-template<class ExecutionPolicy,
-         class InputIterator, class Size, class ForwardIterator>
-  ForwardIterator uninitialized_copy_n(ExecutionPolicy &&exec,
-                                       InputIterator first, Size n,
-                                       ForwardIterator result);
 ```
 
 1. *Effects:* Copy constructs the element referenced by every iterator `i` in the range `[result,result + (last - first))` as if by the expression
@@ -56,7 +57,7 @@ template<class ExecutionPolicy,
 
 3. *Complexity:* `O(last - first)`.
 
-4. *Remarks:* Neither signature shall participate in overload resolution if
+4. *Remarks:* The signature shall not participate in overload resolution if
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
@@ -85,7 +86,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `uninitialized_fill` [alg.memory.uninitialized.fill] {#alg.memory.uninitialized.fill}
+### Uninitialized fill {#alg.memory.uninitialized.fill}
 
 ```
 template<class ExecutionPolicy,
@@ -109,8 +110,6 @@ template<class ExecutionPolicy,
 3. *Remarks:* The signature shall not participate in overload resolution if
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
-
-### `uninitialized_fill_n` [alg.memory.uninitialized.fill.n] {#alg.memory.uninitialized.fill.n}
 
 ```
 template<class ExecutionPolicy,

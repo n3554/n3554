@@ -1,8 +1,8 @@
-## Generalized numeric operations [alg.numerics] {#alg.numerics}
+## Generalized numeric operations {#alg.numerics}
 
 This subclause describes components that C++ programs may use to perform seminumerical operations in parallel.
 
-### Header `<experimental/numeric>` synopsis [alg.numerics.synop] {#alg.numerics.synop}
+### Header `<experimental/numeric>` synopsis {#alg.numerics.synop}
 
 ```
 namespace std {
@@ -139,7 +139,7 @@ namespace parallel {
 }
 ```
 
-### Reduce [alg.numerics.reduce] {#alg.numerics.reduce}
+### Reduce {#alg.numerics.reduce}
 
 ```
 template<class InputIterator>
@@ -205,7 +205,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Inner product [alg.numerics.inner.product] {#alg.numerics.inner.product}
+### Inner product {#alg.numerics.inner.product}
 
 
 ```
@@ -262,7 +262,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Exclusive scan [alg.numerics.exclusive.scan] {#alg.numerics.exclusive.scan}
+### Exclusive scan {#alg.numerics.exclusive.scan}
 
 ```
 template<class InputIterator, class OutputIterator,
@@ -332,7 +332,7 @@ template<class ExecutionPolicy,
 
 6. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
 
-### Inclusive scan [alg.numerics.inclusive.scan] {#alg.numerics.inclusive.scan}
+### Inclusive scan {#alg.numerics.inclusive.scan}
 
 ```
 template<class InputIterator, class OutputIterator>
@@ -414,7 +414,7 @@ template<class ExecutionPolicy,
 
 6. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `inclusive_scan` includes the `i`th input element in the `i`th sum.
 
-### Adjacent difference [alg.numerics.adjacent.difference] {#alg.numerics.adjacent.difference}
+### Adjacent difference {#alg.numerics.adjacent.difference}
 
 ```
 template<class ExecutionPolicy,

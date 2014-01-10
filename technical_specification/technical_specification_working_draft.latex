@@ -143,6 +143,21 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+% --- begin my changes - JPH
+
+% The basic sectioning command.  Example:
+%    \Sec1[intro.scope]{Scope}
+% defines a first-level section whose name is "Scope" and whose short
+% tag is intro.scope.  The square brackets are mandatory.
+\def\Sec#1[#2]#3{{%
+\ifcase#1\let\s=\section
+      \or\let\s=\subsection
+      \or\let\s=\subsubsection
+      \or\let\s=\paragraph
+      \or\let\s=\subparagraph
+      \fi%
+\s[#3]{#3\hfill[#2]}\label{#2}}}
+
 \begin{document}
 
 \thispagestyle{empty}
@@ -170,6 +185,8 @@ $endif$
   incorrekt, and it has lots of
   b\kern-1.2pta\kern1ptd\hspace{1.5em}for\kern-3ptmat\kern0.6ptti\raise0.15ex\hbox{n}g.}
 \newpage
+
+% --- end my changes - JPH
 
 $if(abstract)$
 \begin{abstract}

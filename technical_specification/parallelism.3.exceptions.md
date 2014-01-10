@@ -1,6 +1,6 @@
-# Parallel exceptions [exceptions] {#exceptions}
+# Parallel exceptions {#exceptions}
 
-## Exception reporting behavior [exceptions.behavior] {#exceptions.behavior}
+## Exception reporting behavior {#exceptions.behavior}
 
 1. During the execution of a standard parallel algorithm, if the application of a function object terminates with an
    uncaught exception, the behavior of the program is determined by the type of execution policy used to invoke the algorithm.

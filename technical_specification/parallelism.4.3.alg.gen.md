@@ -1,8 +1,8 @@
-## Generic algorithms library [alg.gen] {#alg.gen}
+## Generic algorithms library {#alg.gen}
 
 This subclause describes components that C++ programs may use to perform generic algorithmic operations on containers and other sequences in parallel.
 
-### Header `<experimental/algorithm>` synopsis [alg.gen.synop] {#alg.gen.synop}
+### Header `<experimental/algorithm>` synopsis {#alg.gen.synop}
 
 ```
 namespace std {
@@ -587,7 +587,7 @@ namespace parallel {
 }
 ```
 
-### All of [alg.gen.all_of] {#alg.gen.all_of}
+### All of {#alg.gen.all.of}
 
 ```
 template<class ExecutionPolicy,
@@ -606,7 +606,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Any of [alg.gen.any_of] {#alg.gen.any_of}
+### Any of {#alg.gen.any.of}
 
 ```
 template<class ExecutionPolicy,
@@ -625,7 +625,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### None of [alg.gen.none_of] {#alg.gen.none_of}
+### None of {#alg.gen.none.of}
 
 ```
 template<class ExecutionPolicy,
@@ -644,7 +644,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### For each [alg.gen.foreach] {#alg.gen.foreach}
+### For each {#alg.gen.foreach}
 
 ```
 template<class InputIterator, class Size n, class Function>
@@ -692,7 +692,7 @@ template<class ExecutionPolicy,
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Find [alg.gen.find] {#alg.gen.find}
+### Find {#alg.gen.find}
 
 ```
 template<class ExecutionPolicy,
@@ -725,7 +725,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Find end [alg.gen.find.end] {#alg.gen.find.end}
+### Find end {#alg.gen.find.end}
 
 ```
 template<class ExecutionPolicy,
@@ -761,7 +761,7 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Find first [alg.gen.find.first.of] {#alg.gen.find.first.of}
+### Find first {#alg.gen.find.first.of}
 
 ```
 template<class ExecutionPolicy,
@@ -796,7 +796,7 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Adjacent find [alg.gen.adjacent.find] {#alg.gen.adjacent.find}
+### Adjacent find {#alg.gen.adjacent.find}
 
 ```
 template<class ExecutionPolicy,
@@ -824,7 +824,7 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Count [alg.gen.count] {#alg.gen.count}
+### Count {#alg.gen.count}
 
 ```
 template<class ExecutionPolicy,
@@ -850,7 +850,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Mismatch [alg.gen.mismatch] {#alg.gen.mismatch}
+### Mismatch {#alg.gen.mismatch}
 
 ```
 template<class ExecutionPolicy,
@@ -885,7 +885,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Equal [alg.gen.equal] {#alg.gen.equal}
+### Equal {#alg.gen.equal}
 
 ```
 template<class ExecutionPolicy,
@@ -912,7 +912,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Search [alg.gen.search] {#alg.gen.search}
+### Search {#alg.gen.search}
 
 ```
 template<class ExecutionPolicy,
@@ -966,7 +966,7 @@ template<class ExecutionPolicy,
 4. *Complexity:* `O(last - first)`.
 
 
-### Copy [alg.gen.copy] {#alg.gen.copy}
+### Copy {#alg.gen.copy}
 
 ```
 template<class ExecutionPolicy,
@@ -1027,7 +1027,7 @@ template<class ExecutionPolicy,
     The signature shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Move [alg.gen.move] {#alg.gen.move}
+### Move {#alg.gen.move}
 
 ```
 template<class ExecutionPolicy,
@@ -1051,7 +1051,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Swap [alg.gen.swap] {#alg.gen.swap}
+### Swap {#alg.gen.swap}
 
 ```
 template<class ExecutionPolicy,
@@ -1076,7 +1076,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Transform [alg.gen.transform] {#alg.gen.transform}
+### Transform {#alg.gen.transform}
 
 ```
 template<class ExecutionPolicy,
@@ -1111,7 +1111,7 @@ template<class ExecutionPolicy,
 
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Replace [alg.gen.replace] {#alg.gen.replace}
+### Replace {#alg.gen.replace}
 
 ```
 template<class ExecutionPolicy,
@@ -1173,7 +1173,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Fill [alg.gen.fill] {#alg.gen.fill}
+### Fill {#alg.gen.fill}
 
 ```
 template<class ExecutionPolicy,
@@ -1201,7 +1201,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Generate [alg.gen.generate] {#alg.gen.generate}
+### Generate {#alg.gen.generate}
 
 ```
 template<class ExecutionPolicy,
@@ -1229,7 +1229,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Remove [alg.gen.remove] {#alg.gen.remove}
+### Remove {#alg.gen.remove}
 
 ```
 template<class ExecutionPolicy,
@@ -1289,7 +1289,7 @@ template<class ExecutionPolicy,
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Unique [alg.gen.unique] {#alg.gen.unique}
+### Unique {#alg.gen.unique}
 
 ```
 template<class ExecutionPolicy,
@@ -1347,7 +1347,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Reverse [alg.gen.reverse] {#alg.gen.reverse}
+### Reverse {#alg.gen.reverse}
 
 ```
 template<class ExecutionPolicy,
@@ -1391,7 +1391,7 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### Rotate [alg.gen.rotate] {#alg.gen.rotate}
+### Rotate {#alg.gen.rotate}
 
 ```
 template<class ExecutionPolicy,
@@ -1441,7 +1441,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Partitions [alg.gen.partitions] {#alg.gen.partitions}
+### Partitions {#alg.gen.partitions}
 
 ```
 template<class ExecutionPolicy,
@@ -1555,7 +1555,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `sort` [alg.gen.sort] {#alg.gen.sort}
+### Sort {#alg.gen.sort}
 
 ```
 template<class ExecutionPolicy,
@@ -1579,7 +1579,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `stable_sort` [alg.gen.stable.sort] {#alg.gen.stable.sort}
+### Stable sort {#alg.gen.stable.sort}
 
 ```
 template<class ExecutionPolicy,
@@ -1604,7 +1604,7 @@ template<class ExecutionPolicy,
 
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `partial_sort` [alg.gen.partial.sort] {#alg.gen.partial.sort}
+### Partial sort {#alg.gen.partial.sort}
 
 ```
 template<class ExecutionPolicy,
@@ -1639,7 +1639,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `partial_sort_copy` [alg.gen.partial.sort.copy] {#alg.gen.partial.sort.copy}
+### Partial sort copy {#alg.gen.partial.sort.copy}
 
 ```
 template<class ExecutionPolicy,
@@ -1677,7 +1677,7 @@ template<class ExecutionPolicy,
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### `is_sorted` [alg.gen.is.sorted] {#alg.gen.is.sorted}
+### Is sorted {#alg.gen.is.sorted}
 
 ```
 template<class ExecutionPolicy,
@@ -1737,7 +1737,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Nth element [alg.gen.nth.element] {#alg.gen.nth.element}
+### Nth element {#alg.gen.nth.element}
 
 ```
 template<class ExecutionPolicy,
@@ -1770,7 +1770,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Merge [alg.gen.merge] {#alg.gen.merge}
+### Merge {#alg.gen.merge}
 
 ```
 template<class ExecutionPolicy,
@@ -1843,7 +1843,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Includes [alg.gen.includes] {#alg.gen.includes}
+### Includes {#alg.gen.includes}
 
 ```
 template<class ExecutionPolicy,
@@ -1872,7 +1872,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `set_union` [alg.gen.set.union] {#alg.gen.set.union}
+### Set union {#alg.gen.set.union}
 
 ```
 template<class ExecutionPolicy,
@@ -1909,7 +1909,7 @@ template<class ExecutionPolicy,
 
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `set_intersection` [alg.gen.set.intersection] {#alg.gen.set.intersection}
+### Set intersection {#alg.gen.set.intersection}
 
 ```
 template<class ExecutionPolicy,
@@ -1946,7 +1946,7 @@ template<class ExecutionPolicy,
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
 
-### `set_difference` [alg.gen.set.difference] {#alg.gen.set.difference}
+### Set difference {#alg.gen.set.difference}
 
 ```
 template<class ExecutionPolicy,
@@ -1982,7 +1982,7 @@ template<class ExecutionPolicy,
 
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### `set_symmetric_difference` [alg.gen.set.symmetric.difference] {#alg.gen.set.symmetric.difference}
+### Set symmetric difference {#alg.gen.set.symmetric.difference}
 
 ```
 template<class ExecutionPolicy,
@@ -2020,7 +2020,7 @@ template<class ExecutionPolicy,
 
     The signatures shall not participate in overload resolution if `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Minimum and maximum [alg.gen.min.max] {#alg.gen.min.max}
+### Minimum and maximum {#alg.gen.min.max}
 
 ```
 template<class ExecutionPolicy,
@@ -2095,7 +2095,7 @@ template<class ExecutionPolicy,
 
     `is_execution_policy<ExecutionPolicy>::value` is `false`.
 
-### Lexicographical comparison [alg.gen.lex.comparison] {#alg.gen.lex.comparison}
+### Lexicographical comparison {#alg.gen.lex.comparison}
 
 ```
 template<class ExecutionPolicy,

@@ -1,6 +1,6 @@
-# Execution policies [execpol] {#execpol}
+# Execution policies {#execpol}
 
-## In general [execpol.general] {#execpol.general}
+## In general {#execpol.general}
 
 This subclause describes classes that represent *execution policies*. An
 *execution policy* is an object that expresses the requirements on the ordering
@@ -44,7 +44,7 @@ parameters for efficient execution, implementations of the Standard Library are
 encouraged to provide additional execution policies to those described in this
 Technical Specification as extensions. *-- end note*]
 
-## Header `<experimental/execution_policy>` synopsis [execpol.synop] {#execpol.synop}
+## Header `<experimental/execution_policy>` synopsis {#execpol.synop}
 
     #include <type_traits>
 
@@ -82,7 +82,7 @@ Technical Specification as extensions. *-- end note*]
 
 1. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`.
 
-## Execution policy type trait [execpol.type] {#execpol.type}
+## Execution policy type trait {#execpol.type}
 
     namespace std {
     namespace experimental {
@@ -102,7 +102,7 @@ otherwise from `integral_constant<bool,false>`.
 
     [*Note:* This provision reserves the privilege of creating non-standard execution policies to the library implementation. -- *end note*.]
 
-## Sequential execution policy [execpol.seq] {#execpol.seq}
+## Sequential execution policy {#execpol.seq}
 
 ```
 namespace std {
@@ -130,7 +130,7 @@ void swap(sequential_execution_policy &other);
     
 2. *Effects:* Swaps the state of `*this` and `other`.
 
-## Parallel execution policy [execpol.par] {#execpol.par}
+## Parallel execution policy {#execpol.par}
 
 ```
 namespace std {
@@ -158,7 +158,7 @@ void swap(parallel_execution_policy &other);
     
 2. *Effects:* Swaps the state of `*this` and `other`.
 
-## Vector execution policy [execpol.vec] {#execpol.vec}
+## Vector execution policy {#execpol.vec}
 
 ```
 namespace std {
@@ -186,7 +186,7 @@ void swap(vector_execution_policy &other);
     
 2. *Effects:* Swaps the state of `*this` and `other`.
 
-## Dynamic execution policy [execpol.dynamic] {#execpol.dynamic}
+## Dynamic execution policy {#execpol.dynamic}
 
 ```
 namespace std {
@@ -261,7 +261,7 @@ namespace parallel {
 
 4. Objects of type `execution_policy` shall be constructible and assignable from any additional non-standard execution policy provided by the implementation.
 
-### `execution_policy` construct/assign/swap
+### `execution_policy` construct/assign/swap {#execpol.con}
 
     template<class T> execution_policy(const T &exec);
 
@@ -287,7 +287,7 @@ void swap(execution_policy &other);
 
 1. *Effects:* Swaps the stored object of `*this` with that of `other`.
 
-### `execution_policy` object access
+### `execution_policy` object access {#execpol.access}
 
     const type_info &target_type() const;
 
@@ -302,7 +302,7 @@ template<class T> const T *target() const;
 3. *Remarks:* This signature does not participate in overload resolution if
    `is_execution_policy<T>::value` is `false`.
 
-## Execution policy specialized algorithms [execpol.algorithms] {#execpol.algorithms}
+## Execution policy specialized algorithms {#execpol.algorithms}
 
       void swap(sequential_execution_policy &a, sequential_execution_policy &b);
       void swap(parallel_execution_policy &a, parallel_execution_policy &b);
@@ -311,7 +311,7 @@ template<class T> const T *target() const;
 
 1. *Effects:* `a.swap(b)`.
 
-## Standard execution policy objects [execpol.objects] {#execpol.objects}
+## Standard execution policy objects {#execpol.objects}
 
     namespace std {
     namespace experimental {

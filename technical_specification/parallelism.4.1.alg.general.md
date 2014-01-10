@@ -1,10 +1,10 @@
-# Parallel algorithms [alg] {#alg}
+# Parallel algorithms {#alg}
 
-## In general [alg.general] {#alg.general}
+## In general {#alg.general}
 
 This clause describes components that C++ programs may use to perform operations on containers and other sequences in parallel.
 
-### Effect of execution policies on parallel algorithm execution [alg.general.exec] {#alg.general.exec}
+### Effect of execution policies on parallel algorithm execution {#alg.general.exec}
 
 1. Parallel algorithms accept execution policy parameters which describe the manner in which they apply user-provided function objects.
 
