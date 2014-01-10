@@ -63,7 +63,5 @@ include the standard contents of `<meow>` as if by
 For the purposes of this document, the terms and definitions given in the C++
 Standard and the following apply.
 
-XXX define *user-provided function objects* ?
-
 A *parallel algorithm* is a function template described by this Technical Specification declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
 
