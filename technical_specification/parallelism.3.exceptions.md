@@ -2,14 +2,16 @@
 
 ## Exception reporting behavior {#exceptions.behavior}
 
-1. During the execution of a standard parallel algorithm, if the application of a function object terminates with an
-   uncaught exception, the behavior of the program is determined by the type of execution policy used to invoke the algorithm.
+1. If temporary memory resources are required by the algorithm and none are available, the algorithm throws a `std::bad_alloc` exception.
+
+2. During the execution of a standard parallel algorithm, if the application of a function object terminates with an
+   uncaught exception, the behavior of the program is determined by the type of execution policy used to invoke the algorithm:
 
    * If the execution policy object is of type `vector_execution_policy`, `std::terminate` shall be called.
 
    * If the execution policy object is of type `sequential_execution_policy` or `parallel_execution_policy`,
      the execution of the algorithm terminates with an `exception_list` exception. All uncaught exceptions thrown during
-     the application of user-provided function objects shall be contained in the `exception_list`, however the number of such exceptions is unspecified.
+     the application of user-provided function objects shall be contained in the `exception_list`.
 
       [*Note:* For example, the number of invocations of the user-provided function object in `for_each` is unspecified. When 
       `for_each` is executed sequentially, only one exception will be contained in the `exception_list` object -- *end note*]
@@ -20,14 +22,12 @@
       unspecified whether an algorithm implementation will "forge ahead" after 
       encountering and capturing a user exception. -- *end note*]
 
-   * If the execution policy object is of any other type, the behavior is implementation-defined.
-
-2. If temporary memory resources are required by the algorithm and none are available, the algorithm may terminate with an `std::bad_alloc` exception.
-
       [*Note:* The algorithm may terminate with the `std::bad_alloc` exception even if
       one or more user-provided function objects have terminated with an exception. 
       For example, this can happen when an algorithm fails to allocate memory while
       creating or adding elements to the `exception_list` object -- *end note*]
+
+   * If the execution policy object is of any other type, the behavior is implementation-defined.
 
 ## Header `<experimental/exception>` synopsis {#exceptions.synop}
 
