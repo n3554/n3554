@@ -10,7 +10,7 @@ execute in parallel.
 
 [*Example:*
 
-    std::vector<int> vec = ...
+    std::vector<int> v = ...
 
     // standard sequential sort
     std::sort(vec.begin(), vec.end());                  
@@ -18,23 +18,23 @@ execute in parallel.
     using namespace std::experimental::parallel;
 
     // explicitly sequential sort
-    sort(seq, vec.begin(), vec.end());        
+    sort(seq, v.begin(), v.end());        
 
     // permitting parallel execution
-    sort(par, vec.begin(), vec.end());        
+    sort(par, v.begin(), v.end());        
 
     // permitting vectorization as well
-    sort(vec, vec.begin(), vec.end());
+    sort(vec, v.begin(), v.end());
 
     // sort with dynamically-selected execution
     size_t threshold = ...
     execution_policy exec = seq;
-    if(vec.size() > threshold)
+    if(v.size() > threshold)
     {
       exec = par;
     }
 
-    sort(exec, vec.begin(), vec.end());
+    sort(exec, v.begin(), v.end());
 
 -- *end example*]
 
