@@ -67,11 +67,11 @@ size_t size() const;
 exception_list::iterator begin() const;
 ```
 
-3. *Returns:* An iterator pointing to the first `exception_ptr` object contained within the `exception_list`.
+3. *Returns:* An iterator referring to the first `exception_ptr` object contained within the `exception_list`.
 
 ```
 exception_list::iterator end() const;
 ```
 
-4. *Returns:* An iterator pointing to one position past the last `exception_ptr` object contained within the `exception_list`.
+4. *Returns:* An iterator which is the past-the-end value for the `exception_list`.
 
