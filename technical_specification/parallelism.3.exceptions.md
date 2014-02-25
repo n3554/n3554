@@ -63,15 +63,17 @@ size_t size() const;
 
 2. *Returns:* The number of `exception_ptr` objects contained within the `exception_list`.
 
+3. *Complexity:* Constant time.
+
 ```
 exception_list::iterator begin() const;
 ```
 
-3. *Returns:* An iterator referring to the first `exception_ptr` object contained within the `exception_list`.
+4. *Returns:* An iterator referring to the first `exception_ptr` object contained within the `exception_list`.
 
 ```
 exception_list::iterator end() const;
 ```
 
-4. *Returns:* An iterator which is the past-the-end value for the `exception_list`.
+5. *Returns:* An iterator which is the past-the-end value for the `exception_list`.
 
