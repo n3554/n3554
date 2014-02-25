@@ -92,7 +92,7 @@ This clause describes components that C++ programs may use to perform operations
 
 3. Parallel algorithms have the requirement `is_execution_policy_v<ExecutionPolicy>` is `true`.
 
-4. The algorithms listed in table 1 have parallel overloads.
+4. The algorithms listed in table 1 shall have `ExecutionPolicy` overloads.
 
 -------------------------- ---------------------- ------------------   ----------------------
 `uninitialized_copy`       `uninitialized_copy_n` `uninitialized_fill` `uninitialized_fill_n`
@@ -161,11 +161,9 @@ template<class ExecutionPolicy,
 
 4. *Note:* Unlike its sequential form, the parallel overload of `for_each` does not return a copy of its `Function` parameter, since parallelization does not permit sequential state accumulation.
 
-`XXX fix return type`
-
 ```
-template<class InputIterator, class Size n, class Function>
-  InputIterator for_each_n(InputIterator first, InputIterator last,
+template<class InputIterator, class Size, class Function>
+  InputIterator for_each_n(InputIterator first, Size n,
                            Function f);
 ```
 
