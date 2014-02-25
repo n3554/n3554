@@ -98,9 +98,7 @@ Technical Specification as extensions. *-- end note*]
 2. If `T` is the type of a standard or implementation-defined non-standard execution policy, `is_execution_policy<T>` shall be publicly derived from `integral_constant<bool,true>`,
 otherwise from `integral_constant<bool,false>`.
 
-3. The effect of specializing `is_execution_policy` for a type which is not defined by the library is unspecified.
-
-    [*Note:* This provision reserves the privilege of creating non-standard execution policies to the library implementation. -- *end note*.]
+3. Programs may not specialize `is_execution_policy`.
 
 ## Sequential execution policy {#execpol.seq}
 
