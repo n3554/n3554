@@ -118,10 +118,6 @@ namespace parallel {
 
 1. The class `sequential_execution_policy` provides a mechanism to require a standard algorithm invocation to execute in a sequential order.
 
-2. Implementations of `sequential_execution_policy` are permitted to provide additional non-standard data and function members.
-
-    [*Note:* This provision permits `sequential_execution_policy` objects to be stateful. -- *end note*.]
-
 ```
 void swap(sequential_execution_policy &other);
 ```
@@ -146,10 +142,6 @@ namespace parallel {
 
 1. The class `parallel_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
-2. Implementations of `parallel_execution_policy` are permitted to provide additional non-standard data and function members.
-
-    [*Note:* This provision permits `parallel_execution_policy` objects to be stateful. -- *end note*.]
-
 ```
 void swap(parallel_execution_policy &other);
 ```
@@ -173,10 +165,6 @@ namespace parallel {
 ```
 
 1. The class `vector_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
-
-2. Implementations of `vector_execution_policy` are permitted to provide additional non-standard data and function members.
-
-    [*Note:* This provision permits `vector_execution_policy` objects to be stateful. -- *end note*.]
 
 ```
 void swap(vector_execution_policy &other);
@@ -209,9 +197,7 @@ namespace parallel {
 }
 ```
 
-1. The class `execution_policy` is a dynamic container for execution policy objects.
-
-2. `execution_policy` allows dynamic control over standard algorithm execution.
+1. The class `execution_policy` is a dynamic container for execution policy objects. `execution_policy` allows dynamic control over standard algorithm execution.
 
    [*Example:*
 
@@ -228,7 +214,7 @@ namespace parallel {
 
    -- *end example*]
 
-3. The stored dynamic value of an `execution_policy` object may be retrieved.
+   The stored dynamic value of an `execution_policy` object may be retrieved.
 
     [*Example:*
 
@@ -257,7 +243,7 @@ namespace parallel {
 
     -- *end example*]
 
-4. Objects of type `execution_policy` shall be constructible and assignable from any additional non-standard execution policy provided by the implementation.
+2. Objects of type `execution_policy` shall be constructible and assignable from any additional non-standard execution policy provided by the implementation.
 
 ### `execution_policy` construct/assign/swap {#execpol.con}
 
