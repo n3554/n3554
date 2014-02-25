@@ -199,47 +199,18 @@ namespace parallel {
 
 1. The class `execution_policy` is a dynamic container for execution policy objects. `execution_policy` allows dynamic control over standard algorithm execution.
 
-   [*Example:*
-
-       std::vector<float> sort_me = ...
-       
-       std::execution_policy exec = std::seq;
-       
-       if(sort_me.size() > threshold)
-       {
-         exec = std::par;
-       }
-        
-       std::sort(exec, sort_me.begin(), sort_me.end());
-
-   -- *end example*]
-
-   The stored dynamic value of an `execution_policy` object may be retrieved.
-
     [*Example:*
 
-        void some_api(std::execution_policy exec, int arg1, double arg2)
+        std::vector<float> sort_me = ...
+        
+        std::execution_policy exec = std::seq;
+        
+        if(sort_me.size() > threshold)
         {
-          if(exec.target_type() == typeid(std::seq))
-          {
-            std::cout << "Received a sequential policy" << std::endl;
-            auto *exec_ptr = exec.target<std::sequential_execution_policy>();
-          }
-          else if(exec.target_type() == typeid(std::par))
-          {
-            std::cout << "Received a parallel policy" << std::endl;
-            auto *exec_ptr = exec.target<std::parallel_execution_policy>();
-          }
-          else if(exec.target_type() == typeid(std::vec))
-          {
-            std::cout << "Received a vector policy" << std::endl;
-            auto *exec_ptr = exec.target<std::vector_execution_policy>();
-          }
-          else
-          {
-            std::cout << "Received some other kind of policy" << std::endl;
-          }
+          exec = std::par;
         }
+         
+        std::sort(exec, sort_me.begin(), sort_me.end());
 
     -- *end example*]
 
