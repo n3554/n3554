@@ -241,7 +241,7 @@ template<class InputIterator>
     reduce(InputIterator first, InputIterator last);
 ```
 
-1. *Returns:* The result of the sum of `T(0)` and the elements in the range `[first,last)`.
+1. *Returns:* The result of the sum of `T{}` and the elements in the range `[first,last)`.
 
     The order of operands of the sum is unspecified.
 
@@ -250,6 +250,8 @@ template<class InputIterator>
     `operator+` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
 3. *Complexity:* `O(last - first)`.
+
+4. *Note:* The primary difference between `reduce` and `accumulate` is that the behavior of `reduce` may be non-deterministic for non-associative or non-commutative `binary_op`.
 
 ```
 template<class InputIterator, class T>
