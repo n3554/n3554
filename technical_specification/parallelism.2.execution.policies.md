@@ -218,8 +218,7 @@ namespace parallel {
 
 1. *Effects:* Constructs an `execution_policy` object with a copy of `exec`'s state.
 
-2. *Remarks:* This signature does not participate in overload resolution if
-   `is_execution_policy<T>::value` is `false`.
+2. *Requires:* `is_execution_policy<T>::value` is `true`
 
 ```
 template<class T> execution_policy& operator=(const T& exec);
@@ -229,8 +228,7 @@ template<class T> execution_policy& operator=(const T& exec);
 
 4. *Returns:* `*this`.
 
-5. *Remarks:* This signature does not participate in overload resolution if
-   `is_execution_policy<T>::value` is `false`.
+5. *Requires:* `is_execution_policy<T>::value` is `true`
 
 ```
 void swap(execution_policy& other);
@@ -250,8 +248,8 @@ template<class T> const T* target() const;
 ```
 
 2. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
-3. *Remarks:* This signature does not participate in overload resolution if
-   `is_execution_policy<T>::value` is `false`.
+
+3. *Requires:* `is_execution_policy<T>::value` is `true`
 
 ## Execution policy specialized algorithms {#parallel.execpol.algorithms}
 
