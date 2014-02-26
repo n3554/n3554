@@ -46,8 +46,6 @@ Technical Specification as extensions. *-- end note*]
 
 ## Header `<experimental/execution_policy>` synopsis {#parallel.execpol.synop}
 
-    #include <type_traits>
-
     namespace std { 
     namespace experimental {
     namespace parallel {
