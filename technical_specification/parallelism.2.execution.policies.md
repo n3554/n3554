@@ -265,9 +265,9 @@ template<class T> const T* target() const;
     namespace std {
     namespace experimental {
     namespace parallel {
-      extern const sequential_execution_policy seq;
-      extern const parallel_execution_policy   par;
-      extern const vector_execution_policy     vec;
+      constexpr sequential_execution_policy seq = sequential_execution_policy();
+      constexpr parallel_execution_policy   par = parallel_execution_policy();
+      constexpr vector_execution_policy     vec = vector_execution_policy();
     }
     }
     }
