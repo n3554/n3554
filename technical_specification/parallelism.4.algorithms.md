@@ -80,9 +80,9 @@ This clause describes components that C++ programs may use to perform operations
     [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
     case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
 
-6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or a non-standard implementation-defined execution policy depending on the dynamic value of the `execution_policy` object.
+6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or an implementation-defined execution policy type depending on the dynamic value of the `execution_policy` object.
 
-7. The semantics of parallel algorithms invoked with an execution policy object of type other than those described by this Technical Specification are unspecified.
+7. The semantics of parallel algorithms invoked with an execution policy object of implementation-defined type other than those described by this Technical Specification are unspecified.
 
 ### `ExecutionPolicy` algorithm overloads {#parallel.alg.overloads}
 
