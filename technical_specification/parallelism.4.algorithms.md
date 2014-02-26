@@ -1,10 +1,10 @@
-# Parallel algorithms {#alg}
+# Parallel algorithms {#parallel.alg}
 
-## In general {#alg.general}
+## In general {#parallel.alg.general}
 
 This clause describes components that C++ programs may use to perform operations on containers and other sequences in parallel.
 
-### Effect of execution policies on parallel algorithm execution {#alg.general.exec}
+### Effect of execution policies on parallel algorithm execution {#parallel.alg.general.exec}
 
 1. Parallel algorithms have template parameters named `ExecutionPolicy` which describe the manner in which the execution of these algorithms may be parallelized and the manner in which they apply user-provided function objects.
 
@@ -84,7 +84,7 @@ This clause describes components that C++ programs may use to perform operations
 
 7. The semantics of parallel algorithms invoked with an execution policy object of type other than those described by this Technical Specification are unspecified.
 
-### `ExecutionPolicy` algorithm overloads {#alg.overloads}
+### `ExecutionPolicy` algorithm overloads {#parallel.alg.overloads}
 
 1. Parallel algorithms coexist alongside their sequential counterparts as overloads distinguished by a formal template parameter named `ExecutionPolicy`. This template parameter corresponds to the parallel algorithm's first function parameter.
 
@@ -117,11 +117,11 @@ This clause describes components that C++ programs may use to perform operations
 
 : Table of parallel algorithms
 
-## Novel algorithms {#alg.novel}
+## Novel algorithms {#parallel.alg.novel}
 
 This subclause describes novel algorithms introduced by this technical specification.
 
-### Header `<experimental/algorithm>` synopsis {#alg.novel.algorithm.synop}
+### Header `<experimental/algorithm>` synopsis {#parallel.alg.novel.algorithm.synop}
 
 ```
 namespace std {
@@ -140,7 +140,7 @@ namespace parallel {
 }
 ```
 
-### For each {#alg.novel.foreach}
+### For each {#parallel.alg.novel.foreach}
 
 ```
 template<class ExecutionPolicy,
@@ -178,7 +178,7 @@ template<class InputIterator, class Size, class Function>
 
 5. *Remarks:* If `f` returns a result, the result is ignored.
 
-### Header `<experimental/numeric>` synopsis {#alg.novel.numeric.synop}
+### Header `<experimental/numeric>` synopsis {#parallel.alg.novel.numeric.synop}
 
 ```
 namespace std {
@@ -231,7 +231,7 @@ namespace parallel {
 }
 ```
 
-### Reduce {#alg.novel.reduce}
+### Reduce {#parallel.alg.novel.reduce}
 
 ```
 template<class InputIterator>
@@ -281,7 +281,7 @@ template<class InputIterator, class T, class BinaryOperation>
 4. *Note:* The primary difference between `reduce` and `accumulate` is that the behavior of `reduce` may be non-deterministic for non-associative or non-commutative `operator+`.
 
 
-### Exclusive scan {#alg.novel.exclusive.scan}
+### Exclusive scan {#parallel.alg.novel.exclusive.scan}
 
 ```
 template<class InputIterator, class OutputIterator,
@@ -336,7 +336,7 @@ template<class InputIterator, class OutputIterator,
 5. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
 
 
-### Inclusive scan {#alg.novel.inclusive.scan}
+### Inclusive scan {#parallel.alg.novel.inclusive.scan}
 
 ```
 template<class InputIterator, class OutputIterator>

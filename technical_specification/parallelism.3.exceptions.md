@@ -1,6 +1,6 @@
-# Parallel exceptions {#exceptions}
+# Parallel exceptions {#parallel.exceptions}
 
-## Exception reporting behavior {#exceptions.behavior}
+## Exception reporting behavior {#parallel.exceptions.behavior}
 
 1. If temporary memory resources are required by the algorithm and none are available, the algorithm throws a `std::bad_alloc` exception.
 
@@ -29,7 +29,7 @@
 
    * If the execution policy object is of any other type, the behavior is implementation-defined.
 
-## Header `<experimental/exception>` synopsis {#exceptions.synop}
+## Header `<experimental/exception>` synopsis {#parallel.exceptions.synop}
 
     namespace std {
     namespace experimental {
