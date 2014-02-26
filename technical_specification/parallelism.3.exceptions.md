@@ -41,8 +41,8 @@
           typedef const value_type& reference;
           typedef const value_type& const_reference;
           typedef size_t            size_type;
-          typedef unspecified       iterator;
           typedef unspecified       const_iterator;
+          typedef const_iterator    iterator;
       
           size_t size() const;
           iterator begin() const;
