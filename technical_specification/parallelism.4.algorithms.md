@@ -129,7 +129,7 @@ namespace experimental {
 namespace parallel {
   template<class ExecutionPolicy,
            class InputIterator, class Function>
-    void for_each(ExecutionPolicy &&exec,
+    void for_each(ExecutionPolicy&& exec,
                   InputIterator first, InputIterator last,
                   Function f);
   template<class InputIterator, class Size, class Function>
@@ -145,7 +145,7 @@ namespace parallel {
 ```
 template<class ExecutionPolicy,
          class InputIterator, class Function>
-  InputIterator for_each(ExecutionPolicy &&exec,
+  InputIterator for_each(ExecutionPolicy&& exec,
                          InputIterator first, InputIterator last,
                          Function f);
 ```

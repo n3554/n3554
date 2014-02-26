@@ -67,10 +67,10 @@ Technical Specification as extensions. *-- end note*]
       class execution_policy;
 
       // 2.8, specialized algorithms
-      void swap(sequential_execution_policy &a, sequential_execution_policy &b);
-      void swap(parallel_execution_policy &a, parallel_execution_policy &b);
-      void swap(vector_execution_policy &a, vector_execution_policy &b);
-      void swap(execution_policy &a, execution_policy &b);
+      void swap(sequential_execution_policy& a, sequential_execution_policy& b);
+      void swap(parallel_execution_policy& a, parallel_execution_policy& b);
+      void swap(vector_execution_policy& a, vector_execution_policy& b);
+      void swap(execution_policy& a, execution_policy& b);
 
       // 2.9, standard execution policy objects
       extern const sequential_execution_policy seq;
@@ -107,7 +107,7 @@ namespace parallel {
 
   class sequential_execution_policy
   {
-    void swap(sequential_execution_policy &other);
+    void swap(sequential_execution_policy& other);
   };
 }
 }
@@ -117,7 +117,7 @@ namespace parallel {
 1. The class `sequential_execution_policy` provides a mechanism to require a standard algorithm invocation to execute in a sequential order.
 
 ```
-void swap(sequential_execution_policy &other);
+void swap(sequential_execution_policy& other);
 ```
     
 2. *Effects:* Swaps the state of `*this` and `other`.
@@ -131,7 +131,7 @@ namespace parallel {
 
   class parallel_execution_policy
   {
-    void swap(parallel_execution_policy &other);
+    void swap(parallel_execution_policy& other);
   };
 }
 }
@@ -141,7 +141,7 @@ namespace parallel {
 1. The class `parallel_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
 
 ```
-void swap(parallel_execution_policy &other);
+void swap(parallel_execution_policy& other);
 ```
     
 2. *Effects:* Swaps the state of `*this` and `other`.
@@ -155,7 +155,7 @@ namespace parallel {
 
   class vector_execution_policy
   {
-    void swap(vector_execution_policy &other);
+    void swap(vector_execution_policy& other);
   };
 }
 }
@@ -165,7 +165,7 @@ namespace parallel {
 1. The class `vector_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
 
 ```
-void swap(vector_execution_policy &other);
+void swap(vector_execution_policy& other);
 ```
     
 2. *Effects:* Swaps the state of `*this` and `other`.
@@ -181,14 +181,14 @@ namespace parallel {
   {
     public:
       // 2.7.1, construct/assign/swap
-      template<class T> execution_policy(const T &exec);
-      template<class T> execution_policy &operator=(const T &exec);
-      void swap(execution_policy &other);
+      template<class T> execution_policy(const T& exec);
+      template<class T> execution_policy& operator=(const T& exec);
+      void swap(execution_policy& other);
 
       // 2.7.2, object access
       const type_info& target_type() const;
-      template<class T> T *target();
-      template<class T> const T *target() const;
+      template<class T> T* target();
+      template<class T> const T* target() const;
   };
 }
 }
@@ -224,7 +224,7 @@ namespace parallel {
    `is_execution_policy<T>::value` is `false`.
 
 ```
-template<class T> execution_policy &operator=(const T &exec);
+template<class T> execution_policy& operator=(const T& exec);
 ```
 
 3. *Effects:* Assigns a copy of `exec`'s state to `*this`.
@@ -235,20 +235,20 @@ template<class T> execution_policy &operator=(const T &exec);
    `is_execution_policy<T>::value` is `false`.
 
 ```
-void swap(execution_policy &other);
+void swap(execution_policy& other);
 ```
 
 1. *Effects:* Swaps the stored object of `*this` with that of `other`.
 
 ### `execution_policy` object access {#parallel.execpol.access}
 
-    const type_info &target_type() const;
+    const type_info& target_type() const;
 
 1. *Returns:* `typeid(T)`, such that `T` is the type of the execution policy object contained by `*this`.
 
 ```
-template<class T> T *target();
-template<class T> const T *target() const;
+template<class T> T* target();
+template<class T> const T* target() const;
 ```
 
 2. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
@@ -257,10 +257,10 @@ template<class T> const T *target() const;
 
 ## Execution policy specialized algorithms {#parallel.execpol.algorithms}
 
-      void swap(sequential_execution_policy &a, sequential_execution_policy &b);
-      void swap(parallel_execution_policy &a, parallel_execution_policy &b);
-      void swap(vector_execution_policy &a, vector_execution_policy &b);
-      void swap(execution_policy &a, execution_policy &b);
+      void swap(sequential_execution_policy& a, sequential_execution_policy& b);
+      void swap(parallel_execution_policy& a, parallel_execution_policy& b);
+      void swap(vector_execution_policy& a, vector_execution_policy& b);
+      void swap(execution_policy& a, execution_policy& b);
 
 1. *Effects:* `a.swap(b)`.
 
