@@ -80,8 +80,6 @@ Technical Specification as extensions. *-- end note*]
     }
     }
 
-1. An implementation may provide additional execution policy types besides `parallel_execution_policy`, `sequential_execution_policy`, `vector_execution_policy`, or `execution_policy`.
-
 ## Execution policy type trait {#parallel.execpol.type}
 
     namespace std {
