@@ -32,7 +32,8 @@ This clause describes components that C++ programs may use to perform operations
          for_each(par , std::begin(a), std::end(a), [](int n) {
            x.fetch_add(1 , std::memory_order_relaxed);
            // spin wait for another iteration to change the value of x
-           while(x.load(std::memory_order_relaxed) == 1);
+           while(x.load(std::memory_order_relaxed) == 1)
+             ;
          });
 
      The above example depends on the order of execution of the iterations, and is therefore undefined (may deadlock). -– *end example*]
