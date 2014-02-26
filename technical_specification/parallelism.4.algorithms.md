@@ -29,8 +29,8 @@ This clause describes components that C++ programs may use to perform operations
          using namespace std::experimental::parallel;
          std::atomic<int> x = 0;
          int a[] = {1,2};
-         for_each(par , std::begin(a), std::end(a), [](int n) {
-           x.fetch_add(1 , std::memory_order_relaxed);
+         for_each(par, std::begin(a), std::end(a), [](int n) {
+           x.fetch_add(1, std::memory_order_relaxed);
            // spin wait for another iteration to change the value of x
            while(x.load(std::memory_order_relaxed) == 1)
              ;
