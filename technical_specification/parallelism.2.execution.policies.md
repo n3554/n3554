@@ -59,7 +59,7 @@ Technical Specification as extensions. *-- end note*]
       class parallel_execution_policy;
 
       // 2.6, vector execution policy
-      class vector_execution_policy
+      class vector_execution_policy;
 
       // 2.7, dynamic execution policy
       class execution_policy;
