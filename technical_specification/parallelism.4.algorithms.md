@@ -86,7 +86,8 @@ This clause describes components that C++ programs may use to perform operations
 
 ### `ExecutionPolicy` algorithm overloads {#parallel.alg.overloads}
 
-1. Parallel algorithms coexist alongside their sequential counterparts as overloads distinguished by a formal template parameter named `ExecutionPolicy`. This template parameter corresponds to the parallel algorithm's first function parameter.
+1. Parallel algorithms coexist alongside their sequential counterparts as overloads distinguished by a formal template parameter named `ExecutionPolicy`.
+   This template parameter corresponds to the parallel algorithm's first function parameter, whose type is `ExecutionPolicy&&`.
 
 2. Unless otherwise specified, the semantics of `ExecutionPolicy` algorithm overloads are identical to their overloads without.
 
