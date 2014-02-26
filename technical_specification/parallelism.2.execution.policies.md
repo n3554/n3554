@@ -210,7 +210,7 @@ namespace parallel {
 
     -- *end example*]
 
-2. Objects of type `execution_policy` shall be constructible and assignable from any additional non-standard execution policy provided by the implementation.
+2. Objects of type `execution_policy` shall be constructible and assignable from objects of type `T` for which `is_execution_policy<T>::value` is `true`.
 
 ### `execution_policy` construct/assign/swap {#parallel.execpol.con}
 
@@ -273,6 +273,4 @@ template<class T> const T* target() const;
     }
 
 1. The header `<execution_policy>` declares a global object associated with each type of execution policy defined by this technical specification.
-
-2. Concurrent access to these objects shall not result in a data race.
 
