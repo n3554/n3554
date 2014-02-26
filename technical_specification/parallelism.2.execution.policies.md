@@ -112,7 +112,7 @@ namespace parallel {
 }
 ```
 
-1. The class `sequential_execution_policy` provides a mechanism to require a standard algorithm invocation to execute in a sequential order.
+1. The class `sequential_execution_policy` is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and require that a parallel algorithm's execution may not be parallelized.
 
 ```
 void swap(sequential_execution_policy& other);
@@ -136,7 +136,7 @@ namespace parallel {
 }
 ```
 
-1. The class `parallel_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and indeterminately sequenced when executed on a single thread.
+1. The class `parallel_execution_policy` is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be parallelized.
 
 ```
 void swap(parallel_execution_policy& other);
@@ -160,7 +160,7 @@ namespace parallel {
 }
 ```
 
-1. The class `vector_execution_policy` provides a mechanism to allow a standard algorithm invocation to execute in an unordered fashion when executed on separate threads, and unordered when executed on a single thread.
+1. The class `vector_execution_policy` is an execution policy type used as a unique type to disambiguate parallel algorithm overloading and indicate that a parallel algorithm's execution may be vectorized.
 
 ```
 void swap(vector_execution_policy& other);
