@@ -90,7 +90,7 @@ This clause describes components that C++ programs may use to perform operations
 
 2. Unless otherwise specified, the semantics of `ExecutionPolicy` algorithm overloads are identical to their overloads without.
 
-3. Parallel algorithms have the requirement `is_execution_policy_v<ExecutionPolicy>` is `true`.
+3. Parallel algorithms have the requirement `is_execution_policy<ExecutionPolicy>::value` is `true`.
 
 4. The algorithms listed in table 1 shall have `ExecutionPolicy` overloads.
 
