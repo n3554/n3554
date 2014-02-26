@@ -82,7 +82,7 @@ This clause describes components that C++ programs may use to perform operations
 
 6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or an implementation-defined execution policy type depending on the dynamic value of the `execution_policy` object.
 
-7. The semantics of parallel algorithms invoked with an execution policy object of implementation-defined type other than those described by this Technical Specification are unspecified.
+7. The semantics of parallel algorithms invoked with an execution policy object of implementation-defined type are unspecified.
 
 ### `ExecutionPolicy` algorithm overloads {#parallel.alg.overloads}
 
