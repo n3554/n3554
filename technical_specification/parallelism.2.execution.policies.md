@@ -40,8 +40,8 @@ execute in parallel.
 
 
 [*Note:* Because different parallel architectures may require idiosyncratic
-parameters for efficient execution, implementations of the Standard Library are
-encouraged to provide additional execution policies to those described in this
+parameters for efficient execution, implementations of the Standard Library 
+should provide additional execution policies to those described in this
 Technical Specification as extensions. *-- end note*]
 
 ## Header `<experimental/execution_policy>` synopsis {#parallel.execpol.synop}
