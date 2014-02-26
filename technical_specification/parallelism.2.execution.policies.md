@@ -91,7 +91,7 @@ Technical Specification as extensions. *-- end note*]
 
 1. `is_execution_policy` can be used to detect parallel execution policies for the purpose of excluding function signatures from otherwise ambiguous overload resolution participation.
 
-2. If `T` is the type of a standard or implementation-defined non-standard execution policy, `is_execution_policy<T>` shall be publicly derived from `integral_constant<bool,true>`,
+2. If `T` is the type of a standard or implementation-defined execution policy, `is_execution_policy<T>` shall be publicly derived from `integral_constant<bool,true>`,
 otherwise from `integral_constant<bool,false>`.
 
 3. The behavior of a program that adds specializations for `is_execution_policy` is undefined.
