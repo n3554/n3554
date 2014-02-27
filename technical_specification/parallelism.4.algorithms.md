@@ -278,9 +278,9 @@ template<class InputIterator>
     reduce(InputIterator first, InputIterator last);
 ```
 
-1. *Returns:* `reduce(first, last, typename iterator_traits<InputIterator>::value_type(0))`
+1. *Returns:* `reduce(first, last, typename iterator_traits<InputIterator>::value_type`\color{remclr}~~`(0)`~~\color{addclr}`{}`\color{black}`)`
 
-2. *Requires:* `typename iterator_traits<InputIterator>::value_type(0)` shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity and commutativity.
+2. *Requires:* `typename iterator_traits<InputIterator>::value_type`\color{remclr}~~`(0)`~~\color{addclr}`{}` \color{black} shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity and commutativity.
 
     `operator+` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
