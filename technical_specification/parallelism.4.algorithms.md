@@ -113,7 +113,7 @@ This clause describes components that C++ programs may use to perform operations
 `includes`                 `set_union`            `set_intersection`   `set_difference`
 `set_symmetric_difference` `min_element`          `max_element`        `minmax_element`
 `lexicographical_compare`  `reduce`               `inclusive_scan`     `exclusive_scan`
-                           `for_each`             `for_each_n`
+`is_heap`                  `for_each`             `for_each_n`
 -------------------------- ---------------------  ------------------   ----------------------
 
 : Table of parallel algorithms
