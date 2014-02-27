@@ -198,8 +198,10 @@ namespace parallel {
       // 2.7.2, object access
 \remvrbline[      const type_info& target_type() const;]
 \addvrbline[      const type_info& type() const;]
-      template<class T> T* target();
-      template<class T> const T* target() const;
+\remvrbline[      template<class T> T* target();]
+\remvrbline[      template<class T> const T* target() const;]
+\addvrbline[      template<class T> T* get();]
+\addvrbline[      template<class T> const T* get() const;]
   };
 }
 }
@@ -260,10 +262,12 @@ template<class T> execution_policy& operator=(const T& exec);
 
 1. *Returns:* `typeid(T)`, such that `T` is the type of the execution policy object contained by `*this`.
 
-```
-template<class T> T* target();
-template<class T> const T* target() const;
-```
+\begin{Verbatim}[commandchars=\\\[\]]
+\remvrbline[template<class T> T* target();]
+\remvrbline[template<class T> const T* target() const;]
+\addvrbline[template<class T> T* get();]
+\addvrbline[template<class T> const T* get() const;]
+\end{Verbatim}
 
 2. *Returns:* If `target_type() == typeid(T)`, a pointer to the stored execution policy object; otherwise a null pointer.
 
