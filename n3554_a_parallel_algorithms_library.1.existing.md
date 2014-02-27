@@ -341,6 +341,7 @@ namespace std {
       replace_copy_if(ExecutionPolicy &&exec,
                       InputIterator first, InputIterator last,
                       OutputIterator result,
+                      Predicate pred, const T& new_value);
 
   template<class ExecutionPolicy,
            class ForwardIterator, class T>
@@ -348,7 +349,7 @@ namespace std {
               ForwardIterator first, ForwardIterator last, const T& value);
   template<class ExecutionPolicy,
            class OutputIterator, class Size, class T>
-    void fill_n(ExecutionPolicy &&exec,
+    OutputIterator fill_n(ExecutionPolicy &&exec,
                 OutputIterator first, Size n, const T& value);
 
   template<class ExecutionPolicy,
@@ -659,7 +660,6 @@ namespace std {
            class ForwardIterator>
     ForwardIterator min_element(ExecutionPolicy &&exec,
                                 ForwardIterator first, ForwardIterator last);
-                                Compare comp);
   template<class ExecutionPolicy,
            class ForwardIterator, class Compare>
     ForwardIterator min_element(ExecutionPolicy &&exec,
@@ -673,6 +673,7 @@ namespace std {
            class ForwardIterator, class Compare>
     ForwardIterator max_element(ExecutionPolicy &&exec,
                                 ForwardIterator first, ForwardIterator last,
+                                Compare comp);
   template<class ExecutionPolicy,
            class ForwardIterator>
     pair<ForwardIterator, ForwardIterator>
@@ -1251,7 +1252,7 @@ template<class ExecutionPolicy,
 
 template<class ExecutionPolicy,
          class OutputIterator, class Size, class T>
-  void fill_n(ExecutionPolicy &&exec,
+  OutputIterator fill_n(ExecutionPolicy &&exec,
               OutputIterator first, Size n, const T& value);
 ```
 
