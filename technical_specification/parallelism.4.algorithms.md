@@ -130,11 +130,15 @@ namespace experimental {
 namespace parallel {
   template<class ExecutionPolicy,
            class InputIterator, class Function>
-    void for_each(ExecutionPolicy&& exec,
-                  InputIterator first, InputIterator last,
-                  Function f);
+    InputIterator for_each(ExecutionPolicy&& exec,
+                           InputIterator first, InputIterator last,
+                           Function f);
   template<class InputIterator, class Size, class Function>
-    InputIterator for_each_n(InputIterator first, Size n,
+    Function for_each_n(InputIterator first, Size n,
+                        Function f);
+  template<class ExecutionPolicy,
+           class InputIterator, class Size, class Function>
+    InputIterator for_each_n(ExecutionPolicy&& exec, InputIterator first, Size n,
                              Function f);
 }
 }
@@ -156,15 +160,37 @@ template<class ExecutionPolicy,
    the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced
    iterator. -- *end note*]
 
-2. *Complexity:* Applies `f` exactly `last - first` times.
+2. *Returns:* `first + (last - first)`.
 
-3. *Remarks:* If `f` returns a result, the result is ignored.
+3. *Complexity:* Applies `f` exactly `last - first` times.
 
-4. *Note:* Unlike its sequential form, the parallel overload of `for_each` does not return a copy of its `Function` parameter, since parallelization may not permit efficient state accumulation.
+4. *Remarks:* If `f` returns a result, the result is ignored.
+
+5. *Note:* Unlike its sequential form, the parallel overload of `for_each` does not return a copy of its `Function` parameter, since parallelization may not permit efficient state accumulation.
 
 ```
 template<class InputIterator, class Size, class Function>
-  InputIterator for_each_n(InputIterator first, Size n,
+  Function for_each_n(InputIterator first, Size n,
+                      Function f);
+```
+
+1. *Requires:* `Function` shall meet the requirements of `MoveConstructible` [*Note:* `Function need not meet the requirements of `CopyConstructible`. -- *end note*]
+
+2. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,first + n)`, starting from `first` and proceeding to `first + n - 1`.
+    [*Note:* If the type of `first` satisfies the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced iterator. -- *end note*]
+
+3. *Returns:* `std::move(f)`.
+
+4. *Complexity:* Applies `f` exactly `n` times.
+
+5. *Remarks:* If `f` returns a result, the result is ignored.
+
+
+```
+template<class ExecutionPolicy,
+         class InputIterator, class Size, class Function>
+  InputIterator for_each_n(ExecutionPolicy&& exec,
+                           InputIterator first, Size n,
                            Function f);
 ```
 
@@ -240,9 +266,9 @@ template<class InputIterator>
     reduce(InputIterator first, InputIterator last);
 ```
 
-1. *Returns:* `reduce(first, last, typename iterator_traits<InputIterator>::value_type{})`
+1. *Returns:* `reduce(first, last, typename iterator_traits<InputIterator>::value_type(0))`
 
-2. *Requires:* `typename iterator_traits<InputIterator>::value_type{}` shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity and commutativity.
+2. *Requires:* `typename iterator_traits<InputIterator>::value_type(0)` shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity and commutativity.
 
     `operator+` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
