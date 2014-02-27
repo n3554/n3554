@@ -130,12 +130,12 @@ namespace experimental {
 namespace parallel {
   template<class ExecutionPolicy,
            class InputIterator, class Function>
-\remvrbline[InputIterator for_each(ExecutionPolicy&& exec,]
-\remvrbline[                       InputIterator first, InputIterator last,]
-\remvrbline[                       Function f);]
-\addvrbline[void for_each(ExecutionPolicy&& exec,]
-\addvrbline[              InputIterator first, InputIterator last,]
-\addvrbline[              Function f);]
+\remvrbline[    InputIterator for_each(ExecutionPolicy&& exec,]
+\remvrbline[                           InputIterator first, InputIterator last,]
+\remvrbline[                           Function f);]
+\addvrbline[    void for_each(ExecutionPolicy&& exec,]
+\addvrbline[                  InputIterator first, InputIterator last,]
+\addvrbline[                  Function f);]
   template<class InputIterator, class Size, class Function>
     Function for_each_n(InputIterator first, Size n,
                         Function f);
@@ -153,12 +153,12 @@ namespace parallel {
 \begin{Verbatim}[commandchars=\\\[\]]
 template<class ExecutionPolicy,
          class InputIterator, class Function>
-\remvrbline[InputIterator for_each(ExecutionPolicy&& exec,]
-\remvrbline[                       InputIterator first, InputIterator last,]
-\remvrbline[                       Function f);]
-\addvrbline[void for_each(ExecutionPolicy&& exec,]
-\addvrbline[              InputIterator first, InputIterator last,]
-\addvrbline[              Function f);]
+\remvrbline[  InputIterator for_each(ExecutionPolicy&& exec,]
+\remvrbline[                         InputIterator first, InputIterator last,]
+\remvrbline[                         Function f);]
+\addvrbline[  void for_each(ExecutionPolicy&& exec,]
+\addvrbline[                InputIterator first, InputIterator last,]
+\addvrbline[                Function f);]
 \end{Verbatim}
 
 1. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,last)`.
