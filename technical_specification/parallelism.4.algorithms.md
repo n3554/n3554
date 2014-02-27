@@ -156,7 +156,7 @@ template<class ExecutionPolicy,
    the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced
    iterator. -- *end note*]
 
-2. *Complexity:* `O(last - first)`.
+2. *Complexity:* Applies `f` exactly `last - first` times.
 
 3. *Remarks:* If `f` returns a result, the result is ignored.
 
