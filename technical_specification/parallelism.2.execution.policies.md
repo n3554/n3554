@@ -196,7 +196,8 @@ namespace parallel {
 \remvrbline[      void swap(execution_policy& other);]
 
       // 2.7.2, object access
-      const type_info& target_type() const;
+\remvrbline[      const type_info& target_type() const;]
+\addvrbline[      const type_info& type() const;]
       template<class T> T* target();
       template<class T> const T* target() const;
   };
@@ -252,7 +253,10 @@ template<class T> execution_policy& operator=(const T& exec);
 
 ### `execution_policy` object access {#parallel.execpol.access}
 
-    const type_info& target_type() const;
+\begin{Verbatim}[commandchars=\\\[\]]
+\remvrbline[const type_info& target_type() const;]
+\addvrbline[const type_info& type() const;]
+\end{Verbatim}
 
 1. *Returns:* `typeid(T)`, such that `T` is the type of the execution policy object contained by `*this`.
 
