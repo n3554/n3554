@@ -280,9 +280,7 @@ template<class InputIterator>
 
 1. *Returns:* `reduce(first, last, typename iterator_traits<InputIterator>::value_type`\color{remclr}~~`(0)`~~\color{addclr}`{}`\color{black}`)`
 
-2. *Requires:* `typename iterator_traits<InputIterator>::value_type`\color{remclr}~~`(0)`~~\color{addclr}`{}` \color{black} shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity and commutativity.
-
-    `operator+` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
+2. *Requires:* `typename iterator_traits<InputIterator>::value_type`\color{remclr}~~`(0)`~~\color{addclr}`{}` \color{black} shall be a valid expression. The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
 3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
@@ -311,9 +309,7 @@ template<class InputIterator, class T, class BinaryOperation>
 
     Sums of elements are evaluated with `binary_op`. The order of operands of the sum is unspecified.
 
-2. *Requires:* `binary_op` shall have associativity and commutativity.
-
-    `binary_op` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
+2. *Requires:* `binary_op` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
 3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
@@ -338,6 +334,7 @@ template<class InputIterator, class OutputIterator,
 3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
+    If the `operator+` function is not mathematically associative, the behavior of `exclusive_scan` may be non-deterministic.
 
 ```
 template<class InputIterator, class OutputIterator,
@@ -366,13 +363,12 @@ template<class InputIterator, class OutputIterator,
 
 2. *Returns:* The end of the resulting range beginning at `result`.
 
-3. *Requires:* `binary_op` shall have associativity.
-
-    `binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
+3. *Requires:* `binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
 4. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
 5. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
+    If `binary_op` is not mathematically associative, the behavior of `exclusive_scan` may be non-deterministic.
 
 
 ### Inclusive scan {#parallel.alg.novel.inclusive.scan}
@@ -386,13 +382,12 @@ template<class InputIterator, class OutputIterator>
 
 1. *Returns:* `inclusive_scan(first, last, result, plus<>())`
 
-2. *Requires:* The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall have associativity.
-
-    `operator+` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
+2. *Requires:* The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
 3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
+    If the `operator+` function is not mathematically associative, the behavior of `inclusive_scan` may be non-deterministic.
 
 ```
 template<class InputIterator, class OutputIterator,
@@ -428,11 +423,10 @@ template<class InputIterator, class OutputIterator,
 
 2. *Returns:* The end of the resulting range beginning at `result`.
 
-3. *Requires:* `binary_op` shall have associativity.
-
-    `binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
+3. *Requires:* binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
 4. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
 5. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `inclusive_scan` includes the `i`th input element in the `i`th sum.
+    If `binary_op` is not mathematically associative, the behavior of `inclusive_scan` may be non-deterministic.
 
