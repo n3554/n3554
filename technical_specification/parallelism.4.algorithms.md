@@ -137,12 +137,14 @@ namespace parallel {
 \addvrbline[                  InputIterator first, InputIterator last,]
 \addvrbline[                  Function f);]
   template<class InputIterator, class Size, class Function>
-    Function for_each_n(InputIterator first, Size n,
-                        Function f);
-  template<class ExecutionPolicy,
-           class InputIterator, class Size, class Function>
-    InputIterator for_each_n(ExecutionPolicy&& exec, InputIterator first, Size n,
-                             Function f);
+\remvrbline[    Function for_each_n(InputIterator first, Size n,]
+\remvrbline[                        Function f);]
+\addvrbline[    InputIterator for_each_n(InputIterator first, Size n,]
+\addvrbline[                             Function f);]
+\remvrbline[  template<class ExecutionPolicy,]
+\remvrbline[           class InputIterator, class Size, class Function>]
+\remvrbline[    InputIterator for_each_n(ExecutionPolicy&& exec, InputIterator first, Size n,]
+\remvrbline[                             Function f);]
 }
 }
 }
@@ -174,42 +176,46 @@ template<class ExecutionPolicy,
 
 5. *Note:* Unlike its sequential form, the parallel overload of `for_each` does not return a copy of its `Function` parameter, since parallelization may not permit efficient state accumulation.
 
-```
+\begin{Verbatim}[commandchars=\\\[\]]
 template<class InputIterator, class Size, class Function>
-  Function for_each_n(InputIterator first, Size n,
-                      Function f);
-```
+\remvrbline[  Function for_each_n(InputIterator first, Size n,]
+\remvrbline[                      Function f);]
+\addvrbline[  InputIterator for_each_n(InputIterator first, Size n,]
+\addvrbline[                           Function f);]
+\end{Verbatim}
 
 1. *Requires:* `Function` shall meet the requirements of `MoveConstructible` [*Note:* `Function need not meet the requirements of `CopyConstructible`. -- *end note*]
 
 2. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,first + n)`, starting from `first` and proceeding to `first + n - 1`.
     [*Note:* If the type of `first` satisfies the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced iterator. -- *end note*]
 
-3. *Returns:* `std::move(f)`.
+3. *Returns:* \color{remclr}~~`std::move(f)`~~\color{addclr}`first + n`\color{black}.
 
 4. *Complexity:* Applies `f` exactly `n` times.
 
 5. *Remarks:* If `f` returns a result, the result is ignored.
 
 
-```
-template<class ExecutionPolicy,
-         class InputIterator, class Size, class Function>
-  InputIterator for_each_n(ExecutionPolicy&& exec,
-                           InputIterator first, Size n,
-                           Function f);
-```
+\begin{Verbatim}[commandchars=\\\[\]]
+\remvrbline[template<class ExecutionPolicy,]
+\remvrbline[         class InputIterator, class Size, class Function>]
+\remvrbline[  InputIterator for_each_n(ExecutionPolicy&& exec,]
+\remvrbline[                           InputIterator first, Size n,]
+\remvrbline[                           Function f);]
+\end{Verbatim}
 
-1. *Requires:* `Function` shall meet the requirements of `MoveConstructible` [*Note:* `Function need not meet the requirements of `CopyConstructible`. -- *end note*]
+\color{remclr}
+~~1. *Requires:* `Function` shall meet the requirements of `MoveConstructible` [*Note:* `Function` need not meet the requirements of `CopyConstructible`. -- *end note*]~~
 
-2. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,first + n)`, starting from `first` and proceeding to `first + n - 1`.
-    [*Note:* If the type of `first` satisfies the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced iterator. -- *end note*]
+~~2. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,first + n)`, starting from `first` and proceeding to `first + n - 1`.
+    [*Note:* If the type of `first` satisfies the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced iterator. -- *end note*]~~
 
-3. *Returns:* `first + n`.
+~~3. *Returns:* `first + n`.~~
 
-4. *Complexity:* Applies `f` exactly `n` times.
+~~4. *Complexity:* Applies `f` exactly `n` times.~~
 
-5. *Remarks:* If `f` returns a result, the result is ignored.
+~~5. *Remarks:* If `f` returns a result, the result is ignored.~~
+\color{black}
 
 ### Header `<experimental/numeric>` synopsis {#parallel.alg.novel.numeric.synop}
 
