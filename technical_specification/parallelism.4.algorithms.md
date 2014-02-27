@@ -67,10 +67,10 @@ This clause describes components that C++ programs may use to perform operations
    
 
     The above program is invalid because the applications of the function object are not guaranteed to run on different threads.
-
-    [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*]
     
     -- *end example*]
+
+    [*Note:* the application of the function object may result in two consecutive calls to `m.lock` on the same thread, which may deadlock -– *end note*]
 
     [*Note:* The semantics of the `parallel_execution_policy` or the `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
