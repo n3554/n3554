@@ -31,31 +31,36 @@
 
 ## Header `<experimental/exception>` synopsis {#parallel.exceptions.synop}
 
-    namespace std {
-    namespace experimental {
-    namespace parallel {
-      class exception_list : public exception
-      {
-        public:
-          typedef exception_ptr     value_type;
-          typedef const value_type& reference;
-          typedef const value_type& const_reference;
-          typedef size_t            size_type;
-          typedef unspecified       const_iterator;
-          typedef const_iterator    iterator;
-      
-          size_t size() const;
-          iterator begin() const;
-          iterator end() const;
-      
-        private:
-          std::list<exception_ptr> exceptions_; // exposition only
-      };
-    }
-    }
-    }
+\begin{Verbatim}[commandchars=\\\[\]]
+namespace std {
+namespace experimental {
+namespace parallel {
+  class exception_list : public exception
+  {
+    public:
+      typedef exception_ptr                                             value_type;
+      typedef const value_type&                                         reference;
+      typedef const value_type&                                         const_reference;
+      typedef \textit[implementation-defined]                                    const_iterator;
+      typedef const_iterator                                            iterator;
+\addvrbline[      typedef typename iterator_traits<const_iterator>::difference_type difference_type;]
+      typedef size_t                                                    size_type;
+  
+      size_t size() const;
+      iterator begin() const;
+      iterator end() const;
+  
+    private:
+      std::list<exception_ptr> exceptions_; // exposition only
+  };
+}
+}
+}
+\end{Verbatim}
 
-1. The class `exception_list` is a container of `exception_ptr` objects parallel algorithms may use to communicate uncaught exceptions encountered during parallel execution to the caller of the algorithm.
+1. The class `exception_list` is a container of `exception_ptr` objects parallel algorithms may use to communicate uncaught exceptions encountered during parallel execution to the caller of the algorithm.\color{addclr}
+
+2. The type `exception_list::const_iterator` shall fulfill the requirements of `ForwardIterator`.\color{black}
 
 ```
 size_t size() const;
