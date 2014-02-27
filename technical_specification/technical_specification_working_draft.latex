@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
+\usepackage{color}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
 % use upquote if available, for straight quotes in verbatim environments
@@ -144,6 +145,14 @@ $header-includes$
 $endfor$
 
 % --- begin my changes - JPH
+
+% for producing diffs
+\usepackage{fancyvrb}
+\definecolor{addclr}{rgb}{0,.6,.6}
+\definecolor{remclr}{rgb}{1,0,0}
+
+\newcommand{\remvrbline}[1]{\color{remclr}\sout{#1}}
+\newcommand{\addvrbline}[1]{\color{addclr}\uline{#1}}
 
 % The basic sectioning command.  Example:
 %    \Sec1[intro.scope]{Scope}
