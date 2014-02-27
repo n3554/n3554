@@ -173,7 +173,7 @@ template<class InputIterator, class Size, class Function>
 2. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,first + n)`, starting from `first` and proceeding to `first + n - 1`.
     [*Note:* If the type of `first` satisfies the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced iterator. -- *end note*]
 
-3. *Returns:* `first` + `(last - first`).
+3. *Returns:* `first + n`.
 
 4. *Complexity:* Applies `f` exactly `n` times.
 
