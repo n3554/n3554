@@ -158,6 +158,9 @@ $endfor$
       \fi%
 \s[#3]{#3\hfill[#2]}\label{#2}}}
 
+\newcommand{\bigoh}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+
+
 \begin{document}
 
 \thispagestyle{empty}

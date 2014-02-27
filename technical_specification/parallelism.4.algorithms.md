@@ -246,7 +246,7 @@ template<class InputIterator>
 
     `operator+` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
-3. *Complexity:* `O(last - first)`.
+3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Note:* The primary difference between `reduce` and `accumulate` is that the behavior of `reduce` may be non-deterministic for non-associative or non-commutative `operator+`.
 
@@ -259,7 +259,7 @@ template<class InputIterator, class T>
 
 2. *Requires:* The `operator+` function associated with `T` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
-3. *Complexity:* `O(last - first)`.
+3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Note:* The primary difference between `reduce` and `accumulate` is that the behavior of `reduce` may be non-deterministic for non-associative or non-commutative `operator+`.
 
@@ -277,7 +277,7 @@ template<class InputIterator, class T, class BinaryOperation>
 
     `binary_op` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
-3. *Complexity:* `O(last - first)`.
+3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
 4. *Note:* The primary difference between `reduce` and `accumulate` is that the behavior of `reduce` may be non-deterministic for non-associative or non-commutative `operator+`.
 
@@ -297,7 +297,7 @@ template<class InputIterator, class OutputIterator,
 
 2. *Requires:* The `operator+` function associated with `iterator_traits<InputIterator>::value_type` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
-3. *Complexity:* `O(last - first)`.
+3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
 
@@ -332,7 +332,7 @@ template<class InputIterator, class OutputIterator,
 
     `binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
-4. *Complexity:* `O(last - first)`.
+4. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
 5. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
 
@@ -352,7 +352,7 @@ template<class InputIterator, class OutputIterator>
 
     `operator+` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
-3. *Complexity:* `O(last - first)`.
+3. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `operator+`.
 
 4. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `exclusive_scan` excludes the `i`th input element from the `i`th sum.
 
@@ -394,7 +394,7 @@ template<class InputIterator, class OutputIterator,
 
     `binary_op` shall not invalidate iterators or subranges, nor modify elements in the ranges `[first,last)` or `[result,result + (last - first))`.
 
-4. *Complexity:* `O(last - first)`.
+4. *Complexity:* $\bigoh{\texttt{last - first}}$ applications of `binary_op`.
 
 5. *Notes:* The primary difference between `exclusive_scan` and `inclusive_scan` is that `inclusive_scan` includes the `i`th input element in the `i`th sum.
 
