@@ -124,15 +124,18 @@ This subclause describes novel algorithms introduced by this technical specifica
 
 ### Header `<experimental/algorithm>` synopsis {#parallel.alg.novel.algorithm.synop}
 
-```
+\begin{Verbatim}[commandchars=\\\[\]]
 namespace std {
 namespace experimental {
 namespace parallel {
   template<class ExecutionPolicy,
            class InputIterator, class Function>
-    InputIterator for_each(ExecutionPolicy&& exec,
-                           InputIterator first, InputIterator last,
-                           Function f);
+\remvrbline[InputIterator for_each(ExecutionPolicy&& exec,]
+\remvrbline[                       InputIterator first, InputIterator last,]
+\remvrbline[                       Function f);]
+\addvrbline[void for_each(ExecutionPolicy&& exec,]
+\addvrbline[              InputIterator first, InputIterator last,]
+\addvrbline[              Function f);]
   template<class InputIterator, class Size, class Function>
     Function for_each_n(InputIterator first, Size n,
                         Function f);
@@ -143,24 +146,27 @@ namespace parallel {
 }
 }
 }
-```
+\end{Verbatim}
 
 ### For each {#parallel.alg.novel.foreach}
 
-```
+\begin{Verbatim}[commandchars=\\\[\]]
 template<class ExecutionPolicy,
          class InputIterator, class Function>
-  InputIterator for_each(ExecutionPolicy&& exec,
-                         InputIterator first, InputIterator last,
-                         Function f);
-```
+\remvrbline[InputIterator for_each(ExecutionPolicy&& exec,]
+\remvrbline[                       InputIterator first, InputIterator last,]
+\remvrbline[                       Function f);]
+\addvrbline[void for_each(ExecutionPolicy&& exec,]
+\addvrbline[              InputIterator first, InputIterator last,]
+\addvrbline[              Function f);]
+\end{Verbatim}
 
 1. *Effects:* Applies `f` to the result of dereferencing every iterator in the range `[first,last)`.
    [*Note:* If the type of `first` satisfies
    the requirements of a mutable iterator, `f` may apply nonconstant functions through the dereferenced
    iterator. -- *end note*]
 
-2. *Returns:* `first + (last - first)`.
+2. \color{remclr}~~*Returns:* `first + (last - first)`.~~\color{black}
 
 3. *Complexity:* Applies `f` exactly `last - first` times.
 
