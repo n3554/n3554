@@ -325,9 +325,7 @@ template<class InputIterator, class T, class BinaryOperation>
            BinaryOperation binary_op);
 ```
 
-1. *Returns:* The result of the generalized sum of `init` and the elements in the range `[first,last)`.
-
-    Sums of elements are evaluated with `binary_op`. The order of operands of the sum is unspecified.
+1. *Returns:* \texttt{\textit{GENERALIZED\_SUM}(binary\_op, init, *first, ..., *(first + last - first - 1))}.
 
 2. *Requires:* `binary_op` shall not invalidate iterators or subranges, nor modify elements in the range `[first,last)`.
 
@@ -365,21 +363,8 @@ template<class InputIterator, class OutputIterator,
                    T init, BinaryOperation binary_op);
 ```
 
-1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, produces a result such that upon
-    completion of the algorithm, `*i` yields the generalized sum of `init` and the elements in the range
-    `[first, first + (i - result))`.
-
-    During execution of the algorithm, every evaluation of the above sum is 
-
-    `binary_op(binary_op(init,A), B)` or `binary_op(A, B)`
-
-    where there exists some iterator `j` in `[first, last)` such that:
-
-    1. `A` is the partial sum of elements in the range `[j, j + n)`.
-
-    2. `B` is the partial sum of elements in the range `[j + n, j + m)`.
-
-    3. `n` and `m` are positive integers and `j + m < last`.
+1. *Effects:* Assigns through each iterator `i` in `[result,result + (last - first))` the value of
+    \texttt{\textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(binary\_op, init, *first, ..., (*first + i - result - 1))}.
 
 2. *Returns:* The end of the resulting range beginning at `result`.
 
@@ -425,21 +410,9 @@ template<class InputIterator, class OutputIterator,
                    T init, BinaryOperation binary_op);
 ```
 
-1. *Effects:* For each iterator `i` in `[result,result + (last - first))`, produces a result such that upon
-    completion of the algorithm, `*i` yields the generalized sum of `init`, if it is provided as a parameter,
-    and the elements in the range `[first, first + (i - result)]`.
-
-    During execution of the algorithm, every evaluation of the above sum is either of the corresponding form
-
-    `binary_op(binary_op(init,A), B)` or `binary_op(A, B)`
-
-    where there exists some iterator `j` in `[first, last)` such that:
-
-    1. `A` is the partial sum of elements in the range `[j, j + n)`.
-
-    2. `B` is the partial sum of elements in the range `[j + n, j + m)`.
-
-    3. `n` and `m` are positive integers and `j + m < last`.
+1. *Effects:* Assigns through each iterator `i` in `[result,result + (last - first))` the value of
+    \texttt{\textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(binary\_op, *first, ..., (*first + i - result))} or
+    \texttt{\textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(binary\_op, init, *first, ..., (*first + i - result))} if `init` is provided.
 
 2. *Returns:* The end of the resulting range beginning at `result`.
 
