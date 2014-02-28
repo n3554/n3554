@@ -46,9 +46,12 @@ namespace parallel {
 \addvrbline[      typedef typename iterator_traits<const_iterator>::difference_type difference_type;]
       typedef size_t                                                    size_type;
   
-      size_t size() const;
-      iterator begin() const;
-      iterator end() const;
+\remvrbline[      size_t size() const];
+\addvrbline[      size_t size() const noexcept];
+\remvrbline[      iterator begin() const];
+\addvrbline[      iterator begin() const noexcept];
+\remvrbline[      iterator end() const];
+\addvrbline[      iterator end() const noexcept];
   
     private:
       std::list<exception_ptr> exceptions_; // exposition only
@@ -62,23 +65,23 @@ namespace parallel {
 
 2. The type `exception_list::const_iterator` shall fulfill the requirements of `ForwardIterator`.\color{black}
 
-```
-size_t size() const;
-```
+\begin{Verbatim}[commandchars=\\\{\}]
+size_t size() const \color{addclr}noexcept\color{black};
+\end{Verbatim}
 
 2. *Returns:* The number of `exception_ptr` objects contained within the `exception_list`.
 
 3. *Complexity:* Constant time.
 
-```
-exception_list::iterator begin() const;
-```
+\begin{Verbatim}[commandchars=\\\{\}]
+exception_list::iterator begin() const \color{addclr}noexcept\color{black};
+\end{Verbatim}
 
 4. *Returns:* An iterator referring to the first `exception_ptr` object contained within the `exception_list`.
 
-```
-exception_list::iterator end() const;
-```
+\begin{Verbatim}[commandchars=\\\{\}]
+exception_list::iterator end() const \color{addclr}noexcept\color{black};
+\end{Verbatim}
 
 5. *Returns:* An iterator which is the past-the-end value for the `exception_list`.
 
