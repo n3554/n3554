@@ -118,6 +118,26 @@ This clause describes components that C++ programs may use to perform operations
 
 : Table of parallel algorithms
 
+## Definitions {#parallel.alg.defns}
+
+\color{addclr}
+1. Define \texttt{\textit{GENERALIZED\_SUM}(op, a1, ..., aN)} as follows:
+
+   * `a1` when `N` is `1`
+
+   * \texttt{op(\textit{GENERALIZED\_SUM}(op, b1, ..., bM), \textit{GENERALIZED\_SUM}(op, bM, ..., bN))} where
+     
+      * `b1, ..., bN` may be any permutation of `a1, ..., aN` and
+      * `0 < M < N`.
+
+2. Define \texttt{\textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(op, a1, ..., aN)} as follows:
+
+   * `a1` when `N` is `1`
+
+   * \texttt{op(\textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(op, a1, ..., aM), \textit{GENERALIZED\_NONCOMMUTATIVE\_SUM}(op, aM, ..., aN)} where `0 < M < N`.
+
+\color{black}
+
 ## Novel algorithms {#parallel.alg.novel}
 
 This subclause describes novel algorithms introduced by this technical specification.

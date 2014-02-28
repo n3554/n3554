@@ -273,7 +273,7 @@ template<class T> execution_policy& operator=(const T& exec);
 
 3. *Requires:* `is_execution_policy<T>::value` is `true`
 
-## \color{red}~~Execution policy specialized algorithms~~\color{black} {#parallel.execpol.algorithms}
+## ~~Execution policy specialized algorithms~~ {#parallel.execpol.algorithms}
 
 \begin{Verbatim}[commandchars=\\\[\]]
 \remvrbline[void swap(sequential_execution_policy& a, sequential_execution_policy& b);]
