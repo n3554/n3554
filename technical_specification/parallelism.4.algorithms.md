@@ -6,11 +6,27 @@ This clause describes components that C++ programs may use to perform operations
 
 ### Effect of execution policies on parallel algorithm execution {#parallel.alg.general.exec}
 
-1. Parallel algorithms have template parameters named `ExecutionPolicy` which describe the manner in which the execution of these algorithms may be parallelized and the manner in which they apply user-provided function objects.
+1. The standard library functions can access objects indirectly accessible via
+its arguments or via elements of its container by invoking the following
+functions:
 
-2. The applications of function objects in parallel algorithms invoked with an execution policy object of type `sequential_execution_policy` execute in sequential order in the calling thread.
+* Functions on those container elements that are required by its specification.
+* User-provided function objects to be applied during the execution of the 
+algorithm, if required by the specification.
 
-3. The applications of function objects in parallel algorithms invoked with an execution policy object of type `parallel_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, and indeterminately sequenced within each thread. 
+These functions are herein called the _element access functions_.
+
+[*Example:* The `sort` function may invoke the following element access 
+functions:
+
+* The `swap` function on the elements of the container (as per 25.4.1.1/2)
+* The user-provided provided `Compare` function object. -- *end example*]
+
+2. Parallel algorithms have template parameters named `ExecutionPolicy` which describe the manner in which the execution of these algorithms may be parallelized and the manner in which they apply element access functions.
+
+3. The invocation of element access functions in parallel algorithms invoked with an execution policy object of type `sequential_execution_policy` execute in sequential order in the calling thread.
+
+4. The invocations of element access functions in parallel algorithms invoked with an execution policy object of type `parallel_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, and indeterminately sequenced within each thread. 
    [*Note:* It is the caller's responsibility to ensure correctness, for example that the invocation does not introduce data races or deadlocks. –- *end note*]
    
      [*Example:*
@@ -51,7 +67,7 @@ This clause describes components that C++ programs may use to perform operations
     
      The above example synchronizes access to object `x` ensuring that it is incremented correctly. –- *end example*]
 
-4. The applications of function objects in parallel algorithms invoked with an execution policy of type `vector_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, and unsequenced within each thread. [*Note:* as a consequence, function objects governed by the `vector_execution_policy` policy must not synchronize with each other. Specifically, they must not acquire locks. –- *end note*]
+5. The invocations of element access functions in parallel algorithms invoked with an execution policy of type `vector_execution_policy` are permitted to execute in an unordered fashion in unspecified threads, and unsequenced within each thread. [*Note:* as a consequence, element access functions governed by the `vector_execution_policy` policy must not synchronize with each other. Specifically, they must not acquire locks. –- *end note*]
 
     [*Example:*
 
@@ -74,15 +90,15 @@ This clause describes components that C++ programs may use to perform operations
 
     [*Note:* The semantics of the `parallel_execution_policy` or the `vector_execution_policy` invocation allow the implementation to fall back to sequential execution if the system cannot parallelize an algorithm invocation due to lack of resources. -- *end note*.]
 
-5. If they exist, a parallel algorithm invoked with an execution policy object of type `parallel_execution_policy` or `vector_execution_policy` may apply iterator member functions of a stronger category than its specification requires. In this case,
+6. If they exist, a parallel algorithm invoked with an execution policy object of type `parallel_execution_policy` or `vector_execution_policy` may apply iterator member functions of a stronger category than its specification requires. In this case,
    the application of these member functions are subject to provisions 3. and 4. above, respectively.
 
     [*Note:* For example, an algorithm whose specification requires `InputIterator` but receives a concrete iterator of the category `RandomAccessIterator` may use `operator[]`. In this
     case, it is the algorithm caller's responsibility to ensure `operator[]` is race-free. -- *end note*.]
 
-6. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or an implementation-defined execution policy type depending on the dynamic value of the `execution_policy` object.
+7. Algorithms invoked with an execution policy object of type `execution_policy` execute internally as if invoked with instances of type `sequential_execution_policy`, `parallel_execution_policy`, or an implementation-defined execution policy type depending on the dynamic value of the `execution_policy` object.
 
-7. The semantics of parallel algorithms invoked with an execution policy object of implementation-defined type are unspecified.
+8. The semantics of parallel algorithms invoked with an execution policy object of implementation-defined type are unspecified.
 
 ### `ExecutionPolicy` algorithm overloads {#parallel.alg.overloads}
 

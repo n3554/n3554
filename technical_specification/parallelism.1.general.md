@@ -65,3 +65,20 @@ Standard and the following apply.
 
 A *parallel algorithm* is a function template described by this Technical Specification declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
 
+# Wording changes
+
+The wording changes proposed in this section are relative to the contents of
+N3936.
+
+In 17.6.5.9, change paragraph 8 as follows:
+
+\remvrbline[Unless otherwise specified, C++ standard library functions shall
+perform all operations solely within the current thread if those operations have
+effects that are visible (1.10) to users] 
+
+\addvrbline[A C++ standard library function with execution policy `vec` or `par`
+shall not introduce a race on any object accessible by the means described in
+clauses 2-5.  Otherwise, unless otherwise specified, C++ standard library
+functions shall perform all operations solely within the current thread if
+those operations have effects that are visible (1.10) to users.]
+
