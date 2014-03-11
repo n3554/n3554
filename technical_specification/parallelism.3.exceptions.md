@@ -4,14 +4,14 @@
 
 1. If temporary memory resources are required by the algorithm and none are available, the algorithm throws a `std::bad_alloc` exception.
 
-2. During the execution of a standard parallel algorithm, if the application of a function object terminates with an
+2. During the execution of a standard parallel algorithm, if the execution of an element access function terminates with an
    uncaught exception, the behavior of the program is determined by the type of execution policy used to invoke the algorithm:
 
    * If the execution policy object is of type `vector_execution_policy`, `std::terminate` shall be called.
 
    * If the execution policy object is of type `sequential_execution_policy` or `parallel_execution_policy`,
-     the execution of the algorithm terminates with an `exception_list` exception. All uncaught exceptions thrown during
-     the application of user-provided function objects shall be contained in the `exception_list`.
+     the execution of the algorithm terminates with an `exception_list` exception. All uncaught exceptions 
+     thrown from the element access functions shall be contained in the `exception_list`.
 
       [*Note:* For example, the number of invocations of the user-provided function object in `for_each` is unspecified. When 
       `for_each` is executed sequentially, only one exception will be contained in the `exception_list` object -- *end note*]
