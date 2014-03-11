@@ -3,10 +3,8 @@
 ## In general {#parallel.execpol.general}
 
 This subclause describes classes that represent *execution policies*. An
-*execution policy* is an object that expresses the requirements on the ordering
-of functions invoked as a consequence of the invocation of a standard
-algorithm. Execution policies afford standard algorithms the discretion to
-execute in parallel.
+*execution policy* affords a standard algorithm the discretion to execute in
+parallel and expresses the requirements on the element access functions.
 
 [*Example:*
 

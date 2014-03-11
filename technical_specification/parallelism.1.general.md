@@ -65,7 +65,24 @@ Standard and the following apply.
 
 A *parallel algorithm* is a function template described by this Technical Specification declared in namespace `std::experimental::parallel` with a formal template parameter named `ExecutionPolicy`.
 
-# Wording changes
+Parallel algorithms can access objects indirectly accessible via
+its arguments or via elements of its container by invoking the following
+functions:
+
+* Functions on those container elements that are required by its specification.
+* User-provided function objects to be applied during the execution of the 
+algorithm, if required by the specification.
+
+These functions are herein called the *element access functions* of the parallel
+algorithms.
+
+[*Example:* The `sort` function may invoke the following element access 
+functions:
+
+* The `swap` function on the elements of the container (as per 25.4.1.1/2)
+* The user-provided provided `Compare` function object. -- *end example*]
+
+# Wording changes {#parallel.wording}
 
 The wording changes proposed in this section are relative to the contents of
 N3936.
