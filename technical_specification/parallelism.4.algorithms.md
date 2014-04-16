@@ -96,24 +96,24 @@ This clause describes components that C++ programs may use to perform operations
 4. The algorithms listed in table 1 shall have `ExecutionPolicy` overloads.
 
 -------------------------- ------------------------- ------------------- --------------------------
-`adjacent_find`            `for_each`                `none_of`           `search`                  
-`all_of`                   `for_each_n`              `nth_element`       `search_n`                
-`any_of`                   `generate`                `partial_sort`      `set_difference`          
-`copy`                     `generate_n`              `partial_sort_copy` `set_intersection`        
-`copy_if`                  `includes`                `partition`         `set_symmetric_difference`
-`copy_n`                   `inclusive_scan`          `partition_copy`    `set_union`               
-`count`                    `inplace_merge`           `reduce`            `sort`                    
-`count_if`                 `is_heap`                 `remove`            `stable_partition`        
-`equal`                    `is_partitioned`          `remove_copy`       `stable_sort`             
-`exclusive_scan`           `is_sorted`               `remove_copy_if`    `swap_ranges`             
-`fill`                     `is_sorted_until`         `remove_if`         `transform`               
-`fill_n`                   `lexicographical_compare` `replace`           `uninitialized_copy`      
-`find`                     `max_element`             `replace_copy`      `uninitialized_copy_n`    
-`find`                     `merge`                   `replace_copy_if`   `uninitialized_fill`      
-`find_end`                 `min_element`             `reverse`           `uninitialized_fill_n`    
-`find_first_of`            `minmax_element`          `reverse_copy`      `unique`                  
-`find_if`                  `mismatch`                `rotate`            `unique_copy`             
-`find_if_not`              `move`                    `rotate_copy`        
+`adjacent_find`            `for_each_n`              `none_of`           `rotate_copy`
+`all_of`                   `generate`                `nth_element`       `search`
+`any_of`                   `generate_n`              `partial_sort`      `search_n`
+`copy`                     `includes`                `partial_sort_copy` `set_difference`
+`copy_if`                  `inclusive_scan`          `partition`         `set_intersection`
+`copy_n`                   `inplace_merge`           `partition_copy`    `set_symmetric_difference`
+`count`                    `is_heap`                 `reduce`            `set_union`
+`count_if`                 `is_heap_until`           `remove`            `sort`
+`equal`                    `is_partitioned`          `remove_copy`       `stable_partition`
+`exclusive_scan`           `is_sorted`               `remove_copy_if`    `stable_sort`
+`fill`                     `is_sorted_until`         `remove_if`         `swap_ranges`
+`fill_n`                   `lexicographical_compare` `replace`           `transform`
+`find`                     `max_element`             `replace_copy`      `uninitialized_copy`
+`find_end`                 `merge`                   `replace_copy_if`   `uninitialized_copy_n`
+`find_first_of`            `min_element`             `replace_if`        `uninitialized_fill`
+`find_if`                  `minmax_element`          `reverse`           `uninitialized_fill_n`
+`find_if_not`              `mismatch`                `reverse_copy`      `unique`
+`for_each`                 `move`                    `rotate`            `unique_copy`
 -------------------------- ------------------------- ------------------- --------------------------
 
 : Table of parallel algorithms
